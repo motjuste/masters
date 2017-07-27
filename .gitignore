@@ -409,3 +409,8 @@ Session.vim
 tags
 
 # End of https://www.gitignore.io/api/osx,vim,latex,emacs,python
+
+## Personal Additions
+/ltximg/*
+/*.tex
+/*.pdf
