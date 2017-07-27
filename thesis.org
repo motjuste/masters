@@ -1,4 +1,4 @@
-# -*- fill-column: 80; eval: (zotxt-easykey-mode 1); -*-
+# -*- fill-column: 80; eval: (auto-fill-mode: 1); eval: (zotxt-easykey-mode 1); -*-
 #+TODO: IDEA TODO DOIN WAIT | DONE CANC
 #+PROPERTY: COOKIE_DATA recursive
 #+STARTUP: overview
@@ -6,8 +6,162 @@
 #+STARTUP: align
 #+STARTUP: inlineimages
 #+STARTUP: latexpreview
-#+OPTIONS: toc:nil creator:nil todo:nil
-#+OPTIONS: H:4 ':t ^:{}
+#+OPTIONS: toc:nil creator:nil todo:nil tasks:nil stat:nil tags:nil inline:nil
+#+OPTIONS: H:4 ':t ^:{} tex:t
 
 #+TITLE: Detecting Double-Talk (Overlapping Speech) in Conversations using Deep Learning
 #+AUTHOR: Abdullah
+
+* Abstract
+
+* Dedication
+To Ammi, Abbu, Gudiya, Bushra, and Khushi
+
+/To Happiness indeed/
+* Acknowledgements
+
+* Table of Contents
+
+* [0/3] Introduction
+- [ ] Double Talk (aka Overlapping Speech) is ...
+** [0/3] Motivations for Detecting Double Talk
+*** TODO [0/1] Linguistics                                           :cite:
+- Manual annotation takes expertise and is time consuming.
+- Can give ideas about conversations, the mood, the scencario, cultural aspects, etc.
+- We are not concerned with the language model.
+- While thesis is limited to Fisher dataset, evaluation also performed on KA3.
+  - [ ] Add citation to Fisher dataset paper.
+*** TODO [0/1] Speech and Machine Learning                           :cite:
+- /Achille's heel/ of Speaker Diarization and Recognition systems.
+  + leads to impure speaker models.
+- A recognized source of errors in Speech Recognition systems.
+  + [ ] Talk about that Microsoft paper.
+- We are not concerned with overlapping speech recognition.
+- We are also not concerned with diarization. Our modelling assumptions are
+  speaker indpendent.
+- We are also not concerned with how many speakers are talking simultaneously.
+- We are also not concerned with source separation.
+*** TODO [0/1] Artificial Intelligence and Future User Interfaces
+- Make the assistants more natural to converse with, especially with back-channels, etc.
+  + [ ] Search for continuous conversation type AI assistant research.
+** [0/2] Motivations for using Deep Learning                          :cite:
+- Incredible recent results.
+- [ ] Learn features for us. Learn appropriate representations.
+  + Existing research has pointed to potential improvements with better features.
+- Relatively little investigation in this area.
+- Made more accessible with open-sourced frameworks.
+- Cons:
+  + Need lots of data.
+  + Long training times.
+    * Esp when the hardware is not upto par.
+    * [ ] Long lead times meant use reliable and easy to use Keras framework.
+  + fine-tuning is still an art.
+** [0/1] Challenges                                                   :cite:
+- Not enough high qualitly data.
+  - difficult to judge ground-truth anyway.
+- Heavily imbalanced classes, with two being extremely closely related.
+  - [ ] essentially a linear combination.
+** [0/0] Related Works
+* Approach
+** Scope
+- Speaker and language indpendent model.
+- Assuming it to be a purely acoustic phenomena.
+- Learn appropriate features.
+
+* Evaluations
+
+* Conclusions
+- Context helps. Single frame is not enough for DT.
+- Deep learning relies heavily on the optimizer.
+- Summary statistics can definitely be misleading.
+
+* Future Work
+- More context?
+  + Hardware limitations.
+- More/better features.
+  + If Fbanks do in fact work better, then, more hand-tuned ones as well.
+- More complicated neural networks.
+  + Bigger size ones.
+  + Heirarchial model.
+  + LSTM.
+- Use language model.
+
+* Appendix
+
+* Bibliography
+
+* Workflows                                                        :noexport:
+[[https://bitbucket.org/motjuste/masters][This repository on BitBucket]]
+** org-mode setup
+Look at all the fiddling I have done, and there is bound to be more.
+
+We have some example thesis.org files in `Documents` if you ever need
+inspiration. Also checkout the references.
+*** References
+- [[http://bastibe.de/2014-11-19-writing-a-thesis-in-org-mode.html][Writing a thesis in org-mode]]
+- [[http://www.macs.hw.ac.uk/~rs46/phd-thesis.html][Rob Stewart's PhD thesis]]
+- [[http://orgmode.org/manual/In_002dbuffer-settings.html][Summary of in-buffer settings]]
+- [[http://orgmode.org/manual/Export-settings.html#Export-settings][Export settings]]
+- [[http://orgmode.org/manual/Embedded-LaTeX.html][Embedded LaTeX in orgmode]]
+- [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html][Specifying File Variables]]
+
+* Logs                                                             :noexport:
+** 27-Jul-2017
+*** DOIN [2/7] 6:40:19 PM : First incision.
+If you don't believe me, I have writing the above log entry till *now!*
+
+I have a bunch of things to do in order to even call all these hours to not have
+been a waste. Those things shall be, at least for today:
+
+- [X] Create an outline of the possible chapter headings.
+- [X] Add some outlines in [[Introduction/Motivations]].
+  + Added to a bunch of other headings too, main points that is.
+  + There is still a lot of literature review kinda things needed.
+  + I can keep on going, but ... hey ... good start eh!
+- [X] Add links to pages that helped setup org-mode this far as references in
+  [[Workflows/org-mode setup/Refrences]].
+- [X] Test a preliminary export. Make sure git doesn't find it interesting.
+- [ ] Sync Google Drive.
+- [ ] Reorganize Todoist ... please ... dude ... it is unusable ... cluttered
+  with outdated and/or impossible ideas and tasks.
+  + [ ] Find paper about `fe_03_p1` and add to zotero. :todoist:
+*** DONE [0/0] 5:53:40 PM : Setting up.
+CLOSED: [2017-07-27 Thu 18:43]
+I think I am going to be wasting a lot of my time fiddling with org-mode and
+spacemacs. Add to that my perversion for using [[https://normanlayout.info/][Norman layout]] for typing, and I
+am not sure how my numbers for productivity will look like.
+
+And it is stupid, especially in the current context. There is a lot of stuff to
+write and there is lot of stuff that will need to get done before a lot of stuff
+gets written. And don't even get me started on the amount of back and forth that
+will inevitably take place until the final document is ready to submit.
+**** Why choose org-mode?
+***** Pros
++ Pure text is easy and convenient to write, and adding $$\LaTeX$$ formatting is
+  pretty easy towards the end.
++ Text files are easy to put in git.
++ There are many handy tools available for exporting, formatting, task
+  management, etc.
++ I can run code from within the the org file, potentially making this repo a
+  single file one.
++ I have some helpful reference usages available for using org-mode to write theses.
++ The experience can result in a life-long competency.
+***** Cons
+- Too many opportunities to fiddle with, especially considering I don't have
+  much exprience of working this seriously, at least not with success, in
+  org-mode beforehand.
+  + I don't have enough experience with $$\LaTeX$$ either, but it is likely that I
+    would have used Atom and some hacky, possibly inefficient process to make it
+    work, just like I did for my seminar report.
+- Too many opportunities to get distracted by, including making this my one-file
+  repo idea, where this file holds other, non-thesis related, stuff as well,
+  like these loggings.
+- Can only use emacs to make best use of this file.
+  * Frequent exports may be necessary.
+**** Why do [[https://normanlayout.info/][Norman keyboard layout]]?
+***** Pros
++ I type faster in it.
++ It is overall more comfortable for me.
++ I have some practice of using this layout while using org-mode, so not very many keys to relearn.
+***** Cons
+- Not very comfortable while using VIM keybindings, but not absolutely abysmal either.
