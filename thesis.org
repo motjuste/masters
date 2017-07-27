@@ -1,0 +1,13 @@
+# -*- fill-column: 80; eval: (zotxt-easykey-mode 1); -*-
+#+TODO: IDEA TODO DOIN WAIT | DONE CANC
+#+PROPERTY: COOKIE_DATA recursive
+#+STARTUP: overview
+#+STARTUP: indent
+#+STARTUP: align
+#+STARTUP: inlineimages
+#+STARTUP: latexpreview
+#+OPTIONS: toc:nil creator:nil todo:nil
+#+OPTIONS: H:4 ':t ^:{}
+
+#+TITLE: Detecting Double-Talk (Overlapping Speech) in Conversations using Deep Learning
+#+AUTHOR: Abdullah
