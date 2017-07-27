@@ -6,8 +6,8 @@
 #+STARTUP: align
 #+STARTUP: inlineimages
 #+STARTUP: latexpreview
-#+OPTIONS: toc:nil creator:nil todo:nil tasks:nil stat:nil tags:nil inline:nil
-#+OPTIONS: H:4 ':t ^:{} tex:t
+#+OPTIONS: toc:nil creator:nil todo:nil stat:nil tags:nil inline:nil
+#+OPTIONS: H:5 ':t ^:{} tex:t
 
 #+TITLE: Detecting Double-Talk (Overlapping Speech) in Conversations using Deep Learning
 #+AUTHOR: Abdullah
