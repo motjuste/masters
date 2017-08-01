@@ -106,7 +106,7 @@ inspiration. Also checkout the references.
 - [[http://orgmode.org/manual/Export-settings.html#Export-settings][Export settings]]
 - [[http://orgmode.org/manual/Embedded-LaTeX.html][Embedded LaTeX in orgmode]]
 - [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html][Specifying File Variables]]
-** DOIN [0/21] Finale Planne whatever
+** DOIN [0/31] Finale Planne whatever
 Most of this is going to have to be talked about in the [[Approach]] Section of the
 thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts are general.
 *** WAIT [0/4] Data Analysis
@@ -229,8 +229,8 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
 - [ ] look at links on MFCC, iVectors, prosody, pitch, CNSC, PLP, etc. for inspiration.
   + [ ] See if the argument that 'spectrogram' is the mother of all features
     still holds.
-*** TODO [0/3] The Classifier and Configurations
-**** WAIT [0/1] The Neural Networks - {c3}
+*** DOIN [0/13] The Classifier and Configurations
+**** WAIT [0/2] The Neural Networks - {c3}
 - There is essentially just one model based on the code below.
 - There is one output per-sequence, as in, we do sequence classification, but
   not at utterance level.
@@ -238,6 +238,9 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   + The input shape, and hence the context per frame.
   + The number of classes.
 - We use BatchNormalization *BEFORE* Activation, to follow the original paper.
+- We use Categorical crossentropy, and categorical accuracy.
+- [ ] We use adamax as optimizer, but this can change
+- [ ] Check more conv nets for speech and decide one final that we can run.
 - [ ] Move this to =keras_utils= or =models= or =model_utils=, and actually see
   the model output. Too much time getting wasted in making it work in spacemacs.
 #+BEGIN_SRC python :results output
@@ -245,7 +248,7 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   import keras.layers as kl
 
   def c3(input_shape, nclasses=3):
-      model = Sequential()
+      model = Sequential(name='conv3')
 
       # first conv2d layer
       model.add(kl.Conv2D(
@@ -258,7 +261,8 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
       ))
       model.add(kl.BatchNormalization(name='c1_bn'))
       model.add(kl.Activation('relu', name='c1_relu'))
-      model.add(kl.Dropout(0.2, name='c1_d_20'))
+      model.add(kl.Dropout(0.1, name='c1_d_10'))
+      model.add(kl.MaxPool2D(2, name='c1_mxp2_2'))
 
       # second conv2d layer
       model.add(kl.Conv2D(
@@ -272,6 +276,7 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
       model.add(kl.BatchNormalization(name='c2_bn'))
       model.add(kl.Activation('relu', name='c2_relu'))
       model.add(kl.Dropout(0.1, name='c2_d_10'))
+      model.add(kl.MaxPool2D(2, name='c2_mxp2_2'))
 
       # third conv2d layer
       model.add(kl.Conv2D(
@@ -290,12 +295,16 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
       model.add(kl.GlobalMaxPool2D(name='gmxp'))
 
       # first FC
-      model.add(kl.Dense(1024, activation='relu', name='f1_1024_relu'))
+      model.add(kl.Dense(512, activation='relu', name='f1_512_relu'))
       model.add(kl.Dropout(0.1, name='f1_d_10'))
 
-      # first FC
-      model.add(kl.Dense(1024, activation='relu', name='f2_1024_relu'))
+      # second FC
+      model.add(kl.Dense(128, activation='relu', name='f2_128_relu'))
       model.add(kl.Dropout(0.1, name='f2_d_10'))
+
+      # second FC
+      model.add(kl.Dense(32, activation='relu', name='f3_32_relu'))
+      model.add(kl.Dropout(0.1, name='f3_d_10'))
 
       # output layer
       model.add(kl.Dense(nclasses, activation='softmax', name='sfmx'))
@@ -312,6 +321,18 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   input_shape = (None, 21, 64, 1)
   c3(input_shape).summary()
 #+END_SRC
+**** WAIT [0/2] Features to use - {melspectrogram, spectrogram/cepstrogram}
+- *Priority* is for melspectrogram.
+  + choose one between {64, 96}, and stick to it.
+  + They will be calculated on the fly from the saved spectrograms.
+- spectrogram can be used for making an argument on the lines that it requires
+  more work, and/or the argument that network is supposed to learn the features,
+  but takes too much time ... or whatever.
+  + Run spectrogram only for at-most 3 best models, based on results.
+  + May incur more epochs.
+- [ ] Make sure to log and normalize the inputs before feeding them into the network.
+  - [ ] do it *before* making it into sequences.
+- [ ] We wait on the final decision any way from [[Workflows/Finale Planne whatever/Feature Extraction]]
 **** WAIT [0/1] Making sequences to input with context - {±10}
 - There are multiple options, and adding more context has helped results.
 - I have decided to choose and evaluate only on ±10 frames (±100 ms).
@@ -320,17 +341,48 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   + hardware limitations
   + Run time limitations
   + [ ] Add this to future works
-**** WAIT [0/2] Features to use - {melspectrogram, spectrogram/cepstrogram}
-- *Priority* is for melspectrogram.
-  + choose one between {64, 96}, and stick to it.
-- spectrogram can be used for making an argument on the lines that it requires
-  more work, and/or the argument that network is supposed to learn the features,
-  but takes too much time ... or whatever.
-  + Run spectrogram only for at-most 3 best models, based on results.
-  + May incur more epochs.
-- [ ] Make sure to log and normalize the inputs before feeding them into the network.
-- [ ] We wait on the final decision any way from [[Workflows/Finale Planne whatever/Feature Extraction]]
-**** [/]
+- [ ] Add `[..., None]` at the end to make it `channels_last` for conv2d
+**** TODO [0/0] Choosing label for a sequence - {}
+**** TODO [0/0] Skipping class(-es)
+**** TODO [0/0] Class-/Sample-Weights
+**** TODO [0/0] Fixed number of steps per chunk, {8, whatever runs, likely one with 2k examples}
+- This is to make sure we can predict exactly how many steps are required for a pass
+**** WAIT [0/4] Number of epochs / passes over the dataset - 8 epochs per pass * {1, 6, 11, 21 passes}
+- [ ] Make atleast one pass over the entire dataset for every model.
+- [ ] upto 20 total passes for the best/most promising/relevant models.
+  - [ ] build upon saved checkpoints from earlier runs.
+  - [ ] pass it as a parameter to Keras.fit_generator?
+- 8 keras epochs per pass anyways
+- It is okay if we pass over a little more due to rounding, but we don't want to
+  pass less than the entire dataset.
+**** WAIT [0/1] Save model on every keras epoch {every-one}
+- [ ] decide on file name formatting.
+- Save checkpoints every epoch
+**** WAIT [0/2] Save Tensorboard events
+- [ ] Is the images and stuff not showing up an issue from my side?
+- [ ] Is there a way to append to existing events file, instead of adding a new one?
+  - if nothing else, if keras reflects what epoch we are training on, maybe that
+    will help.
+**** WAIT [0/3] Validation data to be given to =keras.fit=
+- [ ] possibly a give the same files as those given for the confusions calculations
+  + so the confusions are printed for the same predictions/loss
+- [ ] give as generator, and get the step size by running a fake loop.
+  + We can also predict the step size as it is, but let's stick to what we can trust.
+  + Or, implement it into the data provider class. We can, cuz we plan to keep
+    the n-steps constant per-chunk.
+- [ ] Do not do any sub-sampling in the validation data provider.
+  + skipping will be done however.
+**** WAIT [0/7] Confusions calculations in callback
+- [ ] Add to a new =keras_utils= file.
+- [ ] Only do per epoch, and hence, multiple epochs per sweep has to be implemented.
+- [ ] Make sure that there is no code being called that needs packages not on
+  the GPU.
+- [ ] use one call, maybe 2, and save the predictions, generated using normal predict.
+  + [ ] '00003' and '00086', or some other based on analysis, /maybe/
+  + [ ] Save the ground-label only once, maybe also with chunking information.
+- [ ] print out the precision and recall for all classes being trained on
+  + [ ] Save the full confusion matrix as well.
+**** IDEA [/] Predict over validation and/or test dataset at the end of training, in the script
 
 *** [/] Post Processing / Smoothing / Inference
 *** [0/0] Evaluation
@@ -556,3 +608,54 @@ use the max-in-center-label approach. The only problem there is post-processing,
 and that is another can of worms I have not opened yet, and it is past 8:00 PM.
 
 Wasn't the plan that I get done by 12:00 PM. /sigh/
+*** TODO [0/1]  9:19 PM : Couldn't take a break, updated network
+I wanted to take a break, and have dinner and what not, but in the cooling down
+period and looking at how much still had to get done, I was ... waffling about
+making myself something.
+
+I realized that my earlier and complicated idea to do silence-skipping was
+overly complicated, and could be done by simply removing the silence labels
+/after/ they have been made into sequences. Yes, there will be forced copying in
+=numpy=, but my earlier solution also involved that. Furthermore, this solution
+is much less complicated, and doing sub-sampling of 1T is pretty similar, except
+that I will already have the labels for the sequences, and can choose create my
+boolean for keeping things by working only on the final sequence labels.
+
+- [ ] Add the approach of filtering away /after/ sequences have been made, in
+  addition to the one brainstormed previously, and choose one.
+
+After that, I actually got back to running the network and looking at the number
+of params. I stopped fiddling with org mode to run my source block, and simply
+copied and pasted the code in ipython. And lo-and-behold, I had missed max-pool
+layers in between conv layers. Because, my number of trainable params were
+beyond 1M. Now, that could definitely improve our model, but the problem in that
+case would be training times. Plus, how many params do I need to learn for 3
+fucking classes?
+
+Anyway, I can still fiddle with it a little more, and change things. Like I did
+by making the final FC layer tapered, instead of square. Too many params.
+*** DONE [0/0]  11:32 PM : There are only so many hours ... I am awake
+CLOSED: [2017-08-01 Tue 23:41]
+The dinner break was a forced and unrewarding one. And then came in my nightly
+routine. I don't feel very accomplished today. The biggest things are still left
+to do in the planning task itself, let alone to start implementing on those
+plans, which could definitely prove a lot more ominous, if not filled with
+distractions and what.
+
+If history is worth trusting, I may not even finish this planning thing. And,
+also, I may not even end following a lot of it. There are definitely things that
+can go wrong which may force me to abandon all hopes and get the minimum done.
+
+The only reason I decided to get through with this was that I believed that I
+had more knowledge now than ever. And that the deadlines will force me anyway.
+And, otherwise, I can stop my brain from having incoherent thoughts.
+
+The sad thing is ... a lot of the tasks are like the 'figure this out' kind, and
+there are definitely more to come I am sure, my first deadline of having getting
+this planning done today has been horrendously overspilled, and, just look at
+how many hours it took me to write that much, I was that incoherent with my ideas.
+
+Tomorrow is another day. Just like today.
+
+I hope having finished a few of the easy sections will not come back to bite me
+and make it more difficult for me to get started tomorrow.
