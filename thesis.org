@@ -76,6 +76,7 @@ To Ammi, Abbu, Gudiya, Bushra, and Khushi
 - Summary statistics can definitely be misleading.
 
 * Future Work
+- Evaluate on different dataset
 - More context?
   + Hardware limitations.
 - More/better features.
@@ -93,6 +94,7 @@ To Ammi, Abbu, Gudiya, Bushra, and Khushi
 * Workflows                                                        :noexport:
 [[https://bitbucket.org/motjuste/masters][This repository on BitBucket]]
 ** org-mode setup
+
 Look at all the fiddling I have done, and there is bound to be more.
 
 We have some example thesis.org files in `Documents` if you ever need
@@ -104,28 +106,134 @@ inspiration. Also checkout the references.
 - [[http://orgmode.org/manual/Export-settings.html#Export-settings][Export settings]]
 - [[http://orgmode.org/manual/Embedded-LaTeX.html][Embedded LaTeX in orgmode]]
 - [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html][Specifying File Variables]]
+** DOIN [0/16] Finale Planne whatever
+Most of this is going to have to be talked about in the [[Approach]] Section of the
+thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts are general.
+*** WAIT [0/4] Data Analysis
+**** WAIT [0/2] Fisher
+***** WAIT [0/9] About
+- [ ] Where does the data come from, with reference to paper
+- [ ] What does the data have
+  + [ ] From the main readme of the dataset, all the params
+- [ ] Why use this dataset
+  + Real Double Talks, similar to KA3
+    + [ ] Some examples
+  + Not a laboratory dataset (?)
+  + SNR (?)
+  + Giant, may help the models generalize better
+  + [ ] How have others used it?
+- [ ] What part was used
+- [ ] How is double talk inferred
+- [ ] What are the limitations / problems
+  + Only Telephone conversations, and only in English
+  + Designed for speech recognition for conversations
+  + VAD done automatically, not manually, only transcription done manually
+  + No way to explicitly determine unique number of speakers over the dataset
+  + Segmentation not as fine as TIMIT
+  + Some parts are not annotated, and have to be taken out carefully
+***** WAIT [0/13] Analysis of segment lengths : General, 0T, 1T, 2T
+- [ ] *Do all analysis in a notebook, either here or `rennet-x`*
+- [ ] *Do All analysis at /frame level/*
+- [ ] *Use consistent colors*
+- [ ] What is the annotation length + histogram
+- [ ] What are the inferred segment lengths for 0T, 1T and 2T + histograms
+- [ ] When do 2T segments occur?
+  + [ ] S1 -> DT -> S1 (back-channel)
+  + [ ] S1 -> DT -> S2 (turn)
+  + [ ] S1 -> DT -> No (back-channel)
+  + [ ] No -> DT -> Sx (overlapping-start and takeover)
+  + [ ] No -> DT -> No (overlapping-start and backing down)
+- [ ] What is the gender distribution for different segment lengths, 1T and
+  2T, + pie-chart of n-frames + /maybe/ histograms
+- [ ] /maybe/ What are the distributions for other params, like topic-id,
+  dialect, etc.
+**** IDEA [0/1] KA3
+- [ ] Relevant things from Fisher later. Add here.
+*** WAIT [0/2] Data Preparation
+**** WAIT [0/5] Split into train, val, test/eval
+- [ ] Which groups were added to which split, and possibly why.
+- [ ] Check the distributions of different statistics
+  + [ ] segment lengths : general, 0T, 1T, 2T + histograms
+  + [ ] gender distributions for 1T, 2T + pie-chart + /maybe/ histograms
+  + [ ] /maybe/ the distribution of other params
+**** WAIT [0/7] Convert all to merged, mono, 8kHz, wav files
+- [ ] Mention that we only export parts of the audio that are within =min-start=
+  and =max-end=, although we actually do it before feature extraction on the
+  read =numpy-data= later on.
+- [ ] Check how it is being done in =pydub= and document
+- [ ] expected to be =int16= files, without compression, and equal weights for
+  all channels.
+  + [ ] The values are normalized at the time of feature-extraction to be in
+    range (-1, 1) and mean 0 when getting input to feature extraction. Done by =librosa.load=.
+  + [ ] Check for each split to confirm.
+- [ ] this is where the model hyperparameters have already started to
+  accumulate, although it is arguable if using only Telephone conversations
+  should be made part of that, especially since we are working with Deep Learning.
+  - [ ] how to account for robustness?
+*** DOIN [0/7] Feature Extraction
+**** TODO [0/3] Load audio using =librosa.load=
+- [ ] make sure that they are in the range (-1, 1) and mean close to zero.
+  + [ ] /maybe/ document what is being done to maintain that
+- [ ] Take only the slice between =min-start= and =max-end= calculated with =samplerate_as(audio_samplerate)=.
+**** TODO [0/7] Calculate the spectrogram
+- [ ] use params:
+  + win_sec = 0.010
+  + hop_sec = 0.032
+  + samplerate = 8000
+  + window = 'hann'
+  + power = 2
+- [ ] Choose between =librosa.spectral._spectrogram= and =scipy.signal.spectrogram=
+  + which one gives the values in a good range
+  + when are the equivalent
+  + which one is used in other =librosa= features, especially the melspectrogram
+    + [ ] check which one gives good results for melspectrogram calculation, as
+      in, which one keeps them in a good range.
+  + [ ] Decide if to keep 0-fft-frequency.
+  + [ ] *Make sure that the final shape is in terms of (time, frequencies).*
+  + [ ] *Make sure that the shape in time dimension matches =samples_for_labelsat=.*
+- [ ] keep the fft-frequencies to be added to the dataset h5, probably
+  calculated using =librosa=. *Confirm with =scipy= and =numpy=.*
+**** TODO [0/2] Make 16k equivalent long chunks per-file and save as single dataset in master h5
+***** TODO [0/10] Dry run with a single file from validation set
+- [ ] Make overlapping chunks with =strided_view=
+  + win_shape = 2**14 = 16384
+  + step_shape = 10 seconds = 10 * 100 = 1000
+- [ ] Concatenate them either using =numpy= or =dask=
+- [ ] when reading into dask, make sure that chunk-size is win_shape, aka 16k equivalent.
+- [ ] Create one hdf5 dataset per file.
+- [ ] Make sure that all chunks for a file are stored in the same dataset in h5.
+  + [ ] Make sure that the chunking value is the same as the 16k equivalent we created.
+  + [ ] Check that reading all chunks do give the expected results.
+- [ ] Use compression
+- [ ] Use Checksum
+- [ ] Add fft-frequencies as attribute or whatever =h5py= provides, to each dataset.
+***** TODO [0/5] Final notebook for all splits
+- [ ] Keep to and from location for data configurable.
+- [ ] Run on *myrmidon*
+  - [ ] Remove old data for new space.
+- [ ] Run on *unumpu*
+  - [ ] Save the data directly on *nm-raid*
+**** TODO [0/4] Normalization
+- [ ] Check what log-ing the spectrogram does to the range
+  + [ ] Check the impact of =librosa.logamplitude= with =ref=1.0=
+- [ ] Choose if CMN or CMVN.
+- [ ] Normalize on chunk (== utterance) level at the time of feeding into the network.
+**** TODO [0/4] Mel-Spectrogram calculation
+- [ ] Make sure to do this before log-ing, and do CMN or CMVN after
+- [ ] Choose n_mels
+  + 64 will be faster
+  + [ ] check that audio-classification-keras guy's explanation for 96
+  + don't go 128
+- [ ] Do at chunk level at the time of feeding into the network.
+*** [/] The Classifier and Configurations
+*** [/] Post Processing / Smoothing / Inference
+*** [0/0] Evaluation
+
+
 
 * Logs                                                             :noexport:
 ** 27-Jul-2017
-*** DOIN [2/7] 6:40:19 PM : First incision.
-If you don't believe me, I have writing the above log entry till *now!*
-
-I have a bunch of things to do in order to even call all these hours to not have
-been a waste. Those things shall be, at least for today:
-
-- [X] Create an outline of the possible chapter headings.
-- [X] Add some outlines in [[Introduction/Motivations]].
-  + Added to a bunch of other headings too, main points that is.
-  + There is still a lot of literature review kinda things needed.
-  + I can keep on going, but ... hey ... good start eh!
-- [X] Add links to pages that helped setup org-mode this far as references in
-  [[Workflows/org-mode setup/Refrences]].
-- [X] Test a preliminary export. Make sure git doesn't find it interesting.
-- [ ] Sync Google Drive.
-- [ ] Reorganize Todoist ... please ... dude ... it is unusable ... cluttered
-  with outdated and/or impossible ideas and tasks.
-  + [ ] Find paper about `fe_03_p1` and add to zotero. :todoist:
-*** DONE [0/0] 5:53:40 PM : Setting up.
+*** DONE [0/0] 5:53 PM : Setting up.
 CLOSED: [2017-07-27 Thu 18:43]
 I think I am going to be wasting a lot of my time fiddling with org-mode and
 spacemacs. Add to that my perversion for using [[https://normanlayout.info/][Norman layout]] for typing, and I
@@ -165,3 +273,101 @@ will inevitably take place until the final document is ready to submit.
 + I have some practice of using this layout while using org-mode, so not very many keys to relearn.
 ***** Cons
 - Not very comfortable while using VIM keybindings, but not absolutely abysmal either.
+*** DONE [5/5] 6:40 PM : First incision.
+CLOSED: [2017-08-01 Tue 13:55]
+If you don't believe me, I have writing the above log entry till *now!*
+
+I have a bunch of things to do in order to even call all these hours to not have
+been a waste. Those things shall be, at least for today:
+
+- [X] Create an outline of the possible chapter headings.
+- [X] Add some outlines in [[Introduction/Motivations]].
+  + Added to a bunch of other headings too, main points that is.
+  + There is still a lot of literature review kinda things needed.
+  + I can keep on going, but ... hey ... good start eh!
+- [X] Add links to pages that helped setup org-mode this far as references in
+  [[Workflows/org-mode setup/Refrences]].
+- [X] Test a preliminary export. Make sure git doesn't find it interesting.
+- [X] Sync Google Drive.
+*** DONE [0/0] 8:31 PM : After first incision
+CLOSED: [2017-07-27 Thu 20:35]
+I hope I can do this. I am finding this interesting, so that is a positive sign.
+And I am talking about writing, not just fiddling with org-mode. In fact, it is
+very likely that I never close this window of emacs, unless something forces me to.
+
+I have done my things till syncing with Google Drive. It is a nice Checkpoint.
+
+Next changes at hand are not exactly here, but in Todoist, essentially a
+complete overhaul. That is definitely daunting and time-consuming, and I am
+already hungry.
+
+I hope that the next update is today, and I hope it comes with good news.
+
+Back to the writing experience, I need to read a lot of papers again, if I have
+ever come across them at all. That ... is ... scary.
+
+Hope Allah Helps.
+** 01-Aug-2017
+*** DOIN [0/3] 11:46 AM : Final Planning
+No, I have not reorganized Todoist yet. Fuck!
+
+But today, We do it!
+
+After brainstormings and experimentation in the past days, I have come to a
+conclusion which means that I basically have to start over ... from scratch.
+That is definitely a daunting task. And I have to finishe writing this thing in
+the meantime as well. I am very much screwed, and that will be mild to say.
+
+And, since I have less than a month to do all of that (for buffer, we see why
+later), not only does it demand excellent efficiency, but also aggressive
+pruning and perhaps compromises. There is a small buffer to accommodate any
+unforseen emergencies, but don't rely on it. There will be emergencies, the
+first of which has been that I may have been calculating my spectrograms all
+wrong till now!
+
+Therefore, the plan, the final plan. Also, moving updating todoist to today as well.
+- [ ] Make a final-ready plan in Workflows for all the things that need to be run.
+- [ ] Reorganize Todoist ... please ... dude ... it is unusable ... cluttered
+  with outdated and/or impossible ideas and tasks.
+  + [ ] Find paper about `fe_03_p1` and add to zotero. :todoist:
+*** TODO [0/3] 1:56 PM : Progress ... is slow
+After quite a bit of unnecessary waffling, I have finally started writing the
+[[Finale Planne whatever]]. I started from the very beginning, hoping to make sure
+that I don't miss any thing, and to organize my thoughts anyway.
+
+I have only reached till feature extraction, although there is still a section
+left for melspectrogram and normalization. There are more todos here that I am
+not sure what I should do with them, and will multiply the [[The Classifier and
+Configurations]] set of todos even more.
+
+But, I am making progress. One idea that I got in the middle was to save the
+chunks as overlapping by 10 seconds. That will help solve the issue of making
+appropriately overlapping context frames. The choice of 10 seconds is to set the
+upper-bound of the context frames I will be using later. I know that I will
+actually only need like 100ms, but ... the repetition will hopefully not be an issue.
+
+Furthermore, I may then settle to do CMN or even CMVN on the chunk level,
+treating it as an utterance that is more than 2 minutes long.
+
+Finally, I have had a few other ideas for aggressive sub-sampling.
+- [ ] Make sure to make this parametrizable, and skippable for validation data provider
+- [ ] In order to remove silences, and train only on 1T and 2T
+  + Read the chunk for audio and labels
+  + Remove the audio and labels where label == 0
+  + Calculate the mean and variances on these
+  + group the audio and labels based on label == 0 or not
+  + Make strided views for each group
+  + Concatenate the strided views ... will need to make copies and increase memory need.
+  + Give this to the stepper
+- [ ] In order to aggressively subsample 1T and 0T
+  + If we have groups (as in, skipping silence)
+    * create strided views with step_size = int(win_size / (larger_factor))
+    * concatenate, and give to stepper
+  + If not working with groups
+    * still make groups based on label == 0 or not
+    * Repeat above for grouped case only if all labels in the group are 1T (and/or 0T)
+
+It is already 2:37 PM! Actually, I finished the normalization and melspectrogram
+sections as well, for now. There are a LOT of todos, just for today, and many of
+them are decisions and explorations. I am gonna go shower and pray. Lunch only
+after all the planning has been done. Damn, the hardest parts are still to come.
