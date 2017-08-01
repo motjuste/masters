@@ -106,7 +106,7 @@ inspiration. Also checkout the references.
 - [[http://orgmode.org/manual/Export-settings.html#Export-settings][Export settings]]
 - [[http://orgmode.org/manual/Embedded-LaTeX.html][Embedded LaTeX in orgmode]]
 - [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html][Specifying File Variables]]
-** DOIN [0/16] Finale Planne whatever
+** DOIN [0/21] Finale Planne whatever
 Most of this is going to have to be talked about in the [[Approach]] Section of the
 thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts are general.
 *** WAIT [0/4] Data Analysis
@@ -170,7 +170,7 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   accumulate, although it is arguable if using only Telephone conversations
   should be made part of that, especially since we are working with Deep Learning.
   - [ ] how to account for robustness?
-*** DOIN [0/7] Feature Extraction
+*** DOIN [0/8] Feature Extraction
 **** TODO [0/3] Load audio using =librosa.load=
 - [ ] make sure that they are in the range (-1, 1) and mean close to zero.
   + [ ] /maybe/ document what is being done to maintain that
@@ -225,7 +225,113 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   + [ ] check that audio-classification-keras guy's explanation for 96
   + don't go 128
 - [ ] Do at chunk level at the time of feeding into the network.
-*** [/] The Classifier and Configurations
+**** IDEA [0/2] Add other possible features for future investigations, mainly as text
+- [ ] look at links on MFCC, iVectors, prosody, pitch, CNSC, PLP, etc. for inspiration.
+  + [ ] See if the argument that 'spectrogram' is the mother of all features
+    still holds.
+*** TODO [0/3] The Classifier and Configurations
+**** WAIT [0/1] The Neural Networks - {c3}
+- There is essentially just one model based on the code below.
+- There is one output per-sequence, as in, we do sequence classification, but
+  not at utterance level.
+- The configurations will decide:
+  + The input shape, and hence the context per frame.
+  + The number of classes.
+- We use BatchNormalization *BEFORE* Activation, to follow the original paper.
+- [ ] Move this to =keras_utils= or =models= or =model_utils=, and actually see
+  the model output. Too much time getting wasted in making it work in spacemacs.
+#+BEGIN_SRC python :results output
+  from keras.models import Sequential
+  import keras.layers as kl
+
+  def c3(input_shape, nclasses=3):
+      model = Sequential()
+
+      # first conv2d layer
+      model.add(kl.Conv2D(
+          64,
+          3,
+          strides=1,
+          data_format='channels_last',
+          input_shape=input_shape[1:],
+          name='c1_3_64_1',
+      ))
+      model.add(kl.BatchNormalization(name='c1_bn'))
+      model.add(kl.Activation('relu', name='c1_relu'))
+      model.add(kl.Dropout(0.2, name='c1_d_20'))
+
+      # second conv2d layer
+      model.add(kl.Conv2D(
+          128,
+          3,
+          strides=1,
+          data_format='channels_last',
+          input_shape=input_shape[1:],
+          name='c2_3_128_1',
+      ))
+      model.add(kl.BatchNormalization(name='c2_bn'))
+      model.add(kl.Activation('relu', name='c2_relu'))
+      model.add(kl.Dropout(0.1, name='c2_d_10'))
+
+      # third conv2d layer
+      model.add(kl.Conv2D(
+          256,
+          3,
+          strides=1,
+          data_format='channels_last',
+          input_shape=input_shape[1:],
+          name='c3_3_256_1',
+      ))
+      model.add(kl.BatchNormalization(name='c3_bn'))
+      model.add(kl.Activation('relu', name='c3_relu'))
+      model.add(kl.Dropout(0.1, name='c3_d_10'))
+
+      # max globally
+      model.add(kl.GlobalMaxPool2D(name='gmxp'))
+
+      # first FC
+      model.add(kl.Dense(1024, activation='relu', name='f1_1024_relu'))
+      model.add(kl.Dropout(0.1, name='f1_d_10'))
+
+      # first FC
+      model.add(kl.Dense(1024, activation='relu', name='f2_1024_relu'))
+      model.add(kl.Dropout(0.1, name='f2_d_10'))
+
+      # output layer
+      model.add(kl.Dense(nclasses, activation='softmax', name='sfmx'))
+
+      # Compile and send the model
+      model.compile(
+          loss='categorical_crossentropy',
+          optimizer='adamax',
+          metrics=['categorical_accuracy'],
+      )
+
+      return model
+
+  input_shape = (None, 21, 64, 1)
+  c3(input_shape).summary()
+#+END_SRC
+**** WAIT [0/1] Making sequences to input with context - {±10}
+- There are multiple options, and adding more context has helped results.
+- I have decided to choose and evaluate only on ±10 frames (±100 ms).
+- The decision comes from @ryant:2013speech
+- We can go for ±20 or ±30 as in @xiong:2016achieving, but why not:
+  + hardware limitations
+  + Run time limitations
+  + [ ] Add this to future works
+**** WAIT [0/2] Features to use - {melspectrogram, spectrogram/cepstrogram}
+- *Priority* is for melspectrogram.
+  + choose one between {64, 96}, and stick to it.
+- spectrogram can be used for making an argument on the lines that it requires
+  more work, and/or the argument that network is supposed to learn the features,
+  but takes too much time ... or whatever.
+  + Run spectrogram only for at-most 3 best models, based on results.
+  + May incur more epochs.
+- [ ] Make sure to log and normalize the inputs before feeding them into the network.
+- [ ] We wait on the final decision any way from [[Workflows/Finale Planne whatever/Feature Extraction]]
+**** [/]
+
 *** [/] Post Processing / Smoothing / Inference
 *** [0/0] Evaluation
 
@@ -330,7 +436,7 @@ Therefore, the plan, the final plan. Also, moving updating todoist to today as w
 - [ ] Reorganize Todoist ... please ... dude ... it is unusable ... cluttered
   with outdated and/or impossible ideas and tasks.
   + [ ] Find paper about `fe_03_p1` and add to zotero. :todoist:
-*** TODO [0/3] 1:56 PM : Progress ... is slow
+*** TODO [0/3]  1:56 PM : Progress ... is slow
 After quite a bit of unnecessary waffling, I have finally started writing the
 [[Finale Planne whatever]]. I started from the very beginning, hoping to make sure
 that I don't miss any thing, and to organize my thoughts anyway.
@@ -356,7 +462,10 @@ Finally, I have had a few other ideas for aggressive sub-sampling.
   + Remove the audio and labels where label == 0
   + Calculate the mean and variances on these
   + group the audio and labels based on label == 0 or not
+  + If label == 0, keep a (context_len) amount of data, initially set to None, to_prepend
+  + if label != 0, and if to_prepend is not None, prepend it to the current data
   + Make strided views for each group
+    * No need to keep data from from here, cuz we are only going to group if/not silence.
   + Concatenate the strided views ... will need to make copies and increase memory need.
   + Give this to the stepper
 - [ ] In order to aggressively subsample 1T and 0T
@@ -371,3 +480,79 @@ It is already 2:37 PM! Actually, I finished the normalization and melspectrogram
 sections as well, for now. There are a LOT of todos, just for today, and many of
 them are decisions and explorations. I am gonna go shower and pray. Lunch only
 after all the planning has been done. Damn, the hardest parts are still to come.
+*** DONE [1/1]  5:05 PM : I am late now am I not?
+CLOSED: [2017-08-01 Tue 19:01]
+Can't deny that I predicted this 'not being back before 5pm' thing. It's a
+tragedy, and I didn't spend the time on eating. And all that while knowing that
+the next sections to work on are by far the most crucial, and probably will give
+me the most peace of mind. And also the fact that *I am only planning*, and all
+those todos need to actually get done, and then written about in the thesis.
+
+Hours are passing by in minutes, and I am waffling.
+
+Here's the thing... I know that when I say that the tasks ahead are the most
+important and difficult and what not, my heart starts beating like crazy and I
+get stressed, and that makes decision making even more difficult and scary.
+Therefore, I am not going to be too angry about this whole thing, because, one
+way or another, I have to make sure all the things get done, and breaking down
+will be a disaster. Calm down.
+
+Here's an idea ... start tracking time. To the minute I say. The hope is that it
+will pull me back to work when I am wasting it away, and push me away from it
+when I am waffling too much and spending too much time on some thing. Like right
+fucking now!. I can't plan to the minute, but that shouldn't stop me. And hey,
+may be the tracking and looking at the actual time being spent will help me make
+better plans!
+
+- [X] Start tracking time, granularly, for *EVERYTHING*
+*** DONE [1/1]  7:01 PM : Starting with what is kinda fixed.
+CLOSED: [2017-08-01 Tue 20:07]
+Have setup the trackers, tracking *EVERYTHING*, and then took a break for prayers.
+
+The main thing is, there are so many options for the networks and the configurations.
+
+I started with what I know, it is going to be a CNN classifying sequences, where
+sequences are essentially single frames provided with left-right context.
+
+At first I was thinking of adding one with starting filter size 3, but keep the
+one with 5 as my top priority. Then, something stupid happened while adding the
+source for the model and I had to restart. Then I decided to fuck it, and go
+with a single network config, just the 5, and wrote the whole code.
+
+But ... once done, I decided to make that 3. You see, now I will be working on
+10ms hopped data. Furthermore, there are very few (64) filters in the first
+layer (limited by hardware, per experience), so ... made that 5 into 3. /sigh/.
+And, it makes sense that it fewer local patterns, and then more and more global
+patterns going up. I hope it is fine. It looks a lot like the conv from that
+@xiong:2016achieving paper (actually, more like VGG net) but with much fewer layers.
+
+So, I have only one architecture to train on. I hope it works.
+
+Furthermore, even though I may look into using configs with different context
+sizes, I believe I am going to stick with (-10, +10) frames ((-100, +100) ms),
+ending up in size 21 frames per sequence (210 ms). I don't want to test out the
+other one for one obvious reason that I don't have the time, and there are far
+more number of other hyperparameters to test out. Also, it makes sense to add
+more context, and was shown to be good in that paper doing SAD on YouTube @ryant:2013speech.
+
+And you know what ... there is still a lot of work to get done, and it is
+already past 7:00 PM. 💩.
+
+- [X] Prioritize models with ±10 frames context, and maybe skip the others.
+*** DONE [0/0]  8:07 PM : Aggressive pruning ... slowly
+CLOSED: [2017-08-01 Tue 20:13]
+Added that section on options for context. I am adding the set of options
+available for each 'hyperparameter' at the end of the heading. So far, the
+features to use has more than 1 option, but I have to keep in mind that I have
+not even begun to add a lot of other things.
+
+They will depend on the arguments I want to make. The fewer, and clearer
+arguments I want to make, the better I can design my experiments, and definitely
+the more time I will have ... if I don't decide to go too overboard with nepochs.
+
+I will, however, also have to keep in mind that I show-off some novelty in my
+approach. Just CNN on context is an okay bet, but you know how much I want to
+use the max-in-center-label approach. The only problem there is post-processing,
+and that is another can of worms I have not opened yet, and it is past 8:00 PM.
+
+Wasn't the plan that I get done by 12:00 PM. /sigh/
