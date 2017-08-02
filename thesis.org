@@ -106,7 +106,7 @@ inspiration. Also checkout the references.
 - [[http://orgmode.org/manual/Export-settings.html#Export-settings][Export settings]]
 - [[http://orgmode.org/manual/Embedded-LaTeX.html][Embedded LaTeX in orgmode]]
 - [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html][Specifying File Variables]]
-** DOIN [0/39] Finale Planne whatever
+** DOIN [0/38] Finale Planne whatever
 Most of this is going to have to be talked about in the [[Approach]] Section of the
 thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts are general.
 *** WAIT [0/4] Data Analysis
@@ -172,28 +172,26 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   accumulate, although it is arguable if using only Telephone conversations
   should be made part of that, especially since we are working with Deep Learning.
   - [ ] how to account for robustness?
-*** TODO [0/8] Feature Extraction
+*** TODO [0/7] Feature Extraction
 **** TODO [0/3] Load audio using =librosa.load=
 - [ ] make sure that they are in the range (-1, 1) and mean close to zero.
   + [ ] /maybe/ document what is being done to maintain that
 - [ ] Take only the slice between =min-start= and =max-end= calculated with =samplerate_as(audio_samplerate)=.
-**** TODO [0/7] Calculate the spectrogram
+**** TODO [0/6] Calculate the fbanks
 - [ ] use params:
   + win_sec = 0.010
   + hop_sec = 0.032
   + samplerate = 8000
   + window = 'hann'
   + power = 2
-- [ ] Choose between =librosa.spectral._spectrogram= and =scipy.signal.spectrogram=
-  + which one gives the values in a good range
-  + when are the equivalent
-  + which one is used in other =librosa= features, especially the melspectrogram
-    + [ ] check which one gives good results for melspectrogram calculation, as
-      in, which one keeps them in a good range.
-  + [ ] Decide if to keep 0-fft-frequency.
+  + n_mels = ~{40, 64, 96}~
+    + [ ] check that audio-classification-keras guy's explanation for 96
+- [ ] Use =librosa.features.melspectrogram=, and then =librosa.logamplitude=
+  with ref = ~1.0~
+  + see if it gives the values in a good range
   + [ ] *Make sure that the final shape is in terms of (time, frequencies).*
   + [ ] *Make sure that the shape in time dimension matches =samples_for_labelsat=.*
-- [ ] keep the fft-frequencies to be added to the dataset h5, probably
+- [ ] keep the mel-frequencies to be added to the dataset h5, probably
   calculated using =librosa=. *Confirm with =scipy= and =numpy=.*
 **** TODO [0/2] Make 16k equivalent long chunks per-file and save as single dataset in master h5
 ***** TODO [0/10] Dry run with a single file from validation set
@@ -216,17 +214,8 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
 - [ ] Run on *unumpu*
   - [ ] Save the data directly on *nm-raid*
 **** TODO [0/4] Normalization
-- [ ] Check what log-ing the spectrogram does to the range
-  + [ ] Check the impact of =librosa.logamplitude= with =ref=1.0=
 - [ ] Choose if CMN or CMVN.
 - [ ] Normalize on chunk (== utterance) level at the time of feeding into the network.
-**** TODO [0/4] Mel-Spectrogram calculation
-- [ ] Make sure to do this before log-ing, and do CMN or CMVN after
-- [ ] Choose n_mels
-  + 64 will be faster
-  + [ ] check that audio-classification-keras guy's explanation for 96
-  + don't go 128
-- [ ] Do at chunk level at the time of feeding into the network.
 **** IDEA [0/2] Add other possible features for future investigations, mainly as text
 - [ ] look at links on MFCC, iVectors, prosody, pitch, CNSC, PLP, etc. for inspiration.
   + [ ] See if the argument that 'spectrogram' is the mother of all features
@@ -239,7 +228,7 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
 - [ ] How many total steps are there in the training data per sweep?
   + [ ] on myrmidon
   + [ ] on unumpu
-**** WAIT [0/5] Number of epochs / passes over the dataset - =8 epochs per pass= * {=1=, =6=, =11=, =21= =passes=}
+**** WAIT [0/5] Number of epochs / passes over the dataset - =steps_per_chunk epochs per pass= * {=1=, =6=, =11=, =21= =passes=}
 - [ ] Make atleast one pass over the entire dataset for every model.
 - [ ] upto 20 total passes for the best/most promising/relevant models.
   + 2 types of promising results both working with atleast the same features,
@@ -257,7 +246,7 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   + [ ] Make sure these invariants hold
 - It is okay if we pass over a little more due to rounding, but we don't want to
   pass less than the entire dataset.
-**** WAIT [0/2] The Neural =Network= - {~c3~}
+**** WAIT [0/3] The Neural =Network= - {~c3~}
 - There is essentially just one model based on the code below.
 - There is one output per-sequence, as in, we do sequence classification, but
   not at utterance level.
@@ -268,6 +257,7 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
 - We use Categorical crossentropy, and categorical accuracy.
 - [ ] We use adamax as optimizer, but this can change
 - [ ] Check more conv nets for speech and decide one final that we can run.
+  - [ ] @deng:2013deep
 - [ ] Move this to =keras_utils= or =models= or =model_utils=, and actually see
   the model output. Too much time getting wasted in making it work in spacemacs.
 
@@ -349,18 +339,11 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   input_shape = (None, 21, 64, 1)
   c3(input_shape).summary()
 #+END_SRC
-**** WAIT [0/2] Features to use - {=melspectrogram=, =spectrogram/cepstrogram=}
-- *Priority* is for melspectrogram.
-  + choose one between {64, 96}, and stick to it.
-  + They will be calculated on the fly from the saved spectrograms.
-- spectrogram can be used for making an argument on the lines that it requires
-  more work, and/or the argument that network is supposed to learn the features,
-  but takes too much time ... or whatever.
-  + Run spectrogram only for at-most 3 best models, based on results.
-  + May incur more epochs.
-- [ ] Make sure to log and normalize the inputs before feeding them into the network.
-  - [ ] do it *before* making it into sequences.
-- [ ] We wait on the final decision any way from [[Workflows/Finale Planne whatever/Feature Extraction]]
+**** WAIT [0/1] Features to use - {~fbanks_64~}
+- choose one between ~{40, 64, 96}~, and stick to it.
+  + [ ] We wait on the final decision any way from [[Workflows/Finale Planne whatever/Feature Extraction]]
+- [ ] will have to argue on why not spectrogram, so cite recent works by
+  @deng:2013recent ... maybe
 **** WAIT [0/2] Making sequences to input with =context= - {=±10=}
 - There are multiple options, and adding more context has helped results.
 - I have decided to choose and evaluate only on ±10 frames (±100 ms).
@@ -449,9 +432,9 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   + in terms of time, it means that we are adding a collar to the boundary at
     training time. This collar basically makes the boundaries fuzzy, in priority
     of 2T > 1T > 0T.
-  + What is the collar size? The boundaries get fuzzy by ±10 depending on which end.
+  + What is the collar size? The boundaries get fuzzy by ±5, depending on which end.
   + [ ] Hence, the post-processing should make sure that segment lengths are atleast
-    21 frames (=210 msec) at the end.
+    11 frames (=110 msec) at the end.
   + [ ] The validation data to keras and confusions callback should have this
     collar applied, if the training data does so
   + [ ] We may even apply this collar to the val/test data on trainings not
@@ -518,12 +501,45 @@ atleast one pass. Of course, we pass it via the data provider.
 - [ ] This depends on whether or not the models will be evaluated on the KA3 dataset.
 - Looks time consuming, and not much promising.
 *** TODO [0/0] The Table of Experiments
+**** Fixed
+- Values between '~~' may change before final models
+|---------------------+-------------------------------|
+| What                | Value                         |
+|---------------------+-------------------------------|
+| features            | fbank ~64~                    |
+| data_ctxt           | ±10                           |
+| normalization       | ~CMN per chunk of final keep~ |
+| steps_per_chunk     | 8 or whatever doesn't crash   |
+|---------------------+-------------------------------|
+| val_dp_shuffle_seed | None                          |
+| val_dp_callids      | ~('00003', '00086')~          |
+|---------------------+-------------------------------|
+| trn_dp_shuffle_seed | 32                            |
+| trn_dp_callids      | all                           |
+| epochs_per_pass     | steps_per_chunk               |
+|---------------------+-------------------------------|
+| nclasses            | 3                             |
+| input_shape         | trn_dp.input_shape            |
+| model               | ~c3~                          |
+|---------------------+-------------------------------|
+| trn_steps_per_epoch | trn_dp.nchunks                |
+| val_steps           | val_dp.nchunks * 8            |
+| max_q_size          | 32                            |
+| verbosity           | 2                             |
+| pickle_safe         | True                          |
+| model_checkpoints   | per-epoch ~filename-pattern~  |
+| confusions          | init + per-epoch on val_dp    |
+| tensorboard         | per-epoch                     |
+|---------------------+-------------------------------|
+**** Variables, and order of experiments
+
+
 *** TODO [0/0] Post Processing / Smoothing / Inference
-*** TODO [0/0] Evaluation
+*** TODO [0/0] Evaluations and Comparisons
 
 
 
-* [11/13] Logs                                                     :noexport:
+* [13/15] Logs                                                     :noexport:
 ** [3/3] 27-Jul-2017
 *** DONE [0/0] 5:53 PM : Setting up.
 CLOSED: [2017-07-27 Thu 18:43]
@@ -795,7 +811,7 @@ Tomorrow is another day. Just like today.
 
 I hope having finished a few of the easy sections will not come back to bite me
 and make it more difficult for me to get started tomorrow.
-** [2/3] 2-Aug-2017
+** [4/5] 2-Aug-2017
 *** DONE [0/0] 12:04 PM : Half the day left, after the other wasted frivolusly
 CLOSED: [2017-08-02 Wed 12:08]
 Well, it is officially more than 12 hours since I did something. Literally
@@ -855,3 +871,61 @@ them will remain tentative, especially beyond the first pass, but, let's see.
 
 I am gonna go shower and pray. Eating, even though my stomach has started to
 make sounds, will have to happen later. Hopefully, I will be done by 7:00 PM.
+*** DONE [0/0]  9:29 PM : Well that break stretched for too long
+CLOSED: [2017-08-02 Wed 21:35]
+I had that shower and prayers break, and was actually back around 6:15 PM, but
+... I just couldn't make myself to do anything apart from some tweaking here and
+there. Wagering that it was the lack of food issue, I decided to take care of that.
+
+Once done, I was still not in the mood, physically, to restart work. Followed by
+a confusion between whether it was 8 PM or 9 PM, and I lost another hour.
+
+I am still not in the mood to work, and God help me, because I just want to go
+to bed, and maybe take a nap. But ... I don't want to ruin my delicated sleeping
+routine which, even though I agree hasn't been paying off very well yet, but
+will come in really handy soon. Actually, there might be one coming just around
+the corner. And I am more confident of having one of those and sticking to the
+tasks better when I am actually coding, and not researching, and definitely not
+when I planning. Nevertheless, the coffee, as cold and old it may be, at this
+time of day ... may end up doing something bad anyway.
+
+In lieu of all the problems that I am having, I believe I am gonna grind a
+little more, until I can't. Having finished the planning, and only being left
+with develpment work might have worked, but ... well atleast I have a full
+stomach and clean kitchen, and some quick snacks ready.
+*** DONE [0/0]  11:35 PM : Well, got rid of the spectrogram bullshit
+CLOSED: [2017-08-02 Wed 23:47]
+I first started by making a nice table of the hyperparameters that going to be
+fixed anyway, mainly from the scripts' point of view.
+
+Then I used =itertools.product= on the rest of variables.
+
+I can't lie but I was very surprised to see that total number of total
+combination of variables led to atleast 32 different experiments. More scared
+than surprised. I tried to reduce the list, but ... it was just not budging.
+
+Then, I saw that using pure spectrograms was not promising much, and was
+definitely going to need more epochs to settle down anywhere. Add to that that
+these features are giant (129 dim). And ... all that ... for one agument that
+while the networks can learn features for themselves, but helping it with better
+features makes it easier. And possibly the other one that some features can end
+up taking away too much speaker information away.
+
+It was not worth it, and I remembered that Microsoft paper @deng:2013recent that
+showed that fbanks worked better than not only spectrograms, but also MFCCs.
+
+So, heck with it ... skipping spectrograms. Plus, now, the export size of the h5
+files will be smaller. I am not going to add more calls to any splits though.
+And, it will hopefully speed up the training times, all with the on-demand
+log-ing and fbank-ing done beforehand.
+
+It is a good decision, and halves the number of experiments I will have to run.
+
+But that still leaves me with ... at least 16.
+
+Aggressive pruning, I have to do that. They will depend on the set of arguments
+I want to make. Best Wishes.
+
+I am going to take a break.
+
+Fuck ... I also have to decide on the n_mels ... FUUCK!
