@@ -106,7 +106,7 @@ inspiration. Also checkout the references.
 - [[http://orgmode.org/manual/Export-settings.html#Export-settings][Export settings]]
 - [[http://orgmode.org/manual/Embedded-LaTeX.html][Embedded LaTeX in orgmode]]
 - [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html][Specifying File Variables]]
-** DOIN [0/31] Finale Planne whatever
+** DOIN [0/35] Finale Planne whatever
 Most of this is going to have to be talked about in the [[Approach]] Section of the
 thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts are general.
 *** WAIT [0/4] Data Analysis
@@ -170,7 +170,7 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   accumulate, although it is arguable if using only Telephone conversations
   should be made part of that, especially since we are working with Deep Learning.
   - [ ] how to account for robustness?
-*** DOIN [0/8] Feature Extraction
+*** TODO [0/8] Feature Extraction
 **** TODO [0/3] Load audio using =librosa.load=
 - [ ] make sure that they are in the range (-1, 1) and mean close to zero.
   + [ ] /maybe/ document what is being done to maintain that
@@ -229,8 +229,35 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
 - [ ] look at links on MFCC, iVectors, prosody, pitch, CNSC, PLP, etc. for inspiration.
   + [ ] See if the argument that 'spectrogram' is the mother of all features
     still holds.
-*** DOIN [0/13] The Classifier and Configurations
-**** WAIT [0/2] The Neural Networks - {c3}
+*** DOIN [0/17] The Classifier and Configurations
+**** WAIT [0/3] Fixed number of =steps per chunk=, {=8= or whatever runs (likely one with 2k examples)}
+- This is to make sure we can predict exactly how many steps are required for a pass
+- The same number of chunks are to be used with the same number of steps per chunk
+  + For skipping/sub-sampling, do it before feeding into the stepper.
+- [ ] How many total steps are there in the training data per sweep?
+  + [ ] on myrmidon
+  + [ ] on unumpu
+**** WAIT [0/5] Number of epochs / passes over the dataset - =8 epochs per pass= * {=1=, =6=, =11=, =21= =passes=}
+- [ ] Make atleast one pass over the entire dataset for every model.
+- [ ] upto 20 total passes for the best/most promising/relevant models.
+  + 2 types of promising results both working with atleast the same features,
+    and other such input of same parameters, like, context, etc.:
+    1. Excellent 0T v/ {1T + 2T}
+    2. Best 1T v/ 2T, with 0T skipped
+  + [ ] build upon saved checkpoints from earlier runs.
+  + [ ] pass starting epoch as a parameter to Keras.fit_generator?
+- *Fixed number of keras epochs per pass anyways* == 8
+- Since there is a fixed number of steps per pass, irrespective of skipping or
+  subsampling, the number of steps per keras epoch is also fixed.
+  + equivalent to (total_steps // 8) + 1 for a keras epoch.
+  + equivalent to ((nchunks * 8) // 8) + 1
+  + [ ] Make sure these invariants hold
+- It is okay if we pass over a little more due to rounding, but we don't want to
+  pass less than the entire dataset.
+**** WAIT [0/0] Part of =training data= to use {=all=}
+We use all the data we have for training. We'll see that we train each model for
+atleast one pass.
+**** WAIT [0/2] The Neural =Network= - {=c3=}
 - There is essentially just one model based on the code below.
 - There is one output per-sequence, as in, we do sequence classification, but
   not at utterance level.
@@ -243,6 +270,7 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
 - [ ] Check more conv nets for speech and decide one final that we can run.
 - [ ] Move this to =keras_utils= or =models= or =model_utils=, and actually see
   the model output. Too much time getting wasted in making it work in spacemacs.
+
 #+BEGIN_SRC python :results output
   from keras.models import Sequential
   import keras.layers as kl
@@ -321,7 +349,7 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   input_shape = (None, 21, 64, 1)
   c3(input_shape).summary()
 #+END_SRC
-**** WAIT [0/2] Features to use - {melspectrogram, spectrogram/cepstrogram}
+**** WAIT [0/2] Features to use - {=melspectrogram=, =spectrogram/cepstrogram=}
 - *Priority* is for melspectrogram.
   + choose one between {64, 96}, and stick to it.
   + They will be calculated on the fly from the saved spectrograms.
@@ -333,7 +361,7 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
 - [ ] Make sure to log and normalize the inputs before feeding them into the network.
   - [ ] do it *before* making it into sequences.
 - [ ] We wait on the final decision any way from [[Workflows/Finale Planne whatever/Feature Extraction]]
-**** WAIT [0/1] Making sequences to input with context - {±10}
+**** WAIT [0/2] Making sequences to input with =context= - {=±10=}
 - There are multiple options, and adding more context has helped results.
 - I have decided to choose and evaluate only on ±10 frames (±100 ms).
 - The decision comes from @ryant:2013speech
@@ -342,29 +370,69 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   + Run time limitations
   + [ ] Add this to future works
 - [ ] Add `[..., None]` at the end to make it `channels_last` for conv2d
+**** WAIT [0/1] =Skipping= class(-es) {=0T=, =None=}
+- *We only experiment with skipping 0T when we choose to, and it is preferable*
+  + skipping 1T does not make sense, use subsampling instead
+- We *still* maintain the same number of steps per chunk, even though the
+  batches now may be of different sizes
+- [ ] should check it out offline first to see that there are no unforseen
+  circumstances where the batches may end up being empty.
+- We want to avoid making copies of giant arrays, so the convoluted algo below.
+***** TODO [0/0] How to skip, the algo
+- Do normal strided data_prep
+- Do normal strided label_prep.
+  + This is the final decision of labels to skip or not is made.
+- The label prepper returns two things
+  1. the prepped_labels
+  2. keep, which is:
+     + True, if to keep all
+     + np.array of booleans of size of prepped labels, indicating which example
+       to keep
+- The packaging method that sends data to stepper forwards all three
+- The stepper looks at keep
+  + if not is nd.array and True (check beforehand that this is never False)
+    * return step-wise in nsteps_per_epoch
+  + if nd.array of booleans
+    * do cumsum of keep
+    * nexamples_per_step = cumsum[-1] // step_per_epoch
+    * ends = searchsorted(cumsum, arange(steps_per_epoch)  * nexamples_per_step,
+      side='right')
+    * starts = [0].extend(ends[:-1])
+    * return data[keep[start:stop]] and label[keep[start:stop]] for start, stop
+      in zip(starts, ends)
+- Make sure that we never go out of bounds in our calculations, and never reture
+  empty batches/steps, and always return the same number of steps per chunk.
+**** TODO [0/0] =Sub-sampling= class(-es) {=1T_0.25=, =None=}
+
+**** WAIT [0/0] Class-/Sample- =Weights= {=clsw_1= =clsw_2=}
+- *We only use class weights, set them to 1 for both 0T, and 1T*
+- we prefer to set class weight for 2T as 1, and at most 2
+  + prefer 1 especially when skipping and/or sub-sampling
+  + using 2 to perhaps support the argument that adding a cost matrix doesn't
+    help much. I hope the results support it.
+- *We use all ones as clsw when either skipping or subsampling*
+- Why not more:
+  + because, 2T is very similar to 1T.
+  + It hardly ever gets confused with 0T.
+  + Too much clsw for it has been shown to make the network results less confident.
+    - Elaborate, with examples.
+  + Slows down training in some ways.
+  + We are also not 100% sure about each and every label. There is a collar.
+- Why not based on data, entire or per batch:
+  + the class weights become even more skewed.
+  + Experiments were performed, things went wrong
 **** TODO [0/0] Choosing label for a sequence - {}
-**** TODO [0/0] Skipping class(-es)
-**** TODO [0/0] Class-/Sample-Weights
-**** TODO [0/0] Fixed number of steps per chunk, {8, whatever runs, likely one with 2k examples}
-- This is to make sure we can predict exactly how many steps are required for a pass
-**** WAIT [0/4] Number of epochs / passes over the dataset - 8 epochs per pass * {1, 6, 11, 21 passes}
-- [ ] Make atleast one pass over the entire dataset for every model.
-- [ ] upto 20 total passes for the best/most promising/relevant models.
-  - [ ] build upon saved checkpoints from earlier runs.
-  - [ ] pass it as a parameter to Keras.fit_generator?
-- 8 keras epochs per pass anyways
-- It is okay if we pass over a little more due to rounding, but we don't want to
-  pass less than the entire dataset.
-**** WAIT [0/1] Save model on every keras epoch {every-one}
+
+**** WAIT [0/1] Save model =checkpoint= on every keras epoch {=every=}
 - [ ] decide on file name formatting.
 - Save checkpoints every epoch
-**** WAIT [0/2] Save Tensorboard events
+**** WAIT [0/2] Save =Tensorboard= events {=yes=}
 - [ ] Is the images and stuff not showing up an issue from my side?
 - [ ] Is there a way to append to existing events file, instead of adding a new one?
   - if nothing else, if keras reflects what epoch we are training on, maybe that
     will help.
 **** WAIT [0/3] Validation data to be given to =keras.fit=
-- [ ] possibly a give the same files as those given for the confusions calculations
+- [ ] possibly give the same files as those given for the confusions calculations
   + so the confusions are printed for the same predictions/loss
 - [ ] give as generator, and get the step size by running a fake loop.
   + We can also predict the step size as it is, but let's stick to what we can trust.
@@ -372,18 +440,31 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
     the n-steps constant per-chunk.
 - [ ] Do not do any sub-sampling in the validation data provider.
   + skipping will be done however.
-**** WAIT [0/7] Confusions calculations in callback
+**** WAIT [0/10] Confusions calculations in callback
 - [ ] Add to a new =keras_utils= file.
+- [ ] Make a confusion calculation on 0th batch and 0th epoch
+  + this is to make sure that any errors due to the size of the batch are caught early.
 - [ ] Only do per epoch, and hence, multiple epochs per sweep has to be implemented.
 - [ ] Make sure that there is no code being called that needs packages not on
   the GPU.
+- [ ] Structure of the h5?
 - [ ] use one call, maybe 2, and save the predictions, generated using normal predict.
   + [ ] '00003' and '00086', or some other based on analysis, /maybe/
   + [ ] Save the ground-label only once, maybe also with chunking information.
 - [ ] print out the precision and recall for all classes being trained on
   + [ ] Save the full confusion matrix as well.
-**** IDEA [/] Predict over validation and/or test dataset at the end of training, in the script
-
+**** IDEA [0/3] Predict over validation and/or test dataset at the end of training, in the script
+- [ ] How much time is to be expected? Wll have to consider that while
+  submitting jobs.
+- [ ] predict only on the last epoch? What if it starts overfitting?
+- Prioritize saving the model first before this. We can do it offline, and
+  probably will have to anyways.
+  + Want to do on GPU cuz there is so much data, and inference takes that long.
+- [ ] Have to come up with a better /loop/ to save the predictions, cuz
+  =predict_generator= works on returning one giant numpy-array.
+**** IDEA [0/1] Adapting a model for KA3
+- [ ] This depends on whether or not the models will be evaluated on the KA3 dataset.
+- Looks time consuming, and not much promising.
 *** [/] Post Processing / Smoothing / Inference
 *** [0/0] Evaluation
 
@@ -465,7 +546,7 @@ Back to the writing experience, I need to read a lot of papers again, if I have
 ever come across them at all. That ... is ... scary.
 
 Hope Allah Helps.
-** 01-Aug-2017
+**  1-Aug-2017
 *** DOIN [0/3] 11:46 AM : Final Planning
 No, I have not reorganized Todoist yet. Fuck!
 
@@ -488,7 +569,8 @@ Therefore, the plan, the final plan. Also, moving updating todoist to today as w
 - [ ] Reorganize Todoist ... please ... dude ... it is unusable ... cluttered
   with outdated and/or impossible ideas and tasks.
   + [ ] Find paper about `fe_03_p1` and add to zotero. :todoist:
-*** TODO [0/3]  1:56 PM : Progress ... is slow
+*** DONE [3/3]  1:56 PM : Progress ... is slow
+CLOSED: [2017-08-02 Wed 14:28]
 After quite a bit of unnecessary waffling, I have finally started writing the
 [[Finale Planne whatever]]. I started from the very beginning, hoping to make sure
 that I don't miss any thing, and to organize my thoughts anyway.
@@ -508,8 +590,8 @@ Furthermore, I may then settle to do CMN or even CMVN on the chunk level,
 treating it as an utterance that is more than 2 minutes long.
 
 Finally, I have had a few other ideas for aggressive sub-sampling.
-- [ ] Make sure to make this parametrizable, and skippable for validation data provider
-- [ ] In order to remove silences, and train only on 1T and 2T
+- [X] Make sure to make this parametrizable, and skippable for validation data provider
+- [X] In order to remove silences, and train only on 1T and 2T
   + Read the chunk for audio and labels
   + Remove the audio and labels where label == 0
   + Calculate the mean and variances on these
@@ -520,7 +602,7 @@ Finally, I have had a few other ideas for aggressive sub-sampling.
     * No need to keep data from from here, cuz we are only going to group if/not silence.
   + Concatenate the strided views ... will need to make copies and increase memory need.
   + Give this to the stepper
-- [ ] In order to aggressively subsample 1T and 0T
+- [X] In order to aggressively subsample 1T and 0T
   + If we have groups (as in, skipping silence)
     * create strided views with step_size = int(win_size / (larger_factor))
     * concatenate, and give to stepper
@@ -608,7 +690,8 @@ use the max-in-center-label approach. The only problem there is post-processing,
 and that is another can of worms I have not opened yet, and it is past 8:00 PM.
 
 Wasn't the plan that I get done by 12:00 PM. /sigh/
-*** TODO [0/1]  9:19 PM : Couldn't take a break, updated network
+*** DONE [1/1]  9:19 PM : Couldn't take a break, updated network
+CLOSED: [2017-08-02 Wed 14:27]
 I wanted to take a break, and have dinner and what not, but in the cooling down
 period and looking at how much still had to get done, I was ... waffling about
 making myself something.
@@ -621,7 +704,7 @@ is much less complicated, and doing sub-sampling of 1T is pretty similar, except
 that I will already have the labels for the sequences, and can choose create my
 boolean for keeping things by working only on the final sequence labels.
 
-- [ ] Add the approach of filtering away /after/ sequences have been made, in
+- [X] Add the approach of filtering away /after/ sequences have been made, in
   addition to the one brainstormed previously, and choose one.
 
 After that, I actually got back to running the network and looking at the number
@@ -659,3 +742,44 @@ Tomorrow is another day. Just like today.
 
 I hope having finished a few of the easy sections will not come back to bite me
 and make it more difficult for me to get started tomorrow.
+**  2-Aug-2017
+*** DONE [0/0] 12:04 PM : Half the day left, after the other wasted frivolusly
+CLOSED: [2017-08-02 Wed 12:08]
+Well, it is officially more than 12 hours since I did something. Literally
+anything useful, except probably sleep, but feeling the way I am right now, I am
+not sure I even did that correctly.
+
+We finish the plan in the next 6 hours, InshaAllah. It is very likely that I may
+not have very good plans about the post-processing and evaluation sections, but
+we can leave them with a few todos that can be figured out while our models are
+training and we are writing.
+
+Oh fuck ... yes ... I have been relying on writing the thesis while the
+trainings ran in the background. I am screwed ... but that is not new.
+
+Let's get started. Remember to sit properly, last night's back pain was not good.
+*** DONE [0/0]  2:28 PM : Been making progress, better skipping algo now, I hope
+CLOSED: [2017-08-02 Wed 14:34]
+I have been making progress on certain decisions and plans. For example, I now
+have it decided that only clsw are going to be used, and that too only for 2T,
+and only upto 2.
+
+I also made a lot of other adjustments and additions, that frankly I don't
+remember much about right now. But, at least, I am in the zone.
+
+Given the amount of time that has been spent, I am still going slow, but the
+decisions are making me feel good, even though it is only an iceberg.
+
+I will continue working on this, especially because I am in the zone, and don't
+want to get it interrupted by anything. Not really hungry.
+
+Furthermore, the next major sections on post-proc and evaluation can either be
+straightforward, or require a lot of research. (FML). But, I can add some
+desirables and todos for now and take them up later.
+
+There is a lot of dev work waiting for me, and quite an uncomfortable few of
+them will need careful research as well. Hence, I am pushing for finishing the
+planning before I put something energizing (more like sleepy-making) in my stomach.
+
+I really hope that there are no big surprises waiting for me. I really hope I
+haven't been something really obvious.
