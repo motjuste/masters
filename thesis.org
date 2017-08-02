@@ -106,7 +106,7 @@ inspiration. Also checkout the references.
 - [[http://orgmode.org/manual/Export-settings.html#Export-settings][Export settings]]
 - [[http://orgmode.org/manual/Embedded-LaTeX.html][Embedded LaTeX in orgmode]]
 - [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html][Specifying File Variables]]
-** DOIN [0/35] Finale Planne whatever
+** DOIN [0/39] Finale Planne whatever
 Most of this is going to have to be talked about in the [[Approach]] Section of the
 thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts are general.
 *** WAIT [0/4] Data Analysis
@@ -150,8 +150,10 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
 **** IDEA [0/1] KA3
 - [ ] Relevant things from Fisher later. Add here.
 *** WAIT [0/2] Data Preparation
-**** WAIT [0/5] Split into train, val, test/eval
+**** TODO [0/6] Split into train, val, test/eval
 - [ ] Which groups were added to which split, and possibly why.
+  + [ ] replicate the same labels data on myrmidon as planned on unumpu, even
+    though we do not have the audio, so that we can do some analysis while at home
 - [ ] Check the distributions of different statistics
   + [ ] segment lengths : general, 0T, 1T, 2T + histograms
   + [ ] gender distributions for 1T, 2T + pie-chart + /maybe/ histograms
@@ -229,7 +231,7 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
 - [ ] look at links on MFCC, iVectors, prosody, pitch, CNSC, PLP, etc. for inspiration.
   + [ ] See if the argument that 'spectrogram' is the mother of all features
     still holds.
-*** DOIN [0/17] The Classifier and Configurations
+*** WAIT [0/18] The Classifier and Configurations
 **** WAIT [0/3] Fixed number of =steps per chunk=, {=8= or whatever runs (likely one with 2k examples)}
 - This is to make sure we can predict exactly how many steps are required for a pass
 - The same number of chunks are to be used with the same number of steps per chunk
@@ -251,13 +253,11 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   subsampling, the number of steps per keras epoch is also fixed.
   + equivalent to (total_steps // 8) + 1 for a keras epoch.
   + equivalent to ((nchunks * 8) // 8) + 1
+  + Or, just use nchunks as the nsteps for keras epochs, lel
   + [ ] Make sure these invariants hold
 - It is okay if we pass over a little more due to rounding, but we don't want to
   pass less than the entire dataset.
-**** WAIT [0/0] Part of =training data= to use {=all=}
-We use all the data we have for training. We'll see that we train each model for
-atleast one pass.
-**** WAIT [0/2] The Neural =Network= - {=c3=}
+**** WAIT [0/2] The Neural =Network= - {~c3~}
 - There is essentially just one model based on the code below.
 - There is one output per-sequence, as in, we do sequence classification, but
   not at utterance level.
@@ -378,6 +378,7 @@ atleast one pass.
 - [ ] should check it out offline first to see that there are no unforseen
   circumstances where the batches may end up being empty.
 - We want to avoid making copies of giant arrays, so the convoluted algo below.
+- *Skipping will be done on validation/test data as well*
 ***** TODO [0/0] How to skip, the algo
 - Do normal strided data_prep
 - Do normal strided label_prep.
@@ -402,7 +403,26 @@ atleast one pass.
       in zip(starts, ends)
 - Make sure that we never go out of bounds in our calculations, and never reture
   empty batches/steps, and always return the same number of steps per chunk.
-**** TODO [0/0] =Sub-sampling= class(-es) {=1T_0.25=, =None=}
+**** WAIT [0/1] =Sub-sampling= class(-es) {=1T_0.25=, =None=}
+- *We only ever sub-sample 1T, cuz it is the majority class*
+- Since the contexts would have been already added by now, we can subsample all
+  1T, whether or not it is near 2T or 0T
+- *Sub-sampling is never done on the validation/test set*
+***** TODO [0/0] How to subsample, the algo
+- Do data and label prep as is, and also intercept the keep from label_prepper
+  + Therefore, subsampler will be a sub-class of skipper, /maybe/
+- make a var keep_list = []
+- do a groupby on labels, key of label == class (1T)
+- if key == False:
+  + make array of all trues of the size of group
+  + Append to keep_list
+- if key == True:
+  + make array of all False of the size of group
+  + Set every nth (=5) to True, starting at first
+  + Append to keep_list
+- np.concatenate keep_list, which should be the same size as keep returned earlier
+- set keep = keep && keep_list
+  + this ensures that any skipping is carried along as well.
 
 **** WAIT [0/0] Class-/Sample- =Weights= {=clsw_1= =clsw_2=}
 - *We only use class weights, set them to 1 for both 0T, and 1T*
@@ -421,38 +441,70 @@ atleast one pass.
 - Why not based on data, entire or per batch:
   + the class weights become even more skewed.
   + Experiments were performed, things went wrong
-**** TODO [0/0] Choosing label for a sequence - {}
-
-**** WAIT [0/1] Save model =checkpoint= on every keras epoch {=every=}
+**** WAIT [0/5] Choosing =label= for a sequence - {=center-frame=, =max-mid-±5-frames=}
+- priority is to choose the center frame with the idea that we are doing frame
+  wise prediction, and the context is just there to ... well, put the frame in context
+- The other choice of choosing the max of the mid ±5 frames, as per our
+  inspiration, is to say that there is 2T happening somewhere near the center.
+  + in terms of time, it means that we are adding a collar to the boundary at
+    training time. This collar basically makes the boundaries fuzzy, in priority
+    of 2T > 1T > 0T.
+  + What is the collar size? The boundaries get fuzzy by ±10 depending on which end.
+  + [ ] Hence, the post-processing should make sure that segment lengths are atleast
+    21 frames (=210 msec) at the end.
+  + [ ] The validation data to keras and confusions callback should have this
+    collar applied, if the training data does so
+  + [ ] We may even apply this collar to the val/test data on trainings not
+    done with this collar
+  + [ ] Finally, there should also be an evaluation step on the pure,
+    un-collared val/test labels as well.
+- Both of these can be implemented in the same code, cuz we only have to max,
+  and both types involve the center frame anyway, with a var label_ctxt, which is:
+  + 0 : for center-frame
+  + 5 : for max-mid-±5-frames
+- [ ] maybe be smarter about creating strided_views based on data_ctxt and label_ctxt
+**** WAIT [0/2] Save model =checkpoint= on every keras epoch - {=per-keras-epoch=}
 - [ ] decide on file name formatting.
-- Save checkpoints every epoch
-**** WAIT [0/2] Save =Tensorboard= events {=yes=}
+  + should reflect the true epoch and sub-epoch number
+  + [ ] Add a convenience function to =keras_utils= that accepts activity path
+- Save checkpoints every keras epoch
+**** WAIT [0/2] Save =Tensorboard= events {=per-keras-epoch=}
 - [ ] Is the images and stuff not showing up an issue from my side?
 - [ ] Is there a way to append to existing events file, instead of adding a new one?
   - if nothing else, if keras reflects what epoch we are training on, maybe that
     will help.
-**** WAIT [0/3] Validation data to be given to =keras.fit=
-- [ ] possibly give the same files as those given for the confusions calculations
+**** WAIT [0/0] Part of =training data= to use - {=all=}
+We use all the data we have for training. We'll see that we train each model for
+atleast one pass. Of course, we pass it via the data provider.
+**** TODO [0/3] Part of =validation data= to use - {~('00003', '00086')~}
+- We use the same data for *all* validations while training, the keras one and
+  the confusions one as well
   + so the confusions are printed for the same predictions/loss
-- [ ] give as generator, and get the step size by running a fake loop.
-  + We can also predict the step size as it is, but let's stick to what we can trust.
-  + Or, implement it into the data provider class. We can, cuz we plan to keep
-    the n-steps constant per-chunk.
+- [ ] *Find 1 or two calls after data-analysis over the extracted frames*
+  + We have the validation data on myrmidon, so can be done at home
+  + Choose for large ratio of 2T, long/good 2T
+- [ ] give as generator
+  + We can also predict the nstep size as it is with nchunks * 8
 - [ ] Do not do any sub-sampling in the validation data provider.
-  + skipping will be done however.
-**** WAIT [0/10] Confusions calculations in callback
+  + skipping will be done, however, if done on training data.
+**** WAIT [0/9] Chatty =Confusions= in callback - {=init+per-keras-epoch=}
 - [ ] Add to a new =keras_utils= file.
-- [ ] Make a confusion calculation on 0th batch and 0th epoch
+- [ ] requires path to export the h5 to.
+- [ ] Make a confusion calculation on init, on 0th batch of 0th epoch
   + this is to make sure that any errors due to the size of the batch are caught early.
-- [ ] Only do per epoch, and hence, multiple epochs per sweep has to be implemented.
+  + Save the true labels
+  + Save the output and confusions, and print the prec rec, to give idea of if
+    the network has learned anything at all, calling it 'init' in the file/logs
+- [ ] After the init one, Only do per keras epoch, and we have 8*npasses any way.
+  + [ ] how to calculate preds? =predict_generator=?
+  + [ ] print out the precision and recall for all classes being trained on, with correct
+    epoch and sub-epoch number.
+  + [ ] Save the full confusion matrix as well.
+- [ ] print full confusion after training ends.
 - [ ] Make sure that there is no code being called that needs packages not on
   the GPU.
 - [ ] Structure of the h5?
-- [ ] use one call, maybe 2, and save the predictions, generated using normal predict.
-  + [ ] '00003' and '00086', or some other based on analysis, /maybe/
-  + [ ] Save the ground-label only once, maybe also with chunking information.
-- [ ] print out the precision and recall for all classes being trained on
-  + [ ] Save the full confusion matrix as well.
+- [ ] use the same val_dp as one given to keras for it's validation
 **** IDEA [0/3] Predict over validation and/or test dataset at the end of training, in the script
 - [ ] How much time is to be expected? Wll have to consider that while
   submitting jobs.
@@ -465,13 +517,14 @@ atleast one pass.
 **** IDEA [0/1] Adapting a model for KA3
 - [ ] This depends on whether or not the models will be evaluated on the KA3 dataset.
 - Looks time consuming, and not much promising.
-*** [/] Post Processing / Smoothing / Inference
-*** [0/0] Evaluation
+*** TODO [0/0] The Table of Experiments
+*** TODO [0/0] Post Processing / Smoothing / Inference
+*** TODO [0/0] Evaluation
 
 
 
-* Logs                                                             :noexport:
-** 27-Jul-2017
+* [11/13] Logs                                                     :noexport:
+** [3/3] 27-Jul-2017
 *** DONE [0/0] 5:53 PM : Setting up.
 CLOSED: [2017-07-27 Thu 18:43]
 I think I am going to be wasting a lot of my time fiddling with org-mode and
@@ -546,7 +599,7 @@ Back to the writing experience, I need to read a lot of papers again, if I have
 ever come across them at all. That ... is ... scary.
 
 Hope Allah Helps.
-**  1-Aug-2017
+** [6/7] 1-Aug-2017
 *** DOIN [0/3] 11:46 AM : Final Planning
 No, I have not reorganized Todoist yet. Fuck!
 
@@ -742,7 +795,7 @@ Tomorrow is another day. Just like today.
 
 I hope having finished a few of the easy sections will not come back to bite me
 and make it more difficult for me to get started tomorrow.
-**  2-Aug-2017
+** [2/3] 2-Aug-2017
 *** DONE [0/0] 12:04 PM : Half the day left, after the other wasted frivolusly
 CLOSED: [2017-08-02 Wed 12:08]
 Well, it is officially more than 12 hours since I did something. Literally
@@ -783,3 +836,22 @@ planning before I put something energizing (more like sleepy-making) in my stoma
 
 I really hope that there are no big surprises waiting for me. I really hope I
 haven't been something really obvious.
+*** TODO [0/2]  4:29 PM : More progress, but shit there's so much still left.
+Took a small break after the last update and push, but the sub-sampling thing,
+and later the labelling thing kept distracting me (!). So, got back to work.
+
+Yes, all of it just "planning", but I am significantly more detailed in my
+decisions and algos today. I hope that works in my favor. There is one todo though.
+
+- [ ] Decide on that validation call(s) to be used while training, based on analysis.
+  + choose based on amount, length, etc of 2T
+
+There is still one giant task left, that is the table of experiments to perform.
+That was /the/ main goal of this entire exercise, to end up with the final list
+of experiments to perform, and the final list trainings to run. Quite a few of
+them will remain tentative, especially beyond the first pass, but, let's see.
+
+- [ ] Make the table of experiments with the configs to use
+
+I am gonna go shower and pray. Eating, even though my stomach has started to
+make sounds, will have to happen later. Hopefully, I will be done by 7:00 PM.
