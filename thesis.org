@@ -106,7 +106,7 @@ inspiration. Also checkout the references.
 - [[http://orgmode.org/manual/Export-settings.html#Export-settings][Export settings]]
 - [[http://orgmode.org/manual/Embedded-LaTeX.html][Embedded LaTeX in orgmode]]
 - [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html][Specifying File Variables]]
-** DOIN [0/38] Finale Planne whatever
+** DOIN [5/38] Finale Planne whatever
 Most of this is going to have to be talked about in the [[Approach]] Section of the
 thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts are general.
 *** WAIT [0/4] Data Analysis
@@ -172,54 +172,81 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   accumulate, although it is arguable if using only Telephone conversations
   should be made part of that, especially since we are working with Deep Learning.
   - [ ] how to account for robustness?
-*** TODO [0/7] Feature Extraction
-**** TODO [0/3] Load audio using =librosa.load=
-- [ ] make sure that they are in the range (-1, 1) and mean close to zero.
-  + [ ] /maybe/ document what is being done to maintain that
-- [ ] Take only the slice between =min-start= and =max-end= calculated with =samplerate_as(audio_samplerate)=.
-**** TODO [0/6] Calculate the fbanks
-- [ ] use params:
+*** WAIT [0/4] Feature Extraction
+- [ ] add to thesis plot of mel-frequencies
+- [ ] /maybe/ document what is being done to maintain audio b/w (-1, 1) (look at =librosa.load=)
+- [ ] Normalization
+- [ ] /maybe/ other possible features for future work
+**** DONE [2/2] Load audio using =librosa.load=
+CLOSED: [2017-08-04 Fri 22:12]
+- [X] make sure that they are in the range (-1, 1) and mean close to zero.
+- [X] Take only the slice between =min-start= and =max-end= calculated with =samplerate_as(audio_samplerate)=.
+**** DONE [7/7] Calculate the fbanks_64
+CLOSED: [2017-08-04 Fri 22:10]
+- [X] use params:
   + win_sec = 0.010
   + hop_sec = 0.032
   + samplerate = 8000
   + window = 'hann'
   + power = 2
-  + n_mels = ~{40, 64, 96}~
-    + [ ] check that audio-classification-keras guy's explanation for 96
-- [ ] Use =librosa.features.melspectrogram=, and then =librosa.logamplitude=
-  with ref = ~1.0~
-  + see if it gives the values in a good range
-  + [ ] *Make sure that the final shape is in terms of (time, frequencies).*
-  + [ ] *Make sure that the shape in time dimension matches =samples_for_labelsat=.*
-- [ ] keep the mel-frequencies to be added to the dataset h5, probably
-  calculated using =librosa=. *Confirm with =scipy= and =numpy=.*
-**** TODO [0/2] Make 16k equivalent long chunks per-file and save as single dataset in master h5
-***** TODO [0/10] Dry run with a single file from validation set
-- [ ] Make overlapping chunks with =strided_view=
-  + win_shape = 2**14 = 16384
-  + step_shape = 10 seconds = 10 * 100 = 1000
-- [ ] Concatenate them either using =numpy= or =dask=
-- [ ] when reading into dask, make sure that chunk-size is win_shape, aka 16k equivalent.
-- [ ] Create one hdf5 dataset per file.
-- [ ] Make sure that all chunks for a file are stored in the same dataset in h5.
-  + [ ] Make sure that the chunking value is the same as the 16k equivalent we created.
-  + [ ] Check that reading all chunks do give the expected results.
-- [ ] Use compression
-- [ ] Use Checksum
-- [ ] Add fft-frequencies as attribute or whatever =h5py= provides, to each dataset.
-***** TODO [0/5] Final notebook for all splits
-- [ ] Keep to and from location for data configurable.
-- [ ] Run on *myrmidon*
-  - [ ] Remove old data for new space.
-- [ ] Run on *unumpu*
-  - [ ] Save the data directly on *nm-raid*
-**** TODO [0/4] Normalization
-- [ ] Choose if CMN or CMVN.
+  + n_mels = ~{40, 64, 96}~ = 64
+    + [X] check that audio-classification-keras guy's explanation for 96
+      * I can't find anything about his work.
+    + Going with =64=. It serves a nice middle ground of serving the purpose of
+      fbanks and keeping more information as far as I am concerned. Refer
+      [[file:img/fbanks-v-spect.png]]
+    + Yes, this will mean that the training will be slower than that for 40.
+    + I am hoping that it will keep enough info about the speakers as well, more
+      than 40 would.
+    + I just can't find justification for 96, except if my samplerate was really high.
+- [X] Use =librosa.features.stft= with =center=False=, and implement wrappers
+  + [X] Save simple log10 of the mel-scaled spectrogram
+  + [X] *Make sure that the final shape is in terms of (time, frequencies).*
+    * [X] *Make sure that the shape in time dimension matches =samples_for_labelsat=.*
+    * [X] Have to write at least my own spectrogram just to set center-ing to
+      False. Damn you librosa!
+**** DONE [2/2] Make 16k equivalent long chunks per-file and save as single dataset in master h5
+CLOSED: [2017-08-04 Fri 22:12]
+***** DONE [11/11] Dry run with a single file from validation set
+CLOSED: [2017-08-04 Fri 22:12]
+- [X] Make overlapping chunks with =strided_view=
+  + win_shape = =2**14 = 16384=
+  + step_shape = 10 seconds = 10 * 100 = 1000 ~= =1024=
+- [X] Concatenate them either using =dask=
+- [X] when reading into dask, make sure that chunk-size is win_shape, aka 16k equivalent.
+- [X] Create one hdf5 dataset per file.
+- [X] Make sure that all chunks for a file are stored in the same dataset in h5.
+  + [X] Make sure that the chunking value is the same as the 16k equivalent we created.
+  + [X] Check that reading all chunks do give the expected results.
+- [X] Use compression
+- [X] Use Checksum
+- [X] Add fft-frequencies as attribute or whatever =h5py= provides, to each dataset.
+  + [X] Check [[http://docs.h5py.org/en/latest/high/dims.html][Dimension Scales]] in h5py
+  + Couldn't, and wouldn't ... h5py was not helping
+***** DONE [5/5] Final notebook for all splits
+CLOSED: [2017-08-04 Fri 22:11]
+- [X] Keep to and from location for data configurable.
+- [X] Run on *myrmidon*
+  - [X] Remove old data for new space.
+- [X] Run on *unumpu*
+  - [X] copy results to *nm-raid*
+**** WAIT [0/3] Normalization
+- [ ] see if the log-mel-spec values are in good range
+- [ ] Choose if CMN, or overall/frequency axis dynamic range normalization
 - [ ] Normalize on chunk (== utterance) level at the time of feeding into the network.
-**** IDEA [0/2] Add other possible features for future investigations, mainly as text
+**** IDEA [0/3] Add other possible features for future investigations, mainly as text
 - [ ] look at links on MFCC, iVectors, prosody, pitch, CNSC, PLP, etc. for inspiration.
-  + [ ] See if the argument that 'spectrogram' is the mother of all features
-    still holds.
+  + [ ] Look at these links from Todoist
+    * [[https://en.wikipedia.org/wiki/Pitch_(music)][Pitch (music) - Wikipedia]]
+      - [[http://www.fon.hum.uva.nl/praat/manual/Intro_4_1__Viewing_a_pitch_contour.html][Intro 4.1. Viewing a pitch contour]]
+      - [[http://librosa.github.io/librosa/generated/librosa.core.piptrack.html#librosa.core.piptrack][librosa.core.piptrack — librosa 0.5.0 documentation]]
+      - [[http://www.let.uu.nl/uilots/lab/courseware/phonetics/basics_of_acoustics_1/praat_pitch.html][praat_pitch]]
+    * [[https://github.com/timmahrt/ProMo][timmahrt/ProMo]]
+    * [[http://www.nature.com/articles/ncomms13654][Rapid tuning shifts in human auditory cortex enhance speech intelligibility]]
+    * [[https://www.kaggle.com/primaryobjects/voicegender][Gender Recognition by Voice | Kaggle]]
+    * iVectors : [[http://pydoc.net/Python/bob.spear/1.1.8/spear.utils/][Python bob.spear package v1.1.8, spear.utils module source code :: PyDoc.net]]
+- [ ] See if the argument that 'spectrogram' is the mother of all features
+  still holds.
 *** WAIT [0/18] The Classifier and Configurations
 **** WAIT [0/3] Fixed number of =steps per chunk=, {=8= or whatever runs (likely one with 2k examples)}
 - This is to make sure we can predict exactly how many steps are required for a pass
@@ -228,9 +255,9 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
 - [ ] How many total steps are there in the training data per sweep?
   + [ ] on myrmidon
   + [ ] on unumpu
-**** WAIT [0/5] Number of epochs / passes over the dataset - =steps_per_chunk epochs per pass= * {=1=, =6=, =11=, =21= =passes=}
-- [ ] Make atleast one pass over the entire dataset for every model.
-- [ ] upto 20 total passes for the best/most promising/relevant models.
+**** WAIT [0/5] Number of epochs / passes over the dataset - =steps_per_chunk epochs per pass= * {=5=, =11=, =21= =passes=}
+- [ ] Make atleast 5 passes over the entire dataset for every model.
+- [ ] upto 21 = (5 + 5 + 10) total passes for the best/most promising/relevant models.
   + 2 types of promising results both working with atleast the same features,
     and other such input of same parameters, like, context, etc.:
     1. Excellent 0T v/ {1T + 2T}
@@ -246,7 +273,7 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   + [ ] Make sure these invariants hold
 - It is okay if we pass over a little more due to rounding, but we don't want to
   pass less than the entire dataset.
-**** WAIT [0/3] The Neural =Network= - {~c3~}
+**** WAIT [0/4] The Neural =Network= - {~c3~}
 - There is essentially just one model based on the code below.
 - There is one output per-sequence, as in, we do sequence classification, but
   not at utterance level.
@@ -339,9 +366,9 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   input_shape = (None, 21, 64, 1)
   c3(input_shape).summary()
 #+END_SRC
-**** WAIT [0/1] Features to use - {~fbanks_64~}
-- choose one between ~{40, 64, 96}~, and stick to it.
-  + [ ] We wait on the final decision any way from [[Workflows/Finale Planne whatever/Feature Extraction]]
+**** WAIT [2/3] Features to use - {=fbanks_64=}
+- [X] choose one between ~{40, 64, 96}~, and stick to it.
+  + [X] We wait on the final decision any way from [[Workflows/Finale Planne whatever/Feature Extraction]]
 - [ ] will have to argue on why not spectrogram, so cite recent works by
   @deng:2013recent ... maybe
 **** WAIT [0/2] Making sequences to input with =context= - {=±10=}
@@ -407,13 +434,14 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
 - set keep = keep && keep_list
   + this ensures that any skipping is carried along as well.
 
-**** WAIT [0/0] Class-/Sample- =Weights= {=clsw_1= =clsw_2=}
+**** WAIT [0/1] Class-/Sample- =Weights= {=clsw_1= =clsw_2=}
 - *We only use class weights, set them to 1 for both 0T, and 1T*
 - we prefer to set class weight for 2T as 1, and at most 2
   + prefer 1 especially when skipping and/or sub-sampling
   + using 2 to perhaps support the argument that adding a cost matrix doesn't
     help much. I hope the results support it.
 - *We use all ones as clsw when either skipping or subsampling*
+  - [ ] Or do we?
 - Why not more:
   + because, 2T is very similar to 1T.
   + It hardly ever gets confused with 0T.
@@ -506,7 +534,7 @@ atleast one pass. Of course, we pass it via the data provider.
 |---------------------+-------------------------------|
 | What                | Value                         |
 |---------------------+-------------------------------|
-| features            | fbank ~64~                    |
+| features            | fbank 64                      |
 | data_ctxt           | ±10                           |
 | normalization       | ~CMN per chunk of final keep~ |
 | steps_per_chunk     | 8 or whatever doesn't crash   |
@@ -539,9 +567,10 @@ atleast one pass. Of course, we pass it via the data provider.
 
 
 
-* [13/15] Logs                                                     :noexport:
-** [3/3] 27-Jul-2017
-*** DONE [0/0] 5:53 PM : Setting up.
+* [20/26] Logs                                                     :noexport:
+** DONE [3/3] 27-Jul-2017
+CLOSED: [2017-08-04 Fri 21:39]
+*** DONE [0/0]  5:53 PM : Setting up.
 CLOSED: [2017-07-27 Thu 18:43]
 I think I am going to be wasting a lot of my time fiddling with org-mode and
 spacemacs. Add to that my perversion for using [[https://normanlayout.info/][Norman layout]] for typing, and I
@@ -581,7 +610,7 @@ will inevitably take place until the final document is ready to submit.
 + I have some practice of using this layout while using org-mode, so not very many keys to relearn.
 ***** Cons
 - Not very comfortable while using VIM keybindings, but not absolutely abysmal either.
-*** DONE [5/5] 6:40 PM : First incision.
+*** DONE [5/5]  6:40 PM : First incision.
 CLOSED: [2017-08-01 Tue 13:55]
 If you don't believe me, I have writing the above log entry till *now!*
 
@@ -597,7 +626,7 @@ been a waste. Those things shall be, at least for today:
   [[Workflows/org-mode setup/Refrences]].
 - [X] Test a preliminary export. Make sure git doesn't find it interesting.
 - [X] Sync Google Drive.
-*** DONE [0/0] 8:31 PM : After first incision
+*** DONE [0/0]  8:31 PM : After first incision
 CLOSED: [2017-07-27 Thu 20:35]
 I hope I can do this. I am finding this interesting, so that is a positive sign.
 And I am talking about writing, not just fiddling with org-mode. In fact, it is
@@ -615,8 +644,8 @@ Back to the writing experience, I need to read a lot of papers again, if I have
 ever come across them at all. That ... is ... scary.
 
 Hope Allah Helps.
-** [6/7] 1-Aug-2017
-*** DOIN [0/3] 11:46 AM : Final Planning
+** DOIN [6/7]  1-Aug-2017
+*** DOIN [2/3] 11:46 AM : Final Planning
 No, I have not reorganized Todoist yet. Fuck!
 
 But today, We do it!
@@ -635,9 +664,9 @@ wrong till now!
 
 Therefore, the plan, the final plan. Also, moving updating todoist to today as well.
 - [ ] Make a final-ready plan in Workflows for all the things that need to be run.
-- [ ] Reorganize Todoist ... please ... dude ... it is unusable ... cluttered
+- [X] Reorganize Todoist ... please ... dude ... it is unusable ... cluttered
   with outdated and/or impossible ideas and tasks.
-  + [ ] Find paper about `fe_03_p1` and add to zotero. :todoist:
+  + [X] Find paper about `fe_03_p1` and add to zotero. :todoist:
 *** DONE [3/3]  1:56 PM : Progress ... is slow
 CLOSED: [2017-08-02 Wed 14:28]
 After quite a bit of unnecessary waffling, I have finally started writing the
@@ -786,7 +815,7 @@ fucking classes?
 
 Anyway, I can still fiddle with it a little more, and change things. Like I did
 by making the final FC layer tapered, instead of square. Too many params.
-*** DONE [0/0]  11:32 PM : There are only so many hours ... I am awake
+*** DONE [0/0] 11:32 PM : There are only so many hours ... I am awake
 CLOSED: [2017-08-01 Tue 23:41]
 The dinner break was a forced and unrewarding one. And then came in my nightly
 routine. I don't feel very accomplished today. The biggest things are still left
@@ -811,7 +840,7 @@ Tomorrow is another day. Just like today.
 
 I hope having finished a few of the easy sections will not come back to bite me
 and make it more difficult for me to get started tomorrow.
-** [4/5] 2-Aug-2017
+** TODO [4/5]  2-Aug-2017
 *** DONE [0/0] 12:04 PM : Half the day left, after the other wasted frivolusly
 CLOSED: [2017-08-02 Wed 12:08]
 Well, it is officially more than 12 hours since I did something. Literally
@@ -893,7 +922,7 @@ In lieu of all the problems that I am having, I believe I am gonna grind a
 little more, until I can't. Having finished the planning, and only being left
 with develpment work might have worked, but ... well atleast I have a full
 stomach and clean kitchen, and some quick snacks ready.
-*** DONE [0/0]  11:35 PM : Well, got rid of the spectrogram bullshit
+*** DONE [0/0] 11:35 PM : Well, got rid of the spectrogram bullshit
 CLOSED: [2017-08-02 Wed 23:47]
 I first started by making a nice table of the hyperparameters that going to be
 fixed anyway, mainly from the scripts' point of view.
@@ -929,3 +958,149 @@ I want to make. Best Wishes.
 I am going to take a break.
 
 Fuck ... I also have to decide on the n_mels ... FUUCK!
+** WAIT [4/5]  3-Aug-2017
+*** WAIT [0/1] 11:24 AM : n_mels = 64
+Yes, the day started a little bit early today. Well ... I will be awake at this
+time on earlier days as well, but today ... I could start working. The trick was
+to start setting up the feat-ext script/notebook while watching (more like
+listening, nay, hearing) YouTube.
+
+I got in pretty easy into tackling the decision for n_mels, and ... even though
+I still not sure about this, I am gonna stick with 64. It looks better than 40,
+and I am not sure why I would choose 96, except if I already had a lot of
+frequency bands already available (which would have needed a higher samplerate
+audio in the first place).
+
+- [ ] mention how the use of features need to be updated and a thorough study
+  conducted in light of deep learning models now being prevelant.
+
+Now, off to the next part ... looking at how the fbanks and the log fbanks look.
+What values do they have, and in what range. How should I go about normalizing
+them later (Most likely gonna stick with CMN).
+
+I can't lie but, the chance than I may not be able to get my models running this
+weekend was a pushing force today. Not because I am not confident in my
+abilities to finish something as complicated as the training scripts in only
+like 18 hours, but administrative reasons.
+
+FML. Both ways.
+*** DONE [0/0]  4:35 PM : Damn this crashing!
+CLOSED: [2017-08-03 Thu 16:41]
+At 1:00 PM, looking at how plotting histograms was taking time, I decided to
+capitulate on my early start to have lunch. All was finished in proper amount of
+time, but after that, I just did not want to return to work. I wasted another
+hour here and there, and when I returned, all I have done since then is just
+write some code.
+
+And that's the thing. I making decisions about what features to use, and what
+normalization to use, and why. That decision making is dangerous especially when
+it is such a crucial part of the system. It is the darn fucking features that I
+am talking about.
+
+I realize that I don't have to worry too much about normalization right fucking
+now and can afford to work on just the feature extraction, the log-fbanks. And I
+can do the normalization debates when I am actually preparing for the models.
+
+But the thing is *there* on my mind, and just not letting me have peace or anything.
+
+There is another impending break any time now for Prayers. May be a shower will
+help as well.
+*** DONE [0/0]  6:29 PM : I hope the break works
+CLOSED: [2017-08-03 Thu 18:33]
+After the last update, I realized that I was wasting my energy on the wrong
+thing at the wrong time. I don't have to worry too much about feature
+normalization at the stage of feature extraction. I just need to make sure that
+the values that I am saving make sense.
+
+So, that is my goal for today, and, after finishing this log, I am gonna be
+enumerating my tasks/checklist in Todoist for that. I will be extracting
+log-mel-spectrograms, and have already written some wrapper functions for them.
+
+I will start a fresh notebook, aggressively copying stuff where I can, and not
+spending too much time in that notebook on frivolous stuff.
+
+I will come back to planning later, likely towards the end of the day, after
+another break. But, my train should not stop before I have a working script for
+feature extraction.
+*** DONE [0/0]  9:16 PM : Damn! is this taking time
+CLOSED: [2017-08-03 Thu 21:19]
+I have been working on the final feature extraction scripts, and I am only done
+till setting up sources and sinks! There are pre-flight checks before I even
+begin the new stuff I have to code for chunking and what not.
+
+Damn!
+
+It took me an hour to just put the feature extraction todos in Todoist! And the
+rest nearly 2 hours ... and I am not even done with pre-flight checks!
+
+What can I say, I like doing things right ... at the wrong fucking times!
+*** DONE [0/0] 11:11 PM : Good boy pre-flight checks, no sleep before done!
+CLOSED: [2017-08-03 Thu 23:18]
+Yes, I am still in the pre-flight checks state, but what did you expect.
+
+And good that I did the checks, because there are audio files that are smaller
+than the labels available for them. I can't do anything about it, except that
+while loading audio and extracting labels, I should trust my =AudioMetadata= for
+the right number of samples available, and choose the minimum between that and
+what is the =SequenceLabels.max_end= in order to determine the right endings for
+the labels, and ofcourse for chopping the audio data itself.
+
+I am kinda feeling a little smug about how elegantly the
+=SequenceLabels.min_start_as= method solves the problem of missing labels beyond extrema.
+
+I am gonna have to update a few things here in the workflows, but only after I
+am done with the script. There is still the pre-flight check for how the
+features are calculated, and later the monster of a task of making chunks.
+
+For now, I have some nightly routines and Prayers to take care of.
+** DONE [1/1]  4-Aug-2017
+CLOSED: [2017-08-04 Fri 22:01]
+*** DONE [0/0]  9:45 PM : Phew, done with feature extraction
+CLOSED: [2017-08-04 Fri 22:01]
+I know that I am bascally a week late on this. I tried doing it on 31-Sep-2017,
+but I didn't have many of things figured out, and had to make the plans.
+
+I was obviously successful in finishing the training scripts last night, but at
+least I went to sleep with a pretty solid plan for how to implement dasking the
+striding thing and concatenating such that the results were with appropriate
+chunking size, overlaps, etc.
+
+The morning today, which started pretty early I must say, especially relative to
+my going to bed time, was basically implementing that idea, with a nice surprise
+helping solve a problem for me as it is, thanks to some test cases I had had
+running last night.
+
+What I didn't expect, I should be scolded for it, especially because I was so
+smug last night about it, was that my 'just shift the min_start to zero and
+everything will work out' had a serious flaw, especially in the case that I
+wanted to use it to solve my problem of having last labels beyond the length of
+the audio, which itself was caught in a pre-flight check, like this problem was.
+Thankfully, the fix was easy, and relatively elegant, and there was some smiling
+and dancing involved.
+
+The hard deadline of needing to be in office definitely helped speed things up,
+but I was, of course, not done till the last minute. At office, the scripts (I
+keep saying scripts when it is a jupyter notebook) worked almost flawlessly.
+Took less than half the time for nearly 50% more data. However, I did notice
+that there were a lot of empty CPU times in the bokeh plot of the dask progress
+report, even though the features I was saving were 1/3 the earlier one. Most
+likely, the striding thing for making chunks of constant size was messing things up.
+
+In fact, come to think of it, there was no need to make all the chunks of the
+same size, because h5py would have returned to me the right amount of data. Yes,
+skipping could have made things a little messy, but I should not forget that the
+main issue with the previous data provider was that I was skipping entire steps,
+leaving me with no guaranteed estimates of what frames would be used, except
+when I used the exact steps per chunk.
+
+But, I hope I have saved myself time and (definitely) space while training cuz I
+will be reading chunks of essentially 1/3 the size, essentially only needing normalization.
+
+Oh you normalization ... I am confused like heck about you. I am not going to
+touch you before I am done updating and implementing the training helpers, which
+I plan to do this weekend. They will perhaps also make the analysis easier.
+
+I am probably only going to update the done tasks for today ... and continue tomorrow.
+
+This week has been tiring ... there is more to come ... I can't afford to rest
+... much.
