@@ -22,52 +22,515 @@ To Ammi, Abbu, Gudiya, Bushra, and Khushi
 
 * Table of Contents
 
-* [0/3] Introduction
-- [ ] Double Talk (aka Overlapping Speech) is ...
-** [0/3] Motivations for Detecting Double Talk
-*** TODO [0/1] Linguistics                                           :cite:
-- Manual annotation takes expertise and is time consuming.
-- Can give ideas about conversations, the mood, the scencario, cultural aspects, etc.
-- We are not concerned with the language model.
-- While thesis is limited to Fisher dataset, evaluation also performed on KA3.
-  - [ ] Add citation to Fisher dataset paper.
-*** TODO [0/1] Speech and Machine Learning                           :cite:
-- /Achille's heel/ of Speaker Diarization and Recognition systems.
-  + leads to impure speaker models.
-- A recognized source of errors in Speech Recognition systems.
-  + [ ] Talk about that Microsoft paper.
-- We are not concerned with overlapping speech recognition.
-- We are also not concerned with diarization. Our modelling assumptions are
-  speaker indpendent.
-- We are also not concerned with how many speakers are talking simultaneously.
-- We are also not concerned with source separation.
-*** TODO [0/1] Artificial Intelligence and Future User Interfaces
+* DOIN [0/2] Introduction
+** WAIT [0/4] Motivations
+Conversations are the dominant form of social interaction between two or more
+people. While text based messaging has seen meteoric rise in recent years,
+speech is still the primary medium of holding conversations. These interactions,
+especially face-to-face ones, are often enriched by both verbal as well as
+non-verbal acts by the participants in the facilitation of the exchange of
+ideas, information, thoughts, feelings, etc.
+- [ ] Mention how these acts make life hard in ASR and other speech systems
+
+The study of verbal and non-verbal cues are key to conversation analysis
+linguistics. In addition to the choice of words, the use of
+intonation, pauses, feedback signals, turn-taking, and other conscious or
+unconscious phatic expressions, which may on their own not hold any information
+of value, can still provide fascinating insights into various aspects of a
+particular conversation. One could analyse their use and frequency to determine
+the scenario, the topic, the structure of the interaction, pre-existing or even
+ad-hoc relationships between the participants, their cultural backgrounds and
+predispositions, their level of engagement and comfort, etc. To the inquisitive
+mind, such analyses and related discoveries are the means to kindle the fire
+that it is. However, the practical aspects of their study can inspire richer and
+more satisfying social interactions in the future, and, where relevant, guide
+the participants towards achieving specific goals of the exercise. The
+popularity of emojis perhaps arises from the need to simulate such acts in a
+concise way under the constraints of medium of text.
+- [ ] fix the last sentence
+- [ ] Mention Automatic Dialogue systems
+
+For their studies, the researchers collect data in the form of video or audio
+conversations. These need to transcribed in detail for the different aspects of
+the conversation. The process, even with the available of digital technologies,
+is a painstakingly manual and time-consuming task, and often require expert
+knowledge. Using software tools like ELAN or PRAAT, they often have to go
+through a conversation multiple times to finely annontate different events in
+the recording. This involves disambiguating not only what is spoken when and by
+whom, but also other verbal and non-verbal phenomena like intonation, prosody,
+gestures, etc. When necessary (for example in bad recording conditions), and
+when possible, this transcription is carried out by multiple parties before
+final adjudication. Certain phenomenon of interest occur for such small durations
+that locating them at a high temporal resolution is necessary, and consequently
+require expert ears and eyes for the task.
+
+The process gets increasingly expensive on multiple metrics very quickly,
+especially in cases of rare phenomena in rare languages. Furthermore, high
+standards are imperative to be maintained since these transcriptions will
+essentially be the /ground truth/ for data driven models in academic and applied
+research.
+- [ ] A little more elaboration
+
+The work presented in this thesis is part of a larger project with the ultimate
+goals of using machine learning to speed up if not fully automate the processes
+involved in such linguistics research. Specifically, this thesis focuses on
+detecting and temporally localizing /Double-Talk/ or /Overlapping Speech/ which
+occur when more than one speakers speak simultaneously, and can be used as an
+incredible meta-conversational metric for analysis. Depending on context and
+several other factors, such overlaps can be quite frequent yet
+characteristically ephemeral individually, especially in spontaneous
+conversations. For one's objectives, this phenomenon can be incredibly difficult
+to precisely annotate.
+
+For a yet another group of objectives, double-talk situations can prove to be a
+major source of errors. For systems that aim to automatically transcribe and/or
+annotate speech signals, high performance on spontaneous conversations
+represents their flagship task. Hesitations, overlaps, and other disfluencies
+are typical in such unplanned settings, and pose significant challenges to these
+speech technologies. In speaker identification and speaker diarization systems,
+overlapped segments of speech are referred to as their /Achille's heel/ since
+they lead to the underlying models being impure when they are not compensated
+for in the training data ~[]~. Furthermore, such segments account for a majority
+of errors even in state of the art performance when applied in conversational
+settings ~[]~. Similar degradation is also observed in Automatic Speech
+Recognition (ASR) where the systems fail at disambiguating the contents of the
+spoken terms in regions with overlapping speakers ~[]~.
+
+Precise and Reliable detection of overlapping speech in conversation can thus
+play important role in improving existing systems, and not only improve the
+workflows for conversation analysis.
+
+The phenomenon of Double-Talk is discussed in more detail in the next section,
+which is followed by putting it in perspective of research in speech
+technologies and existing work on the task of detecting them. Aided by this
+background, the objectives of this thesis are made concrete at the end of this
+chapter.
+
+** DOIN [0/5] Double Talk in Conversations
+Double talk can be straightforwardly defined by the physical phenomenon where
+more than one speakers speak at the same time. Nevertheless, it is pertinent to
+informing different decisions in the approach taken to detect them in
+conversations that different characteristics of their occurances under such
+settings are analyzed beforehand. An approach suitable for detecting overlapping
+speech segments that are 2 seconds long may not be suitable in situations where
+a majority of overlaps are significantly smaller in duration. Furthermore, these
+charactristics, like frequency of occurrence, typical duration, content, etc.
+may vary widely based on a variety of factors. For example, competitive
+conversations, like those of argumentative nature, may have frequent or rarer,
+typically longer or shorter, involve a wider vocabulary or smaller, than
+conversations in more cooperative or relaxed environments. Similar differences
+can arise when the setting is formal v/s informal, involves 2 v/s more
+participants, are carried out face-to-face v/s using a telephone, etc. Finally,
+theories in the area of conversation analysis that try to explain these
+phenomena can not only motivate one's decisions between different methodologies,
+but also help extracting more information from the evaluations.
+
+Before moving forward however, it is important to note that the figures reported
+in this section, unless sourced from a different study, were calculated on the
+(entire) Fisher corpus ~[]~. Relevant to the current section is that the corpus
+is of telephone based informal conversations between english speaking
+participants. Due to some factors, certain extrema of different statistics
+mentioned here should be taken with some caution. These factors, if they are not
+explicitly pointed out here, are discussed in more detail when the dataset is
+formally analyzed in the next chapter.
+
+Double talks become interesting in the analysis of turn-taking management. In
+the absence of any strict guidelines, participants in a conversation manage when
+they speak to avoid speaking at the same time and probably defeating the purpose
+of the activity. There are two popular theories that try to model how the
+participants find the appropriate moments to start speaking @heldner:2010pauses.
+When one speaker is active at a time, according to the first theory ~[]~, the
+next speaker projects the possible end-time of the current turn based on
+syntactic, prosodic, pragmatic and/or gestural information. The other theory
+~[]~ suggests the next speaker starts talking as a direct reaction to a signal
+that the current speaker has finished, or is about to finish. Overlaps can occur
+when there is a mismatch between predictions by the next speaker and the actual
+time the current speaker stops talking. From both perspectives, it is expected
+that having contextual information can benefit the approaches attempting to
+detect double talk occurrences. Particularly helpful can be information which can capture
+or predict based on content, vocalization, or even information from additional
+modalities like accompanying video or extra microphones.
+
+#+LATEX: \begin{figure}
+# \centering
+#+LATEX: \includegraphics[width=0.90\textwidth]{img/example-ovl-conv}
+#+LATEX: \caption{Examples of overlap scenarios in conversations}
+#+LATEX: \label{fig:example-ovl-conv}
+#+LATEX: \end{figure}
+#+LATEX: \end{small}
+
+
+Furthermore, according to both theories, most of the time, a single speaker is
+active for varying lengths of time, and turns are taken with (relatively) minimal gap or overlap with
+respect to duration. Furthermore, speakership changes occur regularly in
+conversations, so instances of double talk can be quite frequent. These can vary
+in different scenarios, and are an area of interesting research.
+
+#+LATEX: \begin{small}
+#+LATEX: \begin{table}
+|-------------+-----------------+---------------------|
+| /#Speakers/ | /#Segments (%)/ | /#10 ms Frames (%)/ |
+|-------------+-----------------+---------------------|
+|           0 |           20.39 |                6.86 |
+|           1 |           50.93 |               79.61 |
+|           2 |           28.68 |               13.53 |
+|-------------+-----------------+---------------------|
+#+LATEX: \caption{Overall ratio of active number of speakers in at a time in terms of segments and frames in the Fisher Corpus \emph{LDC2004T19}}
+#+LATEX: \label{tab:actspk-all}
+
+#+LATEX: \end{table}
+#+LATEX: \end{small}
+
+#+LATEX: \begin{small}
+#+LATEX: \begin{figure}
+# \centering
+#+LATEX: \includegraphics[width=\textwidth]{img/actspk-hist-all}
+#+LATEX: \caption{Histogram of durations of segments (truncated to < 4 second long) with different number of active speakers in \emph{LDC2004T19}.}
+#+LATEX: \label{fig:actspk-hist-all}
+#+LATEX: \end{figure}
+#+LATEX: \end{small}
+
+In Table \ref{tab:actspk-all} the ratios of /inferred/ number of segments of
+speech and those of number of frames calculated with centers at every 10 ms (the
+temporal resolution of the transciptions) over 5850 telephone based
+conversations in the /Fisher English/ /Training Speech - Part 1 - Transcripts
+(**LDC2004T19**)/ are reported (details in Section [[Inferring Labels]]). It can be
+seen that while segments with more than 1 speakers active at the same time
+account for a significant portion, they contribute proportionally less to the
+overall number of individual frames in time. This indicates, and is further
+illustrated in Figure \ref{fig:actspk-hist-all} that the distribution of
+segment-lengths with overlapping speech is skewed towards smaller durations.
+Overlaps longer than 4 seconds are less common and are often a result of
+erroneous transcription and temporal resolution of the annotations. For various
+conversational datasets, the reported median value is typically around 0.5
+seconds, and the distribution has a very thin tail in longer durations ~[]~.
+Knowing this, a system for detecting double talks should work at a high temporal
+resolution. For systems that aim to classify each frame for this, additional
+challenge will arise due to heavy imbalance between the classes designed based
+on number of speakers active at a time.
+
+Literature in the area of linguistics classify overlaps into further categories,
+but these are not discussed in this thesis. The reader should refer to
+@minna_stolt:2008many for an extensive overview. Pertinent to the work here,
+however, would be to analyse the genderwise raios and distributions of the
+occurences of double talk. Since there are necessarily more than one speakers
+active in segments with overlap, and that there can be significant differences
+or lack thereof between the voices in different combinations of genders,
+situations where the two speakers are of the same gender can prove
+more challenging than when they are of different genders. Approaches that target only
+certain combinations cannot be safely assumed to generalize well. This becomes
+especially important when the dataset being used is artificially generated,
+often done to mitigate the class imbalance issue mentioned earlier.
+However, for approaches using natural conversations, as is in the case of this
+thesis, this factor may be beyond their control.
+
+#+LATEX: \begin{small}
+#+LATEX: \begin{table}
+|----------------+-----------------+---------------+-----------------+---------------|
+| /Gender/       | /Segments with/ | /Frames with/ | /Segments with/ | /Frames with/ |
+| /Combination/  |    /Speech (%)/ |  /Speech (%)/ |   /Overlap (%)/ | /Overlap (%)/ |
+|----------------+-----------------+---------------+-----------------+---------------|
+| Female, Female |           42.18 |         40.12 |           36.30 |         15.23 |
+| Female, Male   |           32.49 |         32.32 |           35.07 |         13.87 |
+| Male, Male     |           25.33 |         27.56 |           36.80 |         14.26 |
+|----------------+-----------------+---------------+-----------------+---------------|
+#+LATEX: \caption{Contribution of different gender combinations to speech (with >= 1 speakers) segments and frames, and the proportion of these segments and frames that have overlap, in the Fisher Corpus \emph{LDC2004T19}}
+#+LATEX: \label{tab:seg-gender-all}
+#+LATEX: \end{table}
+#+LATEX: \begin{table}
+|----------------+------------------------+----------------------|
+| /Gender/       |      /Contribution to/ |    /Contribution to/ |
+| /Combination/  | /Overlap Segments (%)/ | /Overlap frames (%)/ |
+|----------------+------------------------+----------------------|
+| Female, Female |                  42.50 |                42.05 |
+| Female, Male   |                  32.62 |                30.87 |
+| Male, Male     |                  25.88 |                27.06 |
+|----------------+------------------------+----------------------|
+#+LATEX: \caption{Contribution of different gender combinations to all overlaps, in the Fisher Corpus \emph{LDC2004T19}}
+#+LATEX: \label{tab:ovl-gender-all}
+#+LATEX: \end{table}
+#+LATEX: \end{small}
+
+**LDC2004T19** consists of 5850 calls, all of roughly the same duration, and all
+have conversations between two speakers. Table \ref{tab:seg-gender-all} shows
+that there are more number of calls (and hence segments and frames where at
+least one speaker is active) where both participants are female, and,
+since the ratio of segments and frames that have overlapping speech within each
+combination are roughly the same, the final contribution to all overlap segments
+and frames are similarly skewed \ref{tab:ovl-gender-all}. Nevertheless, almost
+all approaches for detecting overlapping speech, including the one presented
+here, do not separate examples of overlaps based on genders, especially when
+working with naturally occuring double talk, mainly to avoid
+further decimation of which is already a minority class.
+
+What the analysis above motivates is to use information that can capture
+differences in the voices of the speakers involved. A straightforward approach
+can thus be to have a system that can identify individual speakers, as is done
+in speaker identification and also in some speaker diarization (which aim to
+recognize who spoke and when in a conversation). This system can then be used to
+detect overlaps if it identifies multiple speakers with similar confidence in a given
+segment of speech. Unfortunately, in addition to needing prior information about
+all possible speakers (which is often not available in the application phase),
+so far these systems do not work at high temporal resolutions. A simple reason
+for this is that speaker specific information can only be reliably calculated
+over long durations.
+
+#+LATEX: \begin{figure}
+# \centering
+#+LATEX: \includegraphics[width=\textwidth]{img/actspk-whist-all}
+#+LATEX: \caption{Weighted Histogram of durations of segments (truncated to < 4 second long) with different number of active speakers in \emph{LDC2004T19}.}
+#+LATEX: \label{fig:actspk-whist-all}
+#+LATEX: \end{figure}
+#+LATEX: \end{small}
+
+High temporal resolution in double talk detection is, nevertheless, necessary.
+When the histograms in Figure \ref{fig:actspk-hist-all} are weighted by their
+respective durations (Figure \ref{fig:actspk-whist-all}) to indicate the overall
+proportional contribution of different segment lengths, double talk segments between 0.5 and
+1.5 seconds long are seen to be largest the contributors to overlapping speech.
+Applications where the detection and appropriate treatment of overlapping speech
+can significantly improve the overall performance, should therefore been keenly
+interested in working with such small segments. This has proven to be extremely
+challenging so far, and the work for this thesis's objectives is not immune to
+it either. Existing works on this and related problems are discussed in the next section.
+** Double Talk and Speech Technologies
+Natural conversations are one of the toughest scenario where most of the
+automated spoken language technologies have to prove their metal ~[] corpuses~
+~check @cetin:2006speaker~. In addition to having multiple speakers, the
+spontaneous nature of the utterances and their content, and the presence of
+hesitations, self-corrections, and other disfluencies (including double talk
+situations), make conversations in meetings or other informal settings much more
+challenging than planned and/or read speech (e.g. broadcast recordings). Due to
+the detrimental impact of overlapping speech on their performance, such systems
+often remove them in a pre-processing step, or mitigate for such situations with
+the help of extra information. In an automatic speaker identification /
+verification system, for example, individual speaker models must be learned on
+non-overlapping examples to ensure purity, and the system should be robust
+against the presence interfering speakers in real world application, or at least
+refuse to assign a speaker by identifying presence of competing speakers. There
+has, nevertheless, been relatively few examples in existing publications
+attempting detection and temporal localization of double talk situations in natural
+conversations.
+*** Speaker Diarization
+Over the past decade, most of the significant attention to detecting overlapping
+speech in conversations has been motivated in /**speaker diarization**/ systems
+whose main task is to determine 'who spoke when' in a recording with more than
+one speaker. This involves the unsupervised identification of each speaker
+within a given audio stream and the intervals during which each speaker is
+active. The methods are unsupervised due to lack of prior information about
+speaker identities in most application scenarios. These systems find utility in
+many audio/video document processing tasks, and are integral to automatic rich
+transcription of these documents for a variety of applications, like indexing
+and retrieval, etc. For several conversation analysis workflows, an ideal version of such system
+is almost perfect, especially when combined with a robust
+speech-to-text system that can ultimately answer the 'who spoke when, and what'
+question. In fact, speaker diarization can be a very useful preprocessing step
+for other speech technologies like Automatic Speech Recognition, speaker
+identification, speaker localization, speaker tracking, etc. For example,
+ASR systems, which usually only aim to transcribe the spoken content in a given
+speech, can use outputs from a speaker diarization step to concentrate on only
+the segments with speech, and employ better speaker adaptation techniques (to
+compensate for speaker specific variations in the acoustic model) with the help
+of information about the speakers present in the recording.
+
+Anguera /et al./ @anguera:2012speaker provide an excellent overview of various
+approaches used for speaker diarization. In brief, the general architecture for
+most systems (Figure \ref{fig:arch-diarization}) consists of the following
+steps:
+
+1) **Preprocessing** the raw audio data to suppress noise, extracting acoustic
+   features (like MFCC, LPC, PLP, etc.), removing non-speech frames, and
+   performing any other domain specific processing or augmentation (like
+   acoustic beamforming when data from multiple microphones is available, etc.).
+2) **Speaker Segmentaion** or speaker change detection to end up with speaker
+   homogenous segments. When done separately, the most popular approach is to
+   use a similarity metric like BIC, KL-divergence, etc. between two adjacent
+   windows of relatively small size to determine if they belong to the same
+   source. However, in order to avoid the propagation of errors introduced in
+   this step any further, most state of the art systems optimize segmentation
+   and clustering simultaneously.
+3) **Clustering** the same speaker segments based on some acoustic similarity
+   (e.g. BIC, KL-divergence, etc.) metric to (ideally) end up with the same
+   number of groups as the total number of speakers in the recording. Since the
+   total number of speakers is usually not known a priori, most systems rely on
+   a heirarchial clustering algorithm, predominently by using a bottom-up
+   (agglomerative) strategy where an over-clustered initialization is
+   iteratively merged until a stopping criterion (like BIC, KL2, CLR, etc) is
+   met. In approaches that unify the segmentation and clustering steps,
+   iterative adaptation of speaker models based on current clustering and
+   subsequent re-clustering of the assignments based current models is carried out,
+   predominently using GMM/HMM based models, and BIC based agglomerative heirarchial
+   clustering.
+4) Final **labelling** of each frame/segment of the entire recording with the contributing
+   speaker cluster (predominently using Viterbi decoding), with possible enforcement
+   of minimum turn durations, and any other priors and constraints.
+
+Nevertheless, a fundamental limitation of most of these systems is that they
+only assign one speaker to a frame/segment. This leads to missed speaker errors
+in segments where multiple speakers are active and, given the high performance
+of some state-of-the are systems, can be responsible for a substantial of the
+overall diarization error ~[]~. Anguera /et al/ in fact call overlapping speech
+the 'Achilles heel' of speaker diarization for the meetings. Presence of such
+segments can potentially also degrade the speaker clusters and models of the
+involved speakers when they are not excluded in the pre-processing step ~[]~.
+
+The most common approach available in literature employs a separate overlap
+detection system whose posteriors about the presence of overlapping speech can
+be used in the pre-processing step to remove such segments and then in the
+labelling step to signal the need to look for a second contributing speaker. The
+latter usually done by choosing more than one speakers based on the diarization
+system's posterior probabilities. Other approaches that have been proposed,
+which do not use a separate overlap detection system, either do the detection
+and re-segmentation of the diarization system's output by adding to the derived
+speaker models all the possible combinations of such models ~[]~, or, integrate these
+combinations in the speaker modelling and clustering stage of the diarization
+system itself ~[]~. These other approaches, however, have not been shown to improve
+the overall performance, or require information about the total number of
+speakers to be known beforehand, or have only been investigated in situations
+where recordings from multiple microphones is present.
+
+#+LATEX: \begin{figure}
+# \centering
+#+LATEX: \includegraphics[width=0.90\textwidth]{img/example-ovl-conv}
+#+LATEX: \caption{General architecture of speaker diarization systems, and various ways to handle overlapping speech}
+#+LATEX: \label{fig:arch-diarization}
+#+LATEX: \end{figure}
+#+LATEX: \end{small}
+
+- One of the earliest approaches to solve for this ...
+- use gmm-hmm for three classes : (0T, 1T, 2T)
+- investigated various combinations of features and found ...
+
+- other approaches with different feature combinations
+  - CNSC
+  - prosodic
+  - long-term conversational
+  - ...
+- LSTM for overlap detection
+
+- A common theme has been to prefer high precision over high recall
+- because ....
+- Another common theme, as evidenced above, is that MFCC's are not enough
+  - weird dilemma of speaker agnosticity, vs. not
+- Other literature, that focus solely on detecting overlaps suggest more features
+
+*** Cocktail Party problem, and other speech technologies
+
+- Teager-Kaiser
+
+- Other's from that paper
+
+- Nevertheless, limitation is that they are only shown to work good for overlaps
+  longer than at least 2 seconds
+- using these features to detect overlaps in natural conversations has not been reported
+- Either an artificially generated data is used, or their objective task is the
+  cocktail party problem.
+
+- cocktail party problem?
+
+- impact of overlaps in ASR systems.
+- usually not challenged by overlap, intuitively, because only concerned with
+  what is being spoken. A strong language model in addition to a strong AM can
+  mitigate the disambiguation due overlap.
+- Furthermore, when considered for contribution to WER, their impact is even
+  more minimized, since each occurence usually has on a 1 or 2 words.
+- Interesting to note that recent report of achieving human parity, including in
+  similarity in case of errors, point out the exception in cases of backchannels
+- backchannels are ... and often occur in overlapping condition, where the
+  listener is not competing
+
+*** Deep learning
+
+- Deep learning technologies have proven to be this strong, and are still being
+  investigated. Particularly interesting are end-to-end approaches.
+- [ ] Deep learning and LVCSR
+- CNN promising for the ability to learn appropriate features
+- LSTM for long-term temporal patterns, so far done using HMMs
+
+- Deep learning for diarization is being investigated actively
+- DNN based approach proposed ....
+- CNN based approach ....
+- Still in initial stages.
+- use lower level features and the let the Deep network learn the appropriate
+  representation. a major motivation for us.
+- LSTM based approach for detecting overlapping speech ...
+
 - Make the assistants more natural to converse with, especially with back-channels, etc.
   + [ ] Search for continuous conversation type AI assistant research.
-** [0/2] Motivations for using Deep Learning                          :cite:
-- Incredible recent results.
-- [ ] Learn features for us. Learn appropriate representations.
-  + Existing research has pointed to potential improvements with better features.
-- Relatively little investigation in this area.
-- Made more accessible with open-sourced frameworks.
+
+** [0/3] Objectives and expected challenges                           :cite:
+The larger project that the work done in thesis is a part of, aims towards
+improving the conversational analysis workflows performed in the area of linguistics. A diarization system, at least
+an ideal one, is nearly perfect for the task of automating annotation of
+conversations which are otherwise done manually and cost time and expertise.
+Furthermore, as noted earlier, this system also assists the speech recognition
+system in it's automatic transcription task. As discussed in Section [[Speaker
+Diarization]], an overlap detection system can help improve the overall
+performance of a diarization system, especially when applied to conversational
+scenarios containing a lot of overlapping speech. And finally, as motivated in
+Section [[Double Talk in Conversations]], a system that can detect double talk
+situations itself is directly valuable to conversation analysis. The ultimate goal of the
+work done in thesis, within this context, is the automatic detection and temporal
+localization of double talk (aka overlapping speech) that occur in conversations.
+
+On the technical side, the objectives of this thesis include investigating the
+use of deep learning technologies in realizing such an overlapping speech
+detection system. As previously motivated, these technolgies can help avoid the
+need for manually engineering problem-specific features (a common theme in the
+existing approaches), while promising ground breaking and well generalizable
+results. The task of detecting overlapping speech has proven to be extremely
+challenging, especially in case of the short duration ones (that nonetheless
+make the biggest contribution), so it is perhaps worthwhile to investigate the
+powerful promises of deep learning methods. If successful, the deep neural
+network could have learned the appropriate representations from low-level
+acoustic features that best discriminate and predict the number of speakers
+active at a particular time in an audio recording (0, 1, or 2 speakers).
+Nevertheless, even before starting, many opportunities to tune the system exist,
+from the nature of low-level acoustic features being used as inputs, to the
+configurations of various layers in the deep neural network, how they are
+trained and later fine-tuned, etc. These result in a combinatorial explosion of
+methologies that should ideally be investigated in a comprehensive study, and is
+especially warranted by the lack of (as of yet) any existing published work along the same
+lines.
+
+Restrictions imposed to the duration of this thesis, which are further
+taxed by the amount of computation time and power necessary for properly working
+with deep learning technologies, limit the number of possible approaches that
+could be investigated in the allotted time. Therefore, in addition to prioritizing
+more straightforward approaches in the investigations, an important goal of the work done for this
+thesis was to also implement an end-to-end pipeline for speech segmentation
+research (and perhaps deployment) based on reputed open source technologies
+which can be used for further research with related goals. The former
+comprise the rest of thesis starting in Chapter [[Methodology]], while the latter
+are appropriately discussed as per need.
+
+In the rest of this section, the objectives are formalized further alongside the
+expected challenges that shape them.
+
+- We still attempt to solve a more difficult version of the task.
+  - mono-aural
+  - Speaker identity and number of speaker and language indpendent model.
+    - Assuming it to be a purely acoustic phenomena.
+    - we still limit ourselves to 2-speaker overlaps
+
+- Incredible recent results using deep learning.
 - Cons:
   + Need lots of data.
+  + Hence Fisher, even though other reason is more practical.
+    - difficult to judge ground-truth anyway.
   + Long training times.
     * Esp when the hardware is not upto par.
     * [ ] Long lead times meant use reliable and easy to use Keras framework.
   + fine-tuning is still an art.
-** [0/1] Challenges                                                   :cite:
-- Not enough high qualitly data.
-  - difficult to judge ground-truth anyway.
+
 - Heavily imbalanced classes, with two being extremely closely related.
   - [ ] essentially a linear combination.
-** [0/0] Related Works
-* Approach
-** Scope
-- Speaker and language indpendent model.
-- Assuming it to be a purely acoustic phenomena.
-- Learn appropriate features.
 
+- precision vs. recall
+* Methodology
+
+** Dataset
+*** Inferring Labels
 * Evaluations
 
 * Conclusions
@@ -106,7 +569,7 @@ inspiration. Also checkout the references.
 - [[http://orgmode.org/manual/Export-settings.html#Export-settings][Export settings]]
 - [[http://orgmode.org/manual/Embedded-LaTeX.html][Embedded LaTeX in orgmode]]
 - [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html][Specifying File Variables]]
-** DOIN [5/38] Finale Planne whatever
+** DOIN [17/38] Finale Planne whatever
 Most of this is going to have to be talked about in the [[Approach]] Section of the
 thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts are general.
 *** WAIT [0/4] Data Analysis
@@ -137,7 +600,7 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
 - [ ] *Use consistent colors*
 - [ ] What is the annotation length + histogram
 - [ ] What are the inferred segment lengths for 0T, 1T and 2T + histograms
-- [ ] When do 2T segments occur?
+- [ ] When do 2T segments occur? Check also @heldner:2010pauses
   + [ ] S1 -> DT -> S1 (back-channel)
   + [ ] S1 -> DT -> S2 (turn)
   + [ ] S1 -> DT -> No (back-channel)
@@ -172,11 +635,7 @@ thesis, and maybe also in the [[Introduction/Preliminaries]] where the concepts 
   accumulate, although it is arguable if using only Telephone conversations
   should be made part of that, especially since we are working with Deep Learning.
   - [ ] how to account for robustness?
-*** WAIT [0/4] Feature Extraction
-- [ ] add to thesis plot of mel-frequencies
-- [ ] /maybe/ document what is being done to maintain audio b/w (-1, 1) (look at =librosa.load=)
-- [ ] Normalization
-- [ ] /maybe/ other possible features for future work
+*** WAIT [5/7] Feature Extraction
 **** DONE [2/2] Load audio using =librosa.load=
 CLOSED: [2017-08-04 Fri 22:12]
 - [X] make sure that they are in the range (-1, 1) and mean close to zero.
@@ -230,10 +689,19 @@ CLOSED: [2017-08-04 Fri 22:11]
   - [X] Remove old data for new space.
 - [X] Run on *unumpu*
   - [X] copy results to *nm-raid*
-**** WAIT [0/3] Normalization
-- [ ] see if the log-mel-spec values are in good range
-- [ ] Choose if CMN, or overall/frequency axis dynamic range normalization
+**** DOIN [1/6] Normalization
+- [X] see if the log-mel-spec values are in good range
 - [ ] Normalize on chunk (== utterance) level at the time of feeding into the network.
+  + Don't worry about skipping vectors with silences. Fuck it.
+- [ ] Do dimwise-MN
+- [ ] Do dimwise-MVN
+- [ ] Do pixel-MN
+- [ ] Do pixel-MVN
+***** Why?
+- Main reason: compensate for mismatch in training and testing conditions,
+  especially related to channel distortions.
+- Also: Make it more suitable for the machine learning algorithm.
+
 **** IDEA [0/3] Add other possible features for future investigations, mainly as text
 - [ ] look at links on MFCC, iVectors, prosody, pitch, CNSC, PLP, etc. for inspiration.
   + [ ] Look at these links from Todoist
@@ -245,17 +713,17 @@ CLOSED: [2017-08-04 Fri 22:11]
     * [[http://www.nature.com/articles/ncomms13654][Rapid tuning shifts in human auditory cortex enhance speech intelligibility]]
     * [[https://www.kaggle.com/primaryobjects/voicegender][Gender Recognition by Voice | Kaggle]]
     * iVectors : [[http://pydoc.net/Python/bob.spear/1.1.8/spear.utils/][Python bob.spear package v1.1.8, spear.utils module source code :: PyDoc.net]]
+    * [ ] Fractal Dimensions, check zotero
 - [ ] See if the argument that 'spectrogram' is the mother of all features
   still holds.
-*** WAIT [0/18] The Classifier and Configurations
-**** WAIT [0/3] Fixed number of =steps per chunk=, {=8= or whatever runs (likely one with 2k examples)}
+*** DOIN [12/18] The Classifier and Configurations
+**** DONE [0/0] Fixed number of =steps per chunk=, {=8= or whatever runs (likely one with 2k examples)}
+CLOSED: [2017-08-10 Thu 20:52] DEADLINE: <2017-08-06 Sun> SCHEDULED: <2017-08-05 Sat>
 - This is to make sure we can predict exactly how many steps are required for a pass
 - The same number of chunks are to be used with the same number of steps per chunk
   + For skipping/sub-sampling, do it before feeding into the stepper.
-- [ ] How many total steps are there in the training data per sweep?
-  + [ ] on myrmidon
-  + [ ] on unumpu
-**** WAIT [0/5] Number of epochs / passes over the dataset - =steps_per_chunk epochs per pass= * {=5=, =11=, =21= =passes=}
+**** TODO [0/5] Number of epochs / passes over the dataset - =steps_per_chunk epochs per pass= * {=5=, =10=, =20= =passes=}
+DEADLINE: <2017-08-06 Sun> SCHEDULED: <2017-08-05 Sat>
 - [ ] Make atleast 5 passes over the entire dataset for every model.
 - [ ] upto 21 = (5 + 5 + 10) total passes for the best/most promising/relevant models.
   + 2 types of promising results both working with atleast the same features,
@@ -273,7 +741,7 @@ CLOSED: [2017-08-04 Fri 22:11]
   + [ ] Make sure these invariants hold
 - It is okay if we pass over a little more due to rounding, but we don't want to
   pass less than the entire dataset.
-**** WAIT [0/4] The Neural =Network= - {~c3~}
+**** WAIT [2/5] The Neural =Network= - {~c3~}
 - There is essentially just one model based on the code below.
 - There is one output per-sequence, as in, we do sequence classification, but
   not at utterance level.
@@ -282,11 +750,14 @@ CLOSED: [2017-08-04 Fri 22:11]
   + The number of classes.
 - We use BatchNormalization *BEFORE* Activation, to follow the original paper.
 - We use Categorical crossentropy, and categorical accuracy.
-- [ ] We use adamax as optimizer, but this can change
+- [X] We use adamax as optimizer, but this can change
+  + Nah .. we're sticking with it ... too many other things waiting
+- [ ] Use Average Pooling instead of Max Pooling?
 - [ ] Check more conv nets for speech and decide one final that we can run.
   - [ ] @deng:2013deep
-- [ ] Move this to =keras_utils= or =models= or =model_utils=, and actually see
+- [X] Move this to =keras_utils= or =models= or =model_utils=, and actually see
   the model output. Too much time getting wasted in making it work in spacemacs.
+  + moved to =keras_utils=
 
 #+BEGIN_SRC python :results output
   from keras.models import Sequential
@@ -366,12 +837,12 @@ CLOSED: [2017-08-04 Fri 22:11]
   input_shape = (None, 21, 64, 1)
   c3(input_shape).summary()
 #+END_SRC
-**** WAIT [2/3] Features to use - {=fbanks_64=}
+**** DONE [2/2] Features to use - {=fbanks_64=}
+CLOSED: [2017-08-05 Sat 16:20]
 - [X] choose one between ~{40, 64, 96}~, and stick to it.
   + [X] We wait on the final decision any way from [[Workflows/Finale Planne whatever/Feature Extraction]]
-- [ ] will have to argue on why not spectrogram, so cite recent works by
-  @deng:2013recent ... maybe
-**** WAIT [0/2] Making sequences to input with =context= - {=±10=}
+**** WAIT [1/2] Making sequences to input with =context= - {=±10=}
+SCHEDULED: <2017-08-05 Sat>
 - There are multiple options, and adding more context has helped results.
 - I have decided to choose and evaluate only on ±10 frames (±100 ms).
 - The decision comes from @ryant:2013speech
@@ -379,8 +850,9 @@ CLOSED: [2017-08-04 Fri 22:11]
   + hardware limitations
   + Run time limitations
   + [ ] Add this to future works
-- [ ] Add `[..., None]` at the end to make it `channels_last` for conv2d
-**** WAIT [0/1] =Skipping= class(-es) {=0T=, =None=}
+- [X] Add `[..., None]` at the end to make it `channels_last` for conv2d
+**** DONE [1/1] =Skipping= class(-es) {=0T=, =None=}
+CLOSED: [2017-08-10 Thu 20:54] DEADLINE: <2017-08-07 Mon> SCHEDULED: <2017-08-05 Sat>
 - *We only experiment with skipping 0T when we choose to, and it is preferable*
   + skipping 1T does not make sense, use subsampling instead
 - We *still* maintain the same number of steps per chunk, even though the
@@ -389,7 +861,8 @@ CLOSED: [2017-08-04 Fri 22:11]
   circumstances where the batches may end up being empty.
 - We want to avoid making copies of giant arrays, so the convoluted algo below.
 - *Skipping will be done on validation/test data as well*
-***** TODO [0/0] How to skip, the algo
+***** DONE [0/0] How to skip, the algo
+CLOSED: [2017-08-10 Thu 20:54]
 - Do normal strided data_prep
 - Do normal strided label_prep.
   + This is the final decision of labels to skip or not is made.
@@ -413,12 +886,14 @@ CLOSED: [2017-08-04 Fri 22:11]
       in zip(starts, ends)
 - Make sure that we never go out of bounds in our calculations, and never reture
   empty batches/steps, and always return the same number of steps per chunk.
-**** WAIT [0/1] =Sub-sampling= class(-es) {=1T_0.25=, =None=}
+**** DONE [1/1] =Sub-sampling= class(-es) {=1T_0.2=, =None=}
+CLOSED: [2017-08-10 Thu 20:54] DEADLINE: <2017-08-07 Mon> SCHEDULED: <2017-08-05 Sat>
 - *We only ever sub-sample 1T, cuz it is the majority class*
 - Since the contexts would have been already added by now, we can subsample all
   1T, whether or not it is near 2T or 0T
 - *Sub-sampling is never done on the validation/test set*
-***** TODO [0/0] How to subsample, the algo
+***** DONE [0/0] How to subsample, the algo
+CLOSED: [2017-08-10 Thu 20:55]
 - Do data and label prep as is, and also intercept the keep from label_prepper
   + Therefore, subsampler will be a sub-class of skipper, /maybe/
 - make a var keep_list = []
@@ -433,8 +908,8 @@ CLOSED: [2017-08-04 Fri 22:11]
 - np.concatenate keep_list, which should be the same size as keep returned earlier
 - set keep = keep && keep_list
   + this ensures that any skipping is carried along as well.
-
 **** WAIT [0/1] Class-/Sample- =Weights= {=clsw_1= =clsw_2=}
+DEADLINE: <2017-08-06 Sun> SCHEDULED: <2017-08-05 Sat>
 - *We only use class weights, set them to 1 for both 0T, and 1T*
 - we prefer to set class weight for 2T as 1, and at most 2
   + prefer 1 especially when skipping and/or sub-sampling
@@ -452,7 +927,8 @@ CLOSED: [2017-08-04 Fri 22:11]
 - Why not based on data, entire or per batch:
   + the class weights become even more skewed.
   + Experiments were performed, things went wrong
-**** WAIT [0/5] Choosing =label= for a sequence - {=center-frame=, =max-mid-±5-frames=}
+**** WAIT [1/5] Choosing =label= for a sequence - {=center-frame=, =max-mid-±5-frames=}
+SCHEDULED: <2017-08-05 Sat>
 - priority is to choose the center frame with the idea that we are doing frame
   wise prediction, and the context is just there to ... well, put the frame in context
 - The other choice of choosing the max of the mid ±5 frames, as per our
@@ -473,101 +949,138 @@ CLOSED: [2017-08-04 Fri 22:11]
   and both types involve the center frame anyway, with a var label_ctxt, which is:
   + 0 : for center-frame
   + 5 : for max-mid-±5-frames
-- [ ] maybe be smarter about creating strided_views based on data_ctxt and label_ctxt
-**** WAIT [0/2] Save model =checkpoint= on every keras epoch - {=per-keras-epoch=}
-- [ ] decide on file name formatting.
+- [X] maybe be smarter about creating strided_views based on data_ctxt and label_ctxt
+  - There is not much smart way around it, since we need to know what frames
+    need to be in the center. Have to create the strided views with the same params
+**** DONE [2/2] Save model =checkpoint= on every keras epoch - {=per-keras-epoch=}
+CLOSED: [2017-08-06 Sun 19:49] SCHEDULED: <2017-08-05 Sat> DEADLINE: <2017-08-05 Sat>
+- [X] decide on file name formatting.
   + should reflect the true epoch and sub-epoch number
-  + [ ] Add a convenience function to =keras_utils= that accepts activity path
+  + [X] Add a convenience function to =keras_utils= that accepts activity path
 - Save checkpoints every keras epoch
-**** WAIT [0/2] Save =Tensorboard= events {=per-keras-epoch=}
-- [ ] Is the images and stuff not showing up an issue from my side?
-- [ ] Is there a way to append to existing events file, instead of adding a new one?
+**** DONE [2/2] Save =Tensorboard= events {=per-keras-epoch=}
+CLOSED: [2017-08-06 Sun 19:52] SCHEDULED: <2017-08-05 Sat> DEADLINE: <2017-08-05 Sat>
+- [X] Is the images and stuff not showing up an issue from my side?
+  - Very likely that this is due to using generator for val data, because that
+    is not mentioned to lead to histogram generation.
+- [X] Is there a way to append to existing events file, instead of adding a new one?
   - if nothing else, if keras reflects what epoch we are training on, maybe that
     will help.
-**** WAIT [0/0] Part of =training data= to use - {=all=}
+  - Skipping this ... cuz we can plot our plots from the accuracy in the log
+  - Plus ... since we plan to pass =initial_epoch= to keras.fit ... there is a
+    likelihood that the tensorboard reflects that.
+**** DONE [0/0] Part of =training data= to use - {=all=}
+CLOSED: [2017-08-05 Sat 16:21]
 We use all the data we have for training. We'll see that we train each model for
 atleast one pass. Of course, we pass it via the data provider.
-**** TODO [0/3] Part of =validation data= to use - {~('00003', '00086')~}
+**** DONE [3/3] Part of =validation data= to use - {=('00007', '00013', '00028', '00062', '00065', '00069', '00086')=}
+CLOSED: [2017-08-10 Thu 20:58] DEADLINE: <2017-08-07 Mon> SCHEDULED: <2017-08-07 Mon>
 - We use the same data for *all* validations while training, the keras one and
   the confusions one as well
   + so the confusions are printed for the same predictions/loss
-- [ ] *Find 1 or two calls after data-analysis over the extracted frames*
+- [X] *Find 1 or two calls after data-analysis over the extracted frames*
   + We have the validation data on myrmidon, so can be done at home
   + Choose for large ratio of 2T, long/good 2T
-- [ ] give as generator
+  + Sorry, we are, for now, choosing very many more than just 2, hoping it will perform
+    + chosen based on gender, ratio of 2T, length of 2T, etc.
+    + More explanation, for now, not required
+  + If not, we'll reduce the number
+  + Added that list of calls to =datasets.fisher= for easy access.
+- [X] give as generator
   + We can also predict the nstep size as it is with nchunks * 8
-- [ ] Do not do any sub-sampling in the validation data provider.
+- [X] Do not do any sub-sampling in the validation data provider.
   + skipping will be done, however, if done on training data.
-**** WAIT [0/9] Chatty =Confusions= in callback - {=init+per-keras-epoch=}
-- [ ] Add to a new =keras_utils= file.
-- [ ] requires path to export the h5 to.
-- [ ] Make a confusion calculation on init, on 0th batch of 0th epoch
+**** DONE [11/11] Chatty =Confusions= in callback - {=init+per-keras-epoch=}
+CLOSED: [2017-08-06 Sun 19:55] SCHEDULED: <2017-08-05 Sat> DEADLINE: <2017-08-05 Sat>
+- [X] Add to a new =keras_utils= file.
+- [X] requires path to export the h5 to.
+- [X] Make a confusion calculation on init, on 0th batch of 0th epoch
   + this is to make sure that any errors due to the size of the batch are caught early.
   + Save the true labels
   + Save the output and confusions, and print the prec rec, to give idea of if
     the network has learned anything at all, calling it 'init' in the file/logs
-- [ ] After the init one, Only do per keras epoch, and we have 8*npasses any way.
-  + [ ] how to calculate preds? =predict_generator=?
-  + [ ] print out the precision and recall for all classes being trained on, with correct
+- [X] After the init one, Only do per keras epoch, and we have 8*npasses any way.
+  + [X] how to calculate preds? =predict_generator=?  =Yes=
+  + [X] print out the precision and recall for all classes being trained on, with correct
     epoch and sub-epoch number.
-  + [ ] Save the full confusion matrix as well.
-- [ ] print full confusion after training ends.
-- [ ] Make sure that there is no code being called that needs packages not on
+  + [X] Save the full confusion matrix as well.
+- [X] print full confusion after training ends.
+- [X] Make sure that there is no code being called that needs packages not on
   the GPU.
-- [ ] Structure of the h5?
-- [ ] use the same val_dp as one given to keras for it's validation
-**** IDEA [0/3] Predict over validation and/or test dataset at the end of training, in the script
-- [ ] How much time is to be expected? Wll have to consider that while
-  submitting jobs.
-- [ ] predict only on the last epoch? What if it starts overfitting?
+- [X] Structure of the h5?
+  - basically: [/init/x, x/pass/epoch, /final/x, /true] where x = [preds, confs,
+    precs, recs]
+- [X] use the same val_dp as one given to keras for it's validation
+**** DONE [2/2] =Predict= over validationat the end of training, in the script - {=val-all=}
+CLOSED: [2017-08-10 Thu 20:57] SCHEDULED: <2017-08-07 Mon>
+- [X] predict only on the last epoch? What if it starts overfitting?
+  + We explicitly predict at the end of training
+  + Hopefully, the geepu thing will make it run fast enough, and
+  + give an idea of run time on test data, if we ever decide to run on that.
 - Prioritize saving the model first before this. We can do it offline, and
   probably will have to anyways.
   + Want to do on GPU cuz there is so much data, and inference takes that long.
-- [ ] Have to come up with a better /loop/ to save the predictions, cuz
+- [X] Have to come up with a better /loop/ to save the predictions, cuz
   =predict_generator= works on returning one giant numpy-array.
+  + We're doing explicit predict on batch on every step from flow.
+  + No multi-processing, but atleast, it is supposed to run predictably
+  + We save the trues and preds and the confusion matrix based on the same
+    structure of labels in the chunking info
 **** IDEA [0/1] Adapting a model for KA3
 - [ ] This depends on whether or not the models will be evaluated on the KA3 dataset.
 - Looks time consuming, and not much promising.
-*** TODO [0/0] The Table of Experiments
+*** WAIT [0/0] The Table of Experiments
 **** Fixed
 - Values between '~~' may change before final models
-|---------------------+-------------------------------|
-| What                | Value                         |
-|---------------------+-------------------------------|
-| features            | fbank 64                      |
-| data_ctxt           | ±10                           |
-| normalization       | ~CMN per chunk of final keep~ |
-| steps_per_chunk     | 8 or whatever doesn't crash   |
-|---------------------+-------------------------------|
-| val_dp_shuffle_seed | None                          |
-| val_dp_callids      | ~('00003', '00086')~          |
-|---------------------+-------------------------------|
-| trn_dp_shuffle_seed | 32                            |
-| trn_dp_callids      | all                           |
-| epochs_per_pass     | steps_per_chunk               |
-|---------------------+-------------------------------|
-| nclasses            | 3                             |
-| input_shape         | trn_dp.input_shape            |
-| model               | ~c3~                          |
-|---------------------+-------------------------------|
-| trn_steps_per_epoch | trn_dp.nchunks                |
-| val_steps           | val_dp.nchunks * 8            |
-| max_q_size          | 32                            |
-| verbosity           | 2                             |
-| pickle_safe         | True                          |
-| model_checkpoints   | per-epoch ~filename-pattern~  |
-| confusions          | init + per-epoch on val_dp    |
-| tensorboard         | per-epoch                     |
-|---------------------+-------------------------------|
+|----------------------------+------------------------------------------------------------------------------|
+| What                       | Value                                                                        |
+|----------------------------+------------------------------------------------------------------------------|
+| features                   | fbank 64                                                                     |
+| data_ctxt                  | ±10                                                                          |
+| steps_per_chunk            | 8 or whatever doesn't crash                                                  |
+|----------------------------+------------------------------------------------------------------------------|
+| val_dp_shuffle_seed        | None                                                                         |
+| val_dp_callids             | =('00007', '00013', '00028', '00062', '00065', '00069', '00086')=            |
+|----------------------------+------------------------------------------------------------------------------|
+| trn_dp_shuffle_seed        | 32                                                                           |
+| trn_dp_callids             | all                                                                          |
+| epochs_per_pass            | steps_per_chunk                                                              |
+|----------------------------+------------------------------------------------------------------------------|
+| nclasses                   | 3                                                                            |
+| input_shape                | trn_dp.inputdatashape                                                        |
+| model                      | ~c3~                                                                         |
+|----------------------------+------------------------------------------------------------------------------|
+| trn_steps_per_epoch        | trn_dp.nchunks                                                               |
+| val_steps                  | val_dp.steps_per_pass                                                        |
+| max_q_size                 | 2 * trn_dp.steps_per_chunk + 1                                               |
+| verbosity                  | 2                                                                            |
+| pickle_safe                | True                                                                         |
+| model_checkpoints          | per-epoch ='w.{epoch:03d}-{val_loss:.3f}-{val_categorical_accuracy:.3f}.h5'= |
+| confusions                 | init + per-epoch on val_dp + final                                           |
+| tensorboard                | per-epoch                                                                    |
+|----------------------------+------------------------------------------------------------------------------|
+| predict_on_inputs_provider | val.for_callids('all')                                                       |
+|----------------------------+------------------------------------------------------------------------------|
 **** Variables, and order of experiments
 
+*** WAIT [0/1] Post Processing / Smoothing / Inference
+- [ ] What was that thing where the likelihoods were multiplied by something
+  before feeding into the HMM?
+*** WAIT [0/0] Evaluations and Comparisons
+** WAIT [0/1] Finale Palnne - Remainers
+*** WAIT [0/7] Feature Extraction
+- [ ] Extract the same features for KA3
+- [ ] will have to argue on why not spectrogram, so cite recent works by
+  @deng:2013recent ... maybe
+  + [ ] /maybe/ and why log
+- [ ] add to thesis plot of mel-frequencies
+- [ ] /maybe/ document what is being done to maintain audio b/w (-1, 1) (look at =librosa.load=)
+- [ ] Normalization ~Section above~
+- [ ] /maybe/ other possible features for future work, ~Section Above~
 
-*** TODO [0/0] Post Processing / Smoothing / Inference
-*** TODO [0/0] Evaluations and Comparisons
 
 
-
-* [20/26] Logs                                                     :noexport:
+* [49/59] Logs                                                     :noexport:
 ** DONE [3/3] 27-Jul-2017
 CLOSED: [2017-08-04 Fri 21:39]
 *** DONE [0/0]  5:53 PM : Setting up.
@@ -840,7 +1353,7 @@ Tomorrow is another day. Just like today.
 
 I hope having finished a few of the easy sections will not come back to bite me
 and make it more difficult for me to get started tomorrow.
-** TODO [4/5]  2-Aug-2017
+** DOIN [4/5]  2-Aug-2017
 *** DONE [0/0] 12:04 PM : Half the day left, after the other wasted frivolusly
 CLOSED: [2017-08-02 Wed 12:08]
 Well, it is officially more than 12 hours since I did something. Literally
@@ -881,14 +1394,14 @@ planning before I put something energizing (more like sleepy-making) in my stoma
 
 I really hope that there are no big surprises waiting for me. I really hope I
 haven't been something really obvious.
-*** TODO [0/2]  4:29 PM : More progress, but shit there's so much still left.
+*** DOIN [1/2]  4:29 PM : More progress, but shit there's so much still left.
 Took a small break after the last update and push, but the sub-sampling thing,
 and later the labelling thing kept distracting me (!). So, got back to work.
 
 Yes, all of it just "planning", but I am significantly more detailed in my
 decisions and algos today. I hope that works in my favor. There is one todo though.
 
-- [ ] Decide on that validation call(s) to be used while training, based on analysis.
+- [X] Decide on that validation call(s) to be used while training, based on analysis.
   + choose based on amount, length, etc of 2T
 
 There is still one giant task left, that is the table of experiments to perform.
@@ -1104,3 +1617,742 @@ I am probably only going to update the done tasks for today ... and continue tom
 
 This week has been tiring ... there is more to come ... I can't afford to rest
 ... much.
+** DONE [3/3]  5-Aug-2017
+CLOSED: [2017-08-06 Sun 19:46]
+*** DONE [5/5]  4:05 PM : I certainly rested a bit too much
+CLOSED: [2017-08-06 Sun 19:46]
+Well ... let's not talk too much about it. Last night, I only went to sleep
+after having made the updates I was not in the mood of making. So ... I thought
+I had earned an extended relaxation session in the morning. Plus ... it is the weekend.
+
+I have, nevertheless, tried to use the relaxation time to actually rejuvenate
+myself ... and I hope I have succeeded on it. I ate ... read ... watched ... had
+a long and deep sleep ... etc. Time to get back to work because I don't have
+many more excuses and distractions left.
+
+In that regard, I am most likely going to work on the trainings related utility
+functions and classes, like the confusions calculations and the data providers.
+Not the normalization part ... but that is rife with decision making ... which
+scares me to no end, but also ... need me to have a reliable data provider ready anyways.
+
+So, starting on those are my goals for today ... even though my planning has
+essentially not even reached the most important parts of what needs to actually
+shine in my thesis.
+
+And, not just start ... I need to finish some things as well ... today! And, for
+that ... I really don't know which one tackle first ... the easy one and risk
+feeling like thursday past when my entire day was spent things that could have
+been done by essentially copying pasting ... and ... the harder and more
+involved one and risk having a yet another string of days spent on something
+with no progress on other fronts whatsoever, like the finale planne.
+
+I am gonna start with the easy one .. God help me ... but also prepend it with
+some planning in Todoist (mainly because I am not finding task tracking in org
+very intuitive yet ... and I just want to start with something even easier than
+the easy task one.
+
+
+- [X] Setup training utils project in Todoist with related tasks from here
+- [X] Finish Confusions callback in =keras_utils=
+- [X] keep model =c3= in the =model_utils= file. /maybe/ give a name.
+  + Actually ... just added it to =keras_utils=
+- [X] rename/replace confusing =training_utils.py= files.
+  + There will be none now ... heh
+- [X] Finish a simple =setup_callbacks= in a new =training_utils.py=
+  + Make it a one-stop-shop training utils file inspired by the existing
+    =rennet.training_utils= file, in the utils file.
+  + =import * from rennet.utils.model_utils= to make all models available.
+  + The dataprovider (or not) has to be setup by the user in his/her training /
+    evaluation script ... because only they know what data they are using.
+  + Everything is in =keras_utils=, and the user has to make sure the s/he is
+    using the correct inputs provider, just like caring about providing the
+    correct h5 files.
+*** DONE [0/0]  5:55 PM : Setup Todoist ... yet to start real work
+CLOSED: [2017-08-05 Sat 17:59]
+Since the last log ... I have been setting up Todoist for the tasks for today
+... and kinda also reorganized the outdated stuff there while at it ...
+
+There are definitely some more possible tasks and ideas coming here later.
+
+It is prayers time ... and I have to then get on with the real coding work for
+today. I am hoping for smooth sailing ... especially because a lot of the things
+are pretty straightforward, especially after having taken out a lot of decision
+making from all of it ... and also because there are existing implementation
+that I have written earlier that I know work.
+
+woops ... dejavu?
+*** DONE [0/0] 10:34 PM : It is taking sooo much time ... again!
+CLOSED: [2017-08-05 Sat 22:38]
+Damn Boy! Just printing stuff is taking so much time! What are you gonna do
+about the real stuff???
+
+It is nearly 4 hours that I have spent on this shit ... I am not finished yet
+... at least not the hero tasks of printing things ...
+
+What is causing the delay? It is taking me way too long to make even the most
+trivial decisions ... and I am trying to make good ones ... I believe that most
+of the code ... except the printing thing is there ... and I got distracted a
+lot in the time between ... especially in stupidly trying to set some flag so
+that the confusions history would be inactive ... INACTIVE?? What the hell was I
+thinking?
+
+Late start is making me pay ... and I am starting feel hungry again.
+** DOIN [1/2]  6-Aug-2017
+*** DONE [0/0]  3:44 PM : Long Break again huh?
+CLOSED: [2017-08-06 Sun 15:50]
+It was too damn easy to not have finished confusions history yesterday itself. I
+was actually pretty much done by midnight. But I didn't commit and push because
+I wanted to put some thought into it, plus, I hoped that it would be an easy
+start and early win for today.
+
+I actually woke up pretty early today ... and even with my shitty morning
+'routine', I was kinda near starting work by 0930, but ... Fuck
+
+Only good thing I did with my time till now is have 'some' lunch, although it is
+arguable if what I had for lunch should be counted at all.
+
+I will start by finishing yesterday's tasks ... not many left anyway ... and are
+pretty straightforward ... but those are some very ominous words ... so ...
+expect me to only start on something new only after 6.
+*** TODO [1/2]  7:09 PM : Pretty much on time ... but ...
+I am running pretty much on time ... finished a bunch of the planned things,
+moved the model actually only to =keras_utils= ... and there is likely not going
+to be any =training_utils=. The user will have to make sure that they are
+importing the right stuff from their =dataset=, and the rest will be found in
+=keras_utils=, if, of course, they are using keras at all.
+
+Only left is committing some of the things ... but I have been distracted a little.
+
+Distracted by ... data-preppers and data-provider related changes. Those are the
+next set of tasks on my list you see.
+
+The thing is ... it is kinda bugging me that when I implement a stepper as I
+have been doing earlier, with the only change that I don't skip any step ...
+that is ... there is a fixed number of steps per chunk ... that is all fine and
+dandy for predictability ... but ... it is bugging me that for those consecutive
+number of steps, each batch will be coming from the same 'utterance'/chunk and
+hence the same call.
+
+I will still have the issue where a batch comes from the same utterance ... but
+... is there a way that the consecutive batches that keras sees ... they come
+from different calls?
+
+Apart from re-extracting the features with smaller chunking size, I can actually
+simulate that where the stepper makes multiple chunkings out of the existing
+one. But, I will then have the problem where my entire chunks could be
+skippable, essentially negating the original purpose of keeping steps per chunk
+and steps per epoch constant and predictable. I have analyzed the training h5
+that I have on myrmidon, and can see that continuous segment lengths could go as
+long as an expected input size / step / batch, leading to them getting skipped
+if one uses the skipper.
+
+The existing idea avoids skipping any potential batches by creating them /after/
+the skipping has been done. And, as a reminder, we need stepped provider because
+at full size, GPU will run out of memory, because keras essentially considers
+each input as a single batch.
+
+I can atleast shuffle the order in which the batches are provided ... even
+though they will still belong to the same chunking.
+
+- [X] Shuffle (if asked) the order of steps, and maybe also the samples as well,
+  since we will be copying the data within the batch/step anyway.
+- [ ] There is also the issue with when to normalize ... cuz that will result in
+  copies if I do it after the striding ... and will be impacted by skipped
+  classes if I do it before striding ... FUCK
+
+I hope eating something will help ... but first ... some updates here!
+** DONE [3/3]  7-Aug-2017
+CLOSED: [2017-08-07 Mon 23:02]
+*** DONE [0/0]  1:28 PM : Too many unsolved problems !!!
+CLOSED: [2017-08-07 Mon 13:42]
+Last night, I did not know how to proceed with many things regarding the data
+providers. Plus, I had to attend to some other personal things. I decided to use
+the time to create the KA3 dataset on myrmidon, because why not. Let's just say
+that it was not as smooth as I had imagined it to be ... but not that rough
+either. I had forgotten that KA3 can have more than 2 speakers as well! But ...
+ultimately, the problems were solved, and I stuck to my earlier decision of
+using Lisa_David as my validation data, because TBH, it sounded to best.
+
+Nevertheless, I woke very late today ... and ... with my shitty morning routine,
+was not having my coffee before 1130. But, I avoided the rest of the tragedies
+by just opening up a few papers from zotero to help decide on the convolutional
+network I am going to train on. But ... I got distracted by a paper on how large
+batchsizes lead to bad generalizations. And that got me thinking, maybe that was
+an issue with my trainings so far, because my batchsizes have been usually very
+big, except probably when I was skipping 0T, when the batchsizes, in addition to
+be unpredictable ... were rather small.
+
+That got me into brainstorming whether I could ensure small batchsizes with my
+new steppers, skippers and preppers. I hope I can ... given my steps_per_chunk
+are big enough. Because, even if none of the chunk is going to get skipped, 8
+steps_per_chunk will lead to 2048 examples per batch ... which is still 4x the
+size in that paper for a batch to be the biggest small, but ... oh well ... I
+could also use a different batchsize.
+
+In fact, given that, I will have to settle on earlier decision of making batches
+only after skipping has been done (i.e. by choosing from =keeps=). Consecutive
+batches will still end up coming from the same chunk, but at least I can
+randomize the order in which they do, and even within!
+
+Finally, the normalization thing is going to kill me. I have no idea what to do
+about it, with only the dynamic range normalization being slightly easier
+looking than any other, especially considering the skipping and what not.
+Nevertheless, I can't do any analyses until I have my data providers ready ...
+
+So, those are my today's goals ... update the data providers and associated
+classes, including the data preppers that, at least for now, only work with the
+structure of the data, like, adding context, stepping, skipping, sub-sampling,
+etc. I will probably need a notebook for the devving, for quick debugging. This
+may still take more time than it should, and late start to the day is already
+not helping.
+
+I have ran out of real coffee ... /sigh/
+*** DONE [0/0]  4:53 PM : I am so predictable
+CLOSED: [2017-08-07 Mon 16:58]
+Basically, I started from zero again ... although I did make heavy use of
+copying and pasting. I am re-writing the inputs/data provider but this time
+trying to keep the inheritance tree relatively more linear ... that is, there
+is, so far, only parent per subclass ... but ... I am sure ... as I start adding
+multiple different aspects to like stepping, etc ... there will have to be
+multiple parents.
+
+Rewriting ... in addition to bringing into the right zone so that I know what is
+going on ... has also resulted in better (albeit still pretty much the same)
+shuffling and initializations ... hope that speeds me up ...
+
+... speeds me up to a place where I have no idea what to do ... like
+normalization and model hyperparameters ... etc
+
+Gonna go on a break now ... need food, need to go get coffee ... today will be a
+late nighter.
+
+BTW ... Hans Zimmer ... Dunkirk ... muah muah muah
+*** DONE [0/0] 10:56 PM : I may go back to the old ways
+CLOSED: [2017-08-07 Mon 23:02]
+So ... I made good use of the break ... prayers, dinner, groceries, ... and was
+back by 8:00 PM. I have a working Stepped Provider ... but ... I am kinda
+feeling the need to go back to the multiple inheritance thing ... Smaller legos
+are easier to manipulate, and have some good contraints built in ... having one
+giant class like the one I have implemented which tries to do everything ... is
+... well ... good for auto-completion ... but opens up doors to mistakes where
+things get called and updated by some class that is not supposed to do it.
+
+I am probably gonna go back to the old ways ... but this time ... I don't have
+to rewrite anything ... just copy in the stuff. And then, I will implement the
+specialized preppers and inputs providers ...
+
+But ... I am feeling exhausted for some reason. I will go take a break for
+prayers. It is very likely I don't come back till tomorrow.
+** DONE [2/2]  8-Aug-2017
+CLOSED: [2017-08-08 Tue 21:40]
+*** DONE [0/0]  2:11 PM : Been working since early ... slowly but deliberatively
+CLOSED: [2017-08-08 Tue 14:17]
+Yeah ... I went to sleep early last night ... I was surprisingly tired.
+
+Anyway, it helped me waking up early, and even with the shitty morning routine,
+I was here and working around 9:00 AM.
+
+I went with last night's resolution to keep the classes as they are ...
+chunkings reader and Prepper required to make inputs provider.
+
+Since morning, I have finished stepper, sub-sampler (and skipper when some ratio
+is given to be zero, I might add a convenience wrapper, maybe), and I am
+currently on the context-adder ... which is proving to be a little painful to
+elegantly implement label_context ... especially the function to be applied to
+choose the right label from a label_subcontext.
+
+Been working for ~5 hours ... I think I will take a lunch and Prayers break.
+Hopefully back by 1600, preferably, but unlikely, earlier.
+*** DONE [0/0]  9:31 PM : =BaseWithContextClassSubsamplingSteppedInputsProvider=
+CLOSED: [2017-08-08 Tue 21:39]
+That break went into the 1800's, quite a bit later than 1600. Actually, I was
+done with the eating and praying in the 1600's, but I was still so exhausted and
+sleepy that I decided to take a small lie down in bed.
+
+Once back, I was still sleepy, and may be with a vague headache. I decided that
+since going to bed early was now almost certain, I should atleast finish
+everything till Normalizers in =h5_utils=.
+
+And that's where that long-ass named hero class comes in the title.
+
+Anyway ... I have not tested most of the things at all, since for that, I will
+have to implement them using =fisher.H5ChunkingsReader=, which I haven't looked
+at yet. And it is important that I do that, because, I am playing with a lot of
+multiple inheritance bullshit, and things can go wrong anywhere.
+
+Anyway ... I might do that before bed ... if I am up for it... else ... hope
+that tomorrow starts early, and ... that there are no giant bugs ... and that I
+able to make quick decisions about normalization quickly, maybe because I may
+have a shot at going to office and starting my first model training.
+
+~700 lines ... damn you =rennet.utils.h5_utils= ... and barely any tested
+outside some manual ones. However, since the hero class basically calls
+everything, if my first test on that passes ... then ... I don't think I have to
+worry too much about anything else. Otherwise ... definitely tomorrow.
+** DONE [2/2]  9-Aug-2017
+CLOSED: [2017-08-10 Thu 20:34]
+*** DONE [0/0]  8:09 PM : Last double digit day and look at me wasting time
+CLOSED: [2017-08-09 Wed 20:25]
+I had started to get the headache tomorrow night which would go on to ruin my
+falling asleep at the appropriate time. Nevertheless, I had myself setup to
+start testing all my work on training utils as the first thing to do when I wake
+up in the morning. Things didn't go so well after that.
+
+I fell asleep late due to that headache, which was still there when I woke up
+multiple times in the middle. The final wake up was too late (albeit with no
+headache) and my shitty morning routine ate up my time till past 1400, even
+though I tried to use a little of it to eat something.
+
+Nevertheless, once I started, I could immediately find bugs. I started with the
+simpler no-context one first ... and the bugs were easy to spot and fix. It
+kinda made me happy and all.
+
+But then came testing with-context one ... and that was just stupid. I mean ...
+it was not working as expected to the point I was wondering how is Python
+calling super ... because it was ending up in infinite recursions!
+
+I finally decided to implement the context adder as a data-prepper instead of a
+full on data-provider while still having to implement things in duplicates (with
+tiny changes).
+
+All in all ... sub-sampling ... implemented using =groupby= just slows things
+down ... and I am in no mood to implement anything else.
+
+Or ... I might ... using the =np_utils.groupby_value= ... because ... the next
+tasks on my list are ... the ever dreaded ... normalization.
+
+I have noted it earlier how I it looks to be far more complicated ... especially
+when trying to get it done properly. Especially in the case of subsampling,
+where I have to make sure that I only normalize based on the statistics of the
+data that will be kept ... And, don't even get me started on normalizing on flat
+or dimension wise normalization.
+
+Lastly, I also have to choose some appropriate validation files ... based on
+analyzing the validation set I have with me.
+
+Then, ... setup the table of experiments ... FUCK!
+
+And considering that this is the last day of the month with single digit date,
+and I have not started writing my thesis yet ... it is safe to say that I am
+royally FUCKED ...
+
+... and I managed to waste 3/4 of the day today. /sigh/
+*** DONE [0/0]  9:17 PM : Totally did that ... potentially 10x faster
+CLOSED: [2017-08-09 Wed 21:23]
+Yes ... in the time I had to wait for the Prayers, I just basically implemented
+groupby based on =np_utils=, and the subsampling provider is almost on par with
+the non-subsampling one, ~10x faster that original. However, it does assume
+categorical labels, and I have no time to come up with something generic.
+
+Anyways ... I even thinking about flunking normalization ... maybe ... but the
+fact is that I don't want to do it now, even though it might potentially improve
+my results. It needs a lot of researching and what not ... and for fuck's sake,
+I don't want to do it. Maybe the last thing on my list before I run my models.
+
+The other tasks on my list are also decision making ones. I might start on them
+soon, and ... if I decide to run something without normalization anyways, then I
+might have a model training running tomorrow! Well ... atleast ... submitted.
+
+We'll see how it goes. I am anxious enough already to want to stop working for
+today and go to bed, so ... please forgive me for trying to make things a little
+easier for me to keep myself in the game.
+
+I having serious doubts about going into research heavy career. I love to code.
+** DONE [2/2] 10-Aug-2017
+CLOSED: [2017-08-10 Thu 22:31]
+*** DONE [0/0]  8:34 PM : I may be ready ... but I am not
+CLOSED: [2017-08-10 Thu 20:50]
+Last night, I started on choosing the validation calls to use, but was getting
+no where. My code was sloppy, and things were ugly. So, I stopped.
+
+Today didn't start very early, but I restarted with analyzing the labels for
+validation set, and ended up choosing them based on genders, total ratio of 2T,
+the number of such segments, and the average length of such segments (because,
+you see, the annotations are not very granular, in fact I didn't choose the top
+two wrt ratio of 2T for this reason). I was basically done with my decision by 1
+PM, and, if I wanted to, could make the push to go to office and get them running.
+
+However, that would definitely been an exercise in frustration, because there
+were many other bugs, especially in the ConfusionsHistory callback that I only
+discovered while writing a function to make predictions on end (instead of a
+callback). I fixed those, and implemented the latter by just using
+with_chunkings, which also I had to implement. Finally, I had to add the extra
+channel dim to the with-context prepper.
+
+All those bugs could have been fixed easily, and probably quickly, even if I had
+gone to office with the plan to start a model training on unnormalized data.
+However, it would certainly have been exhausting for the rest of the day.
+
+I didn't save myself any grace however, because, even after getting done by
+around 4PM with all of that, I didn't use my time till now in figuring out the
+normalization, or making the scripts. The normalization thing is looking scarier
+than ever, especially considering how it probably needs to get tackled in cases
+of class skipping or subsampling. And I have no idea what to do.
+
+I have been pushing my code basically, and just biting my time to reach night
+time, so that I can go to sleep in this nice and chilly weather. But, there are
+still enough hours left that at least working on the scripts can be started,
+even if I decide to go with unnormalized data as it is.
+
+And, who knows, it might even work out! There are way too many changes in my
+current implementations from the previous ones that I just can't predict the
+results.
+
+Nevertheless, I will still then have to setup the table of experiments, the as
+yet another dreaded task that I was able to avoid in the name of doing all this
+dev work.
+
+I will go through my tasks here and make sure that I haven't missed anything
+stupid. I can definitely choose to waste my time in trying to explain in the
+workflows why certain calls were chosen for validation (they are =['00007',
+'00013', '00028', '00062', '00065', '00069', '00086', ]= BTW), but I hope I
+don't, and instead, take up the setting up of the table of experiments, and
+start on the scripts so that I have something running on the geepu when I return
+tomorrow.
+
+Yes, setting the scripts will require them to be tested beforehand as well. So,
+my work is far from done. So much for the hopes of enjoying a sleep in the chill
+weather. Nevertheless, I am still not sure about my conv2D model ... and FUCK is
+this shit hard.
+*** DONE [0/0] 10:27 PM : I might have a very heavily pruned set of experiments to run tomorrow
+CLOSED: [2017-08-10 Thu 22:31]
+As you can easily imagine, even with the configs that were heavily pruned, even
+with unnormalized training looking like my only path, I still have double-digit
+number of experiments to perform, if I want to do this correctly.
+
+In this moment of fear, I have heavily pruned even further, most likely not
+using clsw_2 at all, and keeping room for normalization later on, maybe.
+
+I have setup the tasks for the necessary scripts I will have to prepare, and
+hopefully start tomorrow at office. I will do them as first thing in the
+morning, hoping that it will pull me out of my shitty morning routine earlier,
+and make the deadline sort of like work for me.
+** DONE [1/1] 11-Aug-2017
+CLOSED: [2017-08-11 Fri 21:24]
+*** DONE [0/0]  9:10 PM : They are running, and they're running fast!
+CLOSED: [2017-08-11 Fri 21:24]
+I was hoping for an early start today, but didn't really make sure of that last
+night by having late dinner and adamantly finishing the new Dan Carlin's
+Hardcore History episode.
+
+But, the presence of a virtual deadline kinda pushed me to skip my shitty
+morning routine and get started with the training scripts pretty much as soon as
+I was out of bed. But ... I had woken up pretty late, and there were looming
+clouds of doubt on whether I will have to postpone starting the training
+sessions till tomorrow, not the least of which was just my difficulty in
+comprehending some of the most basic variables in my code.
+
+I had to perform some quick fixes towards the end, therefore the dry runs on
+myrmidon were just immensely helpful. Nevertheless, albeit an hour later than
+planned, I had the scripts kinda ready, and an hour or so later, I was trying to
+make them run geepu-d.
+
+And you know what, apart from some easy to spot mistakes, the first script
+worked flawlessly. And, to my surprise, by the time I duplicated it to make 5
+other configurations, the running one had already finished an epoch! Which is
+like 1/8th of the first pass, but dude ... it was running fast! All thanks to
+the new setup at the geepu-d main node.
+
+Quickly, yet carefully, I got the other ones submitted, and by the looks of it,
+I may have them finished by tomorrow! Yes, I only ran them for 5 passes (10 in
+case of subsampling), but ... that possibility just exhilirated me. Which was
+important given how anxious I was while preparing the first one, and how much I
+lacked confidence in getting even one script started today just before leaving
+my room.
+
+That comes with a small caveat too ... because now, not only is it possible for
+me to run for many more epochs, but also, for multiple possible configurations,
+including maybe spectrograms, mfccs, etc not forgetting different
+normalizations. I know that if I start to increase the number of epochs, my
+training time will still go into weeks, and that will be dangerous, but ... hey
+... I can see that light, after I have been in so much darkness.
+
+However, I should still be careful, because it is far more important for me to
+start writing my thesis document now than it is to start finding excuses not to.
+And ... if history has taught me anything about my working, even the simplest
+things can take a lot of time and effort. They may as well end up paying back,
+but I have nowhere the luxury of time as I had even a week ago.
+
+I'll see what I do ... and I'll see into it tomorrow, hopefully early in the
+morning. I will be going to office to check on the finished jobs, and restart
+them with for longer number of epochs. So, I hope, I will have the table of
+experiments with those that are running up there tomorrow ... at some point at
+least. Till then ... I really want to enjoy some deep sleep in this nice and
+chilly weather.
+** DONE [2/2] 16-Aug-2017
+CLOSED: [2017-08-17 Thu 02:58]
+*** DONE [0/0]  2:20 PM : Fuck My Life
+CLOSED: [2017-08-16 Wed 14:34]
+I have essentially not been working since the last entry. If you want to be
+generous and count the model trainings going on in the background as a single
+task that *I* am doing, then you are missing the point of this being the last
+month to finish my thesis.
+
+I tried, but my sleeping routine has gotten fucked, and my shitty morning
+routine, which therefore happens much later in the day, has become worse. Plus,
+I also had a bad headache yesterday, rendering me useless.
+
+But ... let's stop degrading ourselves, and try to focus on some other possible
+whys.
+
+The thing is, the next tasks ahead of me ... are those that I had deferred
+earlier because they were taking too much time because they needed analysis,
+research and, by far the most dreaded, *decision making*. They include,
+normalization, post-proc, and evaluations. Yes, there is this another one, which
+is *actually writing the damn thesis*, but ... we'll come to that a bit later.
+
+I need a plan for those difficult tasks, and a bounded one at that, and
+definitely explicit in all regards. That is what I am going to do next, at least
+for the normalization step, because that is going to define perhaps the next set
+of models that I want to train, which looks like not starting before Friday. (FML).
+
+The post-processing thing will have to be compromised a little bit, and the
+evaluations will have to stick with frame level statistics, and /maybe/
+segmentation metrics, if I plan to use the iFinder system for it. They both will
+involve significant development effort if I don't act smartly, let alone faithfully.
+
+Back to writing the thesis. /sigh/. Let's make one thing clear. I know that
+writing the thesis will definitely help guide my decisions and steps better and
+put things in context. Moreover, it is *the* the most important thing to do with
+respect to my thesis. All the experiments will be for naught if I don't have a
+proper written document. And, considering that I have lost half a month has
+passed already, it is becoming more and more urgent.
+
+We'll, unfortunately, have to defer it to a little later in the week. I *have*
+to decide on normalization first, because I expect to be talking about it in the
+thesis, and because it will perhaps improve my results. So, that's the plan for
+starting today, till I go to sleep. Finish normalization things. /gulp/
+*** DONE [0/0]  9:17 PM : What the hell am I supposed to do?
+CLOSED: [2017-08-16 Wed 21:29]
+I spent roughly 4 hours or more trying again to find out a way to normalize my
+data. My initial plan was to just write down the why's and possible how's, but
+then I started looking at other papers on google and what not for their
+normalization strategies.
+
+From VGG-net, the one that my network is the closest relative to, I saw they
+were only doing dataset level mean normalization over all pixels in a channel,
+and were definitely using it in their tests and evaluations, but I can't use
+that as it is ... not at the frame with context level ... because it doesn't, so
+far, make sense to me, except if I am trying to copy their method as is, without
+any explanation.
+
+So, I tried to come up with an explanation. The one thing that was haunting me
+about their approach was that they have an explicitly limited range of possible
+values for each pixel [0, 255]. In our case, we do have an explicit lower bound
+on the values, they would have been 0 for the power-spectrogram, and -8 when
+logged with amin of 1e-8. But ... the maximum ... that has been proving to be
+elusive. Even though all the operations are very well known, and my input has an
+explicit normalization of (-1, 1) range, I can't seem to find and neither come
+up with that max limit of the final value. That ate up significant portion of my
+time and energy, and was the last thing I tried doing before taking a break for
+dinner.
+
+In the middle though, before I went on doing that, I looked at more refrences
+for overlapping speech detection, and lo and behold, there was an entire thesis
+that I had never seen. It is explicitly on the topic of overlapping speech
+detection, with more focus on improving diarization, and using GMM-HMM. I
+skimmed through that quickly as well, mainly trying to find their approach to
+normalization ... but all that they are doing is CMN, and that too on MFCC. I
+can definitely, however, use the thesis to get ideas about Viterbi decoding ...
+but that comes later.
+
+In essence ... I am back to where I was, and I blame, in addition to the task
+being scary, the lack of direction and appropriate planning. I know that writing
+it down would help, especially in thesis form ... but hey ... I still don't know
+about a lot of stuff.
+
+Nevertheless, I am going to start on that planning and working late night today
+... especially considering the date, and my shitty sleeping and waking-up rituals.
+** DOIN [2/3] 17-Aug-2017
+*** TODO [2/12]  3:03 AM : Alright ... CMN it is ... was it so hard?
+Alright ... I believe I have some direction to go in. Reading that thesis of the
+guy from RWTH was very helpful and introduced me to different possibilities of
+normalization, and a summarization and sets of experiments with results. Very
+very useful indeed.
+
+I have decided to try at least mean normalization per-dim on the filter-banks. I
+am not sure if I will try out MFCCs, but it doesn't look like it, especially
+after reading how it's goal is to separate the source and vocal tract level
+information from the extracted features.
+
+The other method that I wanted to try out earlier was to do dynamic range
+normalization but ... for some reason, I don't think it is a good idea, even
+though I can somehow match it to what is usually done in computer vision
+(scaling). My main concern is not knowing the bounds of the values, especially
+the max. From the looks of the histograms, I may be fine with choosing
+log10(n_fft), but ... I can't / won't explain it ... plus ... it can go fuck
+myself. Actually, if I calculate mel-scaled values on a power spectrogram that
+has all values equal to 2**14 (what I got as pow-spec for constant signal), then
+... log10(/of that/) is almost 7 ... resulting in the data being centered
+already ... !!! which is definitely not the case.
+
+If I want to do something with the histograms, then it makes sense to do the
+histogram equalization thing from that thesis, which ... God help me ... seems
+to complicated and I don't want to them.
+
+Talking of copyting computer vision kind of steps, that VGG-net paper, and many
+others, actually only do channel wise pixel level mean subtraction (over the
+entire dataset, and later use it on test as well). I may think about it, but
+TBH, I don't think it will make any sense in speech. However, looking at the
+plots for each dimensions, they don't look so independent to the neighbors, and
+seem to lie in similar ranges, so .... /maybe/
+
+Variance normalization alongside mean normalization makes sense ... a little bit
+... but ... well ... it is a single step ... and increases the number of
+experiments that I can run and evaluate ... without needing too much explanation.
+
+Lastly, I am thinking about dropping the max-5-lctx configs altogether. From the
+last results, they were worse than the per-frame ones, and require jumping
+through a lot of hoops to explain them.
+
+- [X] Implement Mean and variance normalizer that only acts per chunk
+- [X] Final scripts to run the 0-lctx for mean, and mean+var normalization
+- [ ] Offic:
+  + [ ] start these scripts,
+  + [ ] decide final if mx-5-lctx is dead
+  + [ ] collect and bring the results.
+- [ ] Other CNN changes
+  + [ ] Average pooling
+  + [ ] More context (±20)
+  + [ ] Bigger first filter size
+  + [ ] Deeper network with more convs before pooling
+  + [ ] clsw???
+*** DONE [0/0]  3:14 PM : The scripts are ready ... too much time here and there
+CLOSED: [2017-08-17 Thu 15:22]
+I went to sleep quite a bit later than I was done writing all of that above. I
+was actually reading more about from that TUM speech recognition wiki, and also
+found a paper which concentrated very heavily on analyzing the data imbalance
+problem, and kinda skimmed through it all ... and could see that there is a
+chance that my networks have not been learning very well, especially when I
+don't help it. The idea of clsw has therefore risen again ... as a method of
+modifying the objective function and make the loss function reflect the cost of
+misclassifying the minority class.
+
+Of course, there are also ideas of using more powerful network configurations,
+and testing filter sizes, and using deeper networks ... etc.
+
+But ... since I have woken, which I did at the same usual time, even when I had
+gone to bed only after the sun had already come up, I have been working on mean
+and variance normalizer, mainly testing the impact on the histograms, because
+the code itself was pretty easy (because I am chunk level normalization,
+irrespective of whether there is any subsampling or class skipping going on
+later on). Then, I prepared the scripts, and now they are all ready. It is
+almost the end of the day ... but I also don't have to do a lot ... I may leave
+in this hour hopefully.
+
+And when I come back, I will have the results of the previous trainings, and ...
+even though it will be very tempting to take the rest of the day off ... no! I
+will either start analyzing the results in a bit more detail ... or start
+writing the thesis. Both, I agree, and dangerous looking tasks, but ... hey ...
+we ain't got time for nothing.
+*** DONE [0/0]  5:45 PM : No ... I didn't
+CLOSED: [2017-08-17 Thu 17:53]
+I actually prepared, put everything in the bag and went out to go to office.
+But, by the time I had left, it was past 1600, and there was no way I was going
+to reach office before 1700. Plus, the weather was / is this weird and bad mix
+of post-rain humid and warm and very little wind.
+
+I turned halfway on my way and got lunch/dinner and came back. Gonna go run
+those things tomorrow.
+
+An important reason for skipping office today was what I hinted at earlier what might
+have happened to the rest of the day. I would have most likely gotten really
+tired, and taken the rest of it till tomorrow morning ... off. /Oh yes ... we
+were going to instead work on the thesis weren't we ... / nope ... definitely
+not.
+
+On my way, I was thinking about what I would write about anyway if I succeeded
+in making myself do it. The goals/scope section made the most sense, because it
+is relatively easy, and may even help in decisions about the various experiments
+I plan to run later on.
+
+So ... that is the plan for today ... or at least till I go to sleep. Finish the
+Goals and Scope section. I may ... after that ... even start data-analysis
+section, because certain arguments will need backing from the data. /Just .../
+don't get too hooked up about making the plots and charts look pretty. Not right now.
+
+For some reason ... the internet is not working ... and ... honestly, I don't
+need it ... but there are a few more minutes I wanted to chillax after lunch,
+which ... for good or for worse ... may have to get cut short.
+
+Nevertheless, before I have even started on it, even the most trivial of the
+sections of the thesis promise to be very difficult to write, if not only time
+consuming. There is also the question of whether or not I should go into the
+details of how a DCN works, and what is deep learning, and all the associated
+algorithms and what not. If I have to inflate the number of pages, I can
+certainly do that, or leave it as an appendix item with refrences.
+
+Oh God the refrences ... I can no longer just skim the papers ... I'll have to
+read them not only to make sure what I am referring to from their work does make
+sense, but also to probably get some proper ideas to write them in my own words.
+There is a lot of reading that is going to be involved. And I am not even
+mentioning how many tons of fucking papers I have already.
+
+Lastly, equations ... metrics, etc ... they will have to be written down as
+well. I may wing it in the beginning but they will not be painless either.
+
+Last night's work was surprisingly focused and I remembered a lot of it. I was
+also relatively quick. The peace and serenity ... may be those are worth fucking
+up my sleeping schedule, considering especially that my shitty morning routine
+ends up fucking things up any way. This way, chillax in the evening at least comes after
+something has already been achieved ... and so does going to sleep.
+** DONE [1/1] 18-Aug-2017
+CLOSED: [2017-08-19 Sat 20:21]
+*** DONE [0/0]  8:23 PM : No ... I didn't ... again
+CLOSED: [2017-08-18 Fri 20:32]
+Wait ... regarding the running of trainings thing ... /that/ I got done today
+... except that the cluster is pretty busy ... so I might end up taking more
+time than just this weekend. That damn predit-on-end thing still didn't work ...
+this time due to a stupid typo bug that I introduced in the last commit.
+
+What I didn't do is ... writing anything in the thesis ... let alone anything in
+the goals section or any other section ... although I had brainstormed a lot
+about it and the no-internet situation was like a perfect opportunity, and I did
+not go to sleep early either. I don't have an excuse ... just that I was stupid
+and over-slept today as well ... and all I could do was go to office, get the
+trainings running ... and because it was raining so heavily ... get some
+preliminary and of course surprisingly underwhelming analysis of the results of
+the trainings that had finished.
+
+I will be doing more detailed analysis later (I hope), but as it is ... it looks
+like the precision for double-talk just went very high while the recall went
+into single digit percentages ... which essentially means it didn't work out. I
+might look at the histograms more deeply and find a way to exploit any patterns
+if there are any ... otherwise ... I have no idea other than just try smoothing
+or ... choose a checkpoint before the last one. It is surprising, however, that
+the model did not seem to have converged in any case, although I have a feeling
+that that convergence would have come at very low recall and very high precision
+for double talk ... since it is such a small fraction of the entire training set.
+
+I know that there is barely one month left now for the real hard deadline, and
+barely a week for my personal one. I am going to start on the thesis ...
+especially considering that I have not much else to do for the next three days
+which have more impact promised.
+** DONE [1/1] 19-Aug-2017
+CLOSED: [2017-08-19 Sat 20:29]
+*** DONE [0/0]  8:21 PM : Shit
+CLOSED: [2017-08-19 Sat 20:28]
+Wait ... don't take ou the pitchforks so soon. I did keep the promise and
+started writing the thesis last night. I started with the introduction section
+because that was the one that was attracting my thoughts the most. Plus, it was
+supposed to be the easiest one to handle.
+
+Unfortunately, I have essentially wasted the nearly 7 hours that I worked on the
+thing. I got distracted in a different way. For some reason, and definitely
+without appropriate foresight, I started by talking about the Turing Test for
+some reason, and on top of that ... made my sentences too complicated. The later
+could have been fixed, but the path that I started on ... was going to get me
+stuck in a corner later on. I do not have to debate machine intelligence v/s
+human intelligence, and whether or not there is a potential of some elegant nods
+and winks is not only irrelevant, it is also potentially dangerous.
+
+I have to write the whole thing in a dry scientific and straightforward, clear
+manner. Not only it is what is expected from me, it will also make my life a lot easier.
+
+Nevertheless, those 7 hours gave me a taste of how hours can fly by in doing
+this simple task without much progress to show for them. It is scary, and I have
+to, again, be ruthless and, hopefully, responsible.
+
+Nevertheless, I am still going to start with the introduction section, leaving
+some sub-sections as merely outlines. The need for this approach stems from the
+benefit of maintaining flow of thoughts and ideas.

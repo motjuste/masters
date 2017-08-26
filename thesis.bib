@@ -1,0 +1,1376 @@
+
+@inproceedings{haws_importance_2016,
+  title = {On the Importance of Event Detection for {{ASR}}},
+  doi = {10.1109/ICASSP.2016.7472770},
+  abstract = {The performance of modern large vocabulary continuous speech recognition (LVCSR) systems is heavily affected by segment boundaries, proper speaker identification of the segments, as well as removal of spurious data. We propose to use Long Short Term Memory (LSTM) recurrent neural networks to partition audio into speech segments as well as track speaker turns. Additionally, we train an LSTM to also identify music segments. We show that the accurate detection of events, along with removal of silence and music, using our LSTM yields a 9-10\% relative improvement in ASR performance. Secondary processing by speaker clustering provides an additional boost in accuracy. Event detection accuracy of the LSTM approach is also described.},
+  eventtitle = {2016 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  timestamp = {2016-06-22T15:15:54Z},
+  booktitle = {2016 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Haws, D. and Dimitriadis, D. and Saon, G. and Thomas, S. and Picheny, M.},
+  date = {2016-03},
+  pages = {5705--5709},
+  keywords = {*TO-DO,+RNN,+Speech},
+  file = {Haws et al. - 2016 - On the importance of event detection for ASR.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/EGXDQ4UW/Haws et al. - 2016 - On the importance of event detection for ASR.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/3539B2U7/articleDetails.html:text/html}
+}
+
+@inproceedings{deng_recent_2013,
+  title = {Recent Advances in Deep Learning for Speech Research at {{Microsoft}}},
+  doi = {10.1109/ICASSP.2013.6639345},
+  abstract = {Deep learning is becoming a mainstream technology for speech recognition at industrial scale. In this paper, we provide an overview of the work by Microsoft speech researchers since 2009 in this area, focusing on more recent advances which shed light to the basic capabilities and limitations of the current deep learning technology. We organize this overview along the feature-domain and model-domain dimensions according to the conventional approach to analyzing speech systems. Selected experimental results, including speech recognition and related applications such as spoken dialogue and language modeling, are presented to demonstrate and analyze the strengths and weaknesses of the techniques described in the paper. Potential improvement of these techniques and future research directions are discussed.},
+  eventtitle = {2013 IEEE International Conference on Acoustics, Speech and Signal Processing},
+  timestamp = {2016-06-20T13:34:11Z},
+  booktitle = {2013 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}}},
+  author = {Deng, L. and Li, J. and Huang, J. T. and Yao, K. and Yu, D. and Seide, F. and Seltzer, M. and Zweig, G. and He, X. and Williams, J. and Gong, Y. and Acero, A.},
+  date = {2013-05},
+  pages = {8604--8608},
+  keywords = {_tablet,*TO-READ,+DL,+Overview,+Speech},
+  file = {Deng et al. - 2013 - Recent advances in deep learning for speech resear.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/UAJZ7PRT/Deng et al. - 2013 - Recent advances in deep learning for speech resear.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/T4X2S7RU/Deng et al. - 2013 - Recent advances in deep learning for speech resear.html:text/html}
+}
+
+@inproceedings{sak_learning_2015,
+  title = {Learning Acoustic Frame Labeling for Speech Recognition with Recurrent Neural Networks},
+  doi = {10.1109/ICASSP.2015.7178778},
+  abstract = {We explore alternative acoustic modeling techniques for large vocabulary speech recognition using Long Short-Term Memory recurrent neural networks. For an acoustic frame labeling task, we compare the conventional approach of cross-entropy (CE) training using fixed forced-alignments of frames and labels, with the Connectionist Temporal Classification (CTC) method proposed for labeling unsegmented sequence data. We demonstrate that the latter can be implemented with finite state transducers. We experiment with phones and context dependent HMM states as acoustic modeling units. We also investigate the effect of context in acoustic input by training unidirectional and bidirectional LSTM RNN models. We show that a bidirectional LSTM RNN CTC model using phone units can perform as well as an LSTM RNN model trained with CE using HMM state alignments. Finally, we also show the effect of sequence discriminative training on these models and show the first results for sMBR training of CTC models.},
+  eventtitle = {2015 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  timestamp = {2016-08-09T20:16:30Z},
+  booktitle = {2015 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Sak, H. and Senior, A. and Rao, K. and İrsoy, O. and Graves, A. and Beaufays, F. and Schalkwyk, J.},
+  date = {2015-04},
+  pages = {4280--4284},
+  keywords = {*DONE,+CTC,+RNN,+Speech},
+  file = {Sak et al. - 2015 - Learning acoustic frame labeling for speech recogn.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/2ESVF6M6/Sak et al. - 2015 - Learning acoustic frame labeling for speech recogn.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/CTC4W6MW/articleDetails.html:text/html}
+}
+
+@inproceedings{shokouhi_robust_2015,
+  title = {Robust Overlapped Speech Detection and Its Application in Word-Count Estimation for {{Prof}}-{{Life}}-{{Log}} Data},
+  doi = {10.1109/ICASSP.2015.7178867},
+  abstract = {The ability to estimate the number of words spoken by an individual over a certain period of time is valuable in second language acquisition, healthcare, and assessing language development. However, establishing a robust automatic framework to achieve high accuracy is non-trivial in realistic/naturalistic scenarios due to various factors such as different styles of conversation or types of noise that appear in audio recordings, especially in multi-party conversations. In this study, we propose a noise robust overlapped speech detection algorithm to estimate the likelihood of overlapping speech in a given audio file in the presence of environment noise. This information is embedded into a word-count estimator, which uses a linear minimum mean square estimator (LMMSE) to predict the number of words from the syllable rate. Syllables are detected using a modified version of the mrate algorithm. The proposed word-count estimator is tested on long duration files from the Prof-Life-Log corpus. Data is recorded using a LENA recording device, worn by a primary speaker in various environments and under different noise conditions. The overlap detection system significantly outperforms baseline performance in noisy conditions. Furthermore, applying overlap detection results to word-count estimation achieves 35\% relative improvement over our previous efforts, which included speech enhancement using spectral subtraction and silence removal.},
+  eventtitle = {2015 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  timestamp = {2016-09-18T10:20:33Z},
+  booktitle = {2015 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Shokouhi, N. and Ziaei, A. and Sangwan, A. and Hansen, J. H. L.},
+  date = {2015-04},
+  pages = {4724--4728},
+  keywords = {*TO-READ,+Speech,audio file,Detection algorithms,environment noise,Estimation,Harmonic analysis,least mean squares methods,LENA recording device,linear minimum mean square estimator,LMMSE,Massive audio data,multi-party conversations,naturalistic scenarios,Noise,Noise measurement,noise robust overlapped speech detection algorithm,overlap detection system,overlapped speech detection,overlapping speech,primary speaker,Prof-Life-Log,Prof-Life-Log corpus,realistic scenarios,robust automatic framework,silence removal,speaker recognition,spectral subtraction,Speech,speech enhancement,speech intelligibility,Speech processing,syllable rate,Word-count estimation,word-count estimator},
+  file = {Shokouhi et al. - 2015 - Robust overlapped speech detection and its applica.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/92KXF33V/Shokouhi et al. - 2015 - Robust overlapped speech detection and its applica.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/HPUGC762/Shokouhi et al. - 2015 - Robust overlapped speech detection and its applica.html:text/html}
+}
+
+@inproceedings{shokouhi_overlapped-speech_2013,
+  title = {Overlapped-Speech Detection with Applications to Driver Assessment for in-Vehicle Active Safety Systems},
+  doi = {10.1109/ICASSP.2013.6638174},
+  abstract = {In this study we propose a system for overlapped-speech detection. Spectral harmonicity and envelope features are extracted to represent overlapped and single-speaker speech using Gaussian mixture models (GMM). The system is shown to effectively discriminate the single and overlapped speech classes. We further increase the discrimination by proposing a phoneme selection scheme to generate more reliable artificial overlapped data for model training. Evaluations on artificially generated co-channel data show that the novelty in feature selection and phoneme omission results in a relative improvement of 10\% in the detection accuracy compared to baseline. As an example application, we evaluate the effectiveness of overlapped-speech detection for vehicular environments and its potential in assessing driver alertness. Results indicate a good correlation between driver performance and the amount and location of overlapped-speech segments.},
+  eventtitle = {2013 IEEE International Conference on Acoustics, Speech and Signal Processing},
+  timestamp = {2016-09-18T10:19:54Z},
+  booktitle = {2013 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}}},
+  author = {Shokouhi, N. and Sathyanarayana, A. and Sadjadi, S. O. and Hansen, J. H. L.},
+  date = {2013-05},
+  pages = {2834--2838},
+  keywords = {!REN,*SKIMPED,+Speech,Active safety,cochannel data,co-channel speech,Correlation,driver assessment,envelope feature extraction,feature extraction,feature selection,Gaussian mixture model,GMM,in-vehicle active safety system,Mel frequency cepstral coefficient,overlapped speech detection,overlapped-speech detection,Performance evaluation,phoneme selection scheme,safety systems,single-speaker speech,speaker recognition,spectral harmonicity,Speech,Training,Vehicles},
+  file = {Shokouhi et al. - 2013 - Overlapped-speech detection with applications to d.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/5ESR6H6J/Shokouhi et al. - 2013 - Overlapped-speech detection with applications to d.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/TTBVI4J7/Shokouhi et al. - 2013 - Overlapped-speech detection with applications to d.html:text/html}
+}
+
+@article{chorowski_attention-based_2015,
+  title = {Attention-{{Based Models}} for {{Speech Recognition}}},
+  url = {http://arxiv.org/abs/1506.07503},
+  abstract = {Recurrent sequence generators conditioned on input data through an attention mechanism have recently shown very good performance on a range of tasks in- cluding machine translation, handwriting synthesis and image caption gen- eration. We extend the attention-mechanism with features needed for speech recognition. We show that while an adaptation of the model used for machine translation in reaches a competitive 18.7\% phoneme error rate (PER) on the TIMIT phoneme recognition task, it can only be applied to utterances which are roughly as long as the ones it was trained on. We offer a qualitative explanation of this failure and propose a novel and generic method of adding location-awareness to the attention mechanism to alleviate this issue. The new method yields a model that is robust to long inputs and achieves 18\% PER in single utterances and 20\% in 10-times longer (repeated) utterances. Finally, we propose a change to the at- tention mechanism that prevents it from concentrating too much on single frames, which further reduces PER to 17.6\% level.},
+  timestamp = {2016-07-12T19:21:53Z},
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1506.07503},
+  primaryClass = {cs, stat},
+  author = {Chorowski, Jan and Bahdanau, Dzmitry and Serdyuk, Dmitriy and Cho, Kyunghyun and Bengio, Yoshua},
+  urldate = {2016-07-11},
+  date = {2015-06-24},
+  keywords = {+Attention,+Speech},
+  file = {Chorowski et al. - 2015 - Attention-Based Models for Speech Recognition.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/KXW4DD7P/Chorowski et al. - 2015 - Attention-Based Models for Speech Recognition.pdf:application/pdf;Chorowski et al. - 2015 - Attention-Based Models for Speech Recognition.html:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/HQHPZFID/Chorowski et al. - 2015 - Attention-Based Models for Speech Recognition.html:text/html}
+}
+
+@article{bengio_representation_2012,
+  title = {Representation {{Learning}}: {{A Review}} and {{New Perspectives}}},
+  url = {http://arxiv.org/abs/1206.5538},
+  shorttitle = {Representation {{Learning}}},
+  abstract = {The success of machine learning algorithms generally depends on data representation, and we hypothesize that this is because different representations can entangle and hide more or less the different explanatory factors of variation behind the data. Although specific domain knowledge can be used to help design representations, learning with generic priors can also be used, and the quest for AI is motivating the design of more powerful representation-learning algorithms implementing such priors. This paper reviews recent work in the area of unsupervised feature learning and deep learning, covering advances in probabilistic models, auto-encoders, manifold learning, and deep networks. This motivates longer-term unanswered questions about the appropriate objectives for learning good representations, for computing representations (i.e., inference), and the geometrical connections between representation learning, density estimation and manifold learning.},
+  timestamp = {2016-04-04T09:08:44Z},
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1206.5538},
+  primaryClass = {cs},
+  author = {Bengio, Yoshua and Courville, Aaron and Vincent, Pascal},
+  urldate = {2016-04-04},
+  date = {2012-06-24},
+  keywords = {*TO-DO},
+  file = {Bengio et al. - 2012 - Representation Learning A Review and New Perspect.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/3JRIX86D/Bengio et al. - 2012 - Representation Learning A Review and New Perspect.pdf:application/pdf;arXiv.org Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/ICPVZ56W/1206.html:text/html}
+}
+
+@inproceedings{graves_connectionist_2006,
+  location = {{New York, NY, USA}},
+  title = {Connectionist {{Temporal Classification}}: {{Labelling Unsegmented Sequence Data}} with {{Recurrent Neural Networks}}},
+  isbn = {978-1-59593-383-6},
+  url = {http://doi.acm.org/10.1145/1143844.1143891},
+  doi = {10.1145/1143844.1143891},
+  shorttitle = {Connectionist {{Temporal Classification}}},
+  abstract = {Many real-world sequence learning tasks require the prediction of sequences of labels from noisy, unsegmented input data. In speech recognition, for example, an acoustic signal is transcribed into words or sub-word units. Recurrent neural networks (RNNs) are powerful sequence learners that would seem well suited to such tasks. However, because they require pre-segmented training data, and post-processing to transform their outputs into label sequences, their applicability has so far been limited. This paper presents a novel method for training RNNs to label unsegmented sequences directly, thereby solving both problems. An experiment on the TIMIT speech corpus demonstrates its advantages over both a baseline HMM and a hybrid HMM-RNN.},
+  timestamp = {2016-07-12T18:42:33Z},
+  booktitle = {Proceedings of the 23rd {{International Conference}} on {{Machine Learning}}},
+  series = {ICML '06},
+  publisher = {{ACM}},
+  author = {Graves, Alex and Fernández, Santiago and Gomez, Faustino and Schmidhuber, Jürgen},
+  urldate = {2016-07-12},
+  date = {2006},
+  pages = {369--376},
+  file = {Graves et al. - 2006 - Connectionist Temporal Classification Labelling U.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/XUB6TMPS/Graves et al. - 2006 - Connectionist Temporal Classification Labelling U.pdf:application/pdf}
+}
+
+@inproceedings{li_fractal_2012,
+  title = {Fractal Dimension Feature for Distinguishing between Overlapped Speech and Single-Speaker Speech},
+  volume = {1},
+  doi = {10.1109/ICMLC.2012.6358902},
+  abstract = {This paper proposes to distinguish between overlapped speech and single-speaker speech using fractal dimension feature. It is found that the degree of chaos in single-speaker speech frames is lower than that in overlapped speech frames, which indicates that the fractal dimension can be used as a feature to distinguish overlapped speech from single-speaker speech. We carried out experiments for evaluating the effectiveness of fractal dimension. Experimental results show that combining traditional features with fractal dimension feature achieves the highest discrimination rate of 81.0\%.},
+  eventtitle = {2012 International Conference on Machine Learning and Cybernetics},
+  timestamp = {2017-08-22T21:42:05Z},
+  booktitle = {2012 {{International Conference}} on {{Machine Learning}} and {{Cybernetics}}},
+  author = {Li, Wei and He, Qian-Hua and Li, Yan-Xiong and Zhang, Xue-Yuan and Feng, Xiao-Hvi},
+  date = {2012-07},
+  pages = {148--151},
+  keywords = {!REN,*SKIMPED,+Speech,Abstracts,Box counting dimension,Continuous wavelet transforms,feature extraction,Fractal dimension,fractal dimension feature,Fractals,fractals,overlapped speech,Overlapped speech detection,overlapped speech frame,speaker recognition,speaker speech frame,Speech},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/HVIPPNTP/Li et al. - 2012 - Fractal dimension feature for distinguishing betwe.pdf:application/pdf;Li et al. - 2012 - Fractal dimension feature for distinguishing betwe.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/QWQQPBN8/Li et al. - 2012 - Fractal dimension feature for distinguishing betwe.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/4XIIKG6F/6358902.html:text/html;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/M82SCJIN/Li et al. - 2012 - Fractal dimension feature for distinguishing betwe.html:text/html}
+}
+
+@inproceedings{tan_speaker-aware_2016,
+  title = {Speaker-Aware Training of {{LSTM}}-{{RNNS}} for Acoustic Modelling},
+  doi = {10.1109/ICASSP.2016.7472685},
+  abstract = {Long Short-Term Memory (LSTM) is a particular type of recurrent neural network (RNN) that can model long term temporal dynamics. Recently it has been shown that LSTM-RNNs can achieve higher recognition accuracy than deep feed-forword neural networks (DNNs) in acoustic modelling. However, speaker adaption for LSTM-RNN based acoustic models has not been well investigated. In this paper, we study the LSTM-RNN speaker-aware training that incorporates the speaker information during model training to normalise the speaker variability. We first present several speaker-aware training architectures, and then empirically evaluate three types of speaker representation: I-vectors, bottleneck speaker vectors and speaking rate. Furthermore, to factorize the variability in the acoustic signals caused by speakers and phonemes respectively, we investigate the speaker-aware and phone-aware joint training under the framework of multi-task learning. In AMI meeting speech transcription task, speaker-aware training of LSTM-RNNs reduces word error rates by 6.5\% relative to a very strong LSTM-RNN baseline, which uses FMLLR features.},
+  eventtitle = {2016 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  timestamp = {2016-07-12T18:57:27Z},
+  booktitle = {2016 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Tan, T. and Qian, Y. and Yu, D. and Kundu, S. and Lu, L. and Sim, K. C. and Xiao, X. and Zhang, Y.},
+  date = {2016-03},
+  pages = {5280--5284},
+  keywords = {!REN,*SKIMPED,+RNN,+Speech},
+  file = {Tan et al. - 2016 - Speaker-aware training of LSTM-RNNS for acoustic m.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/MIRHMJJZ/Tan et al. - 2016 - Speaker-aware training of LSTM-RNNS for acoustic m.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/588E8HRK/articleDetails.html:text/html}
+}
+
+@inproceedings{eyben_speech_2009,
+  title = {From Speech to Letters - Using a Novel Neural Network Architecture for Grapheme Based {{ASR}}},
+  doi = {10.1109/ASRU.2009.5373257},
+  abstract = {Main-stream automatic speech recognition systems are based on modelling acoustic sub-word units such as phonemes. Phonemisation dictionaries and language model based decoding techniques are applied to transform the phoneme hypothesis into orthographic transcriptions. Direct modelling of graphemes as sub-word units using HMM has not been successful. We investigate a novel ASR approach using Bidirectional Long Short-Term Memory Recurrent Neural Networks and Connectionist Temporal Classification, which is capable of transcribing graphemes directly and yields results highly competitive with phoneme transcription. In design of such a grapheme based speech recognition system phonemisation dictionaries are no longer required. All that is needed is text transcribed on the sentence level, which greatly simplifies the training procedure. The novel approach is evaluated extensively on the Wall Street Journal 1 corpus.},
+  eventtitle = {IEEE Workshop on Automatic Speech Recognition Understanding, 2009. ASRU 2009},
+  timestamp = {2016-06-22T15:14:58Z},
+  booktitle = {{{IEEE Workshop}} on {{Automatic Speech Recognition Understanding}}, 2009. {{ASRU}} 2009},
+  author = {Eyben, F. and Wöllmer, M. and Schuller, B. and Graves, A.},
+  date = {2009-11},
+  pages = {376--380},
+  keywords = {*TO-DO,+CTC,+RNN,+Speech},
+  file = {Eyben et al. - 2009 - From speech to letters - using a novel neural netw.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/ASPUH8F8/Eyben et al. - 2009 - From speech to letters - using a novel neural netw.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/MDCJ9SR4/abs_all.html:text/html}
+}
+
+@article{weng_deep_2015,
+  title = {Deep {{Neural Networks}} for {{Single}}-{{Channel Multi}}-{{Talker Speech Recognition}}},
+  volume = {23},
+  issn = {2329-9290},
+  doi = {10.1109/TASLP.2015.2444659},
+  abstract = {We investigate techniques based on deep neural networks (DNNs) for attacking the single-channel multi-talker speech recognition problem. Our proposed approach contains five key ingredients: a multi-style training strategy on artificially mixed speech data, a separate DNN to estimate senone posterior probabilities of the louder and softer speakers at each frame, a weighted finite-state transducer (WFST)-based two-talker decoder to jointly estimate and correlate the speaker and speech, a speaker switching penalty estimated from the energy pattern change in the mixed-speech, and a confidence based system combination strategy. Experiments on the 2006 speech separation and recognition challenge task demonstrate that our proposed DNN-based system has remarkable noise robustness to the interference of a competing speaker. The best setup of our proposed systems achieves an average word error rate (WER) of 18.8\% across different SNRs and outperforms the state-of-the-art IBM superhuman system by 2.8\% absolute with fewer assumptions.},
+  timestamp = {2016-07-27T13:46:23Z},
+  number = {10},
+  journaltitle = {IEEE/ACM Transactions on Audio, Speech, and Language Processing},
+  author = {Weng, C. and Yu, D. and Seltzer, M. L. and Droppo, J.},
+  date = {2015-10},
+  pages = {1670--1679},
+  keywords = {+DNN,+Speech},
+  file = {Weng et al. - 2015 - Deep Neural Networks for Single-Channel Multi-Talk.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/HIKNEK5K/Weng et al. - 2015 - Deep Neural Networks for Single-Channel Multi-Talk.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/GR6A2JM2/articleDetails.html:text/html}
+}
+
+@inproceedings{vipperla_speech_2012,
+  title = {Speech Overlap Detection and Attribution Using Convolutive Non-Negative Sparse Coding},
+  doi = {10.1109/ICASSP.2012.6288840},
+  abstract = {Overlapping speech is known to degrade speaker diarization performance with impacts on speaker clustering and segmentation. While previous work made important advances in detecting overlapping speech intervals and in attributing them to relevant speakers, the problem remains largely unsolved. This paper reports the first application of convolutive non-negative sparse coding (CNSC) to the overlap problem. CNSC aims to decompose a composite signal into its underlying contributory parts and is thus naturally suited to overlap detection and attribution. Experimental results on NIST RT data show that the CNSC approach gives comparable results to a state-of-the-art hidden Markov model based overlap detector. In a practical diarization system, CNSC based speaker attribution is shown to reduce the speaker error by over 40\% relative in overlapping segments.},
+  eventtitle = {2012 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  timestamp = {2017-07-24T10:22:37Z},
+  booktitle = {2012 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Vipperla, R. and Geiger, J. T. and Bozonnet, S. and Wang, D. and Evans, N. and Schuller, B. and Rigoll, G.},
+  date = {2012-03},
+  pages = {4181--4184},
+  keywords = {!REN,*SKIMPED,+Speech,CNSC approach,composite signal,convolutive non negative sparse coding,convolutive non-negative sparse coding,Density estimation robust algorithm,Encoding,encoding,Error analysis,hidden Markov model,Hidden Markov models,Matrix decomposition,NIST RT data,overlap detection,Sparse matrices,speaker attribution,speaker clustering,speaker diarization,speaker diarization performance,speaker recognition,speaker segmentation,Speech,speech overlap detection},
+  file = {Vipperla et al. - 2012 - Speech overlap detection and attribution using con.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/2KZPZIA2/Vipperla et al. - 2012 - Speech overlap detection and attribution using con.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/86WGKJCJ/Vipperla et al. - 2012 - Speech overlap detection and attribution using con.html:text/html}
+}
+
+@article{sak_fast_2015,
+  title = {Fast and {{Accurate Recurrent Neural Network Acoustic Models}} for {{Speech Recognition}}},
+  url = {http://arxiv.org/abs/1507.06947},
+  abstract = {We have recently shown that deep Long Short-Term Memory (LSTM) recurrent neural networks (RNNs) outperform feed forward deep neural networks (DNNs) as acoustic models for speech recognition. More recently, we have shown that the performance of sequence trained context dependent (CD) hidden Markov model (HMM) acoustic models using such LSTM RNNs can be equaled by sequence trained phone models initialized with connectionist temporal classification (CTC). In this paper, we present techniques that further improve performance of LSTM RNN acoustic models for large vocabulary speech recognition. We show that frame stacking and reduced frame rate lead to more accurate models and faster decoding. CD phone modeling leads to further improvements. We also present initial results for LSTM RNN models outputting words directly.},
+  timestamp = {2016-07-11T11:28:47Z},
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1507.06947},
+  primaryClass = {cs, stat},
+  author = {Sak, Haşim and Senior, Andrew and Rao, Kanishka and Beaufays, Françoise},
+  urldate = {2016-07-11},
+  date = {2015-07-24},
+  keywords = {*TO-DO,+RNN,+Speech},
+  file = {Sak et al. - 2015 - Fast and Accurate Recurrent Neural Network Acousti.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/AV9CVFXN/Sak et al. - 2015 - Fast and Accurate Recurrent Neural Network Acousti.pdf:application/pdf;arXiv.org Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/ESD3HJM4/Sak et al. - 2015 - Fast and Accurate Recurrent Neural Network Acousti.html:text/html}
+}
+
+@inproceedings{graves_speech_2013,
+  title = {Speech Recognition with Deep Recurrent Neural Networks},
+  doi = {10.1109/ICASSP.2013.6638947},
+  abstract = {Recurrent neural networks (RNNs) are a powerful model for sequential data. End-to-end training methods such as Connectionist Temporal Classification make it possible to train RNNs for sequence labelling problems where the input-output alignment is unknown. The combination of these methods with the Long Short-term Memory RNN architecture has proved particularly fruitful, delivering state-of-the-art results in cursive handwriting recognition. However RNN performance in speech recognition has so far been disappointing, with better results returned by deep feedforward networks. This paper investigates deep recurrent neural networks, which combine the multiple levels of representation that have proved so effective in deep networks with the flexible use of long range context that empowers RNNs. When trained end-to-end with suitable regularisation, we find that deep Long Short-term Memory RNNs achieve a test set error of 17.7\% on the TIMIT phoneme recognition benchmark, which to our knowledge is the best recorded score.},
+  eventtitle = {2013 IEEE International Conference on Acoustics, Speech and Signal Processing},
+  timestamp = {2017-01-02T23:39:30Z},
+  booktitle = {2013 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}}},
+  author = {Graves, A. and r Mohamed, A. and Hinton, G.},
+  date = {2013-05},
+  pages = {6645--6649},
+  keywords = {*TO-READ,+CTC,+RNN,+Speech},
+  file = {Graves et al. - 2013 - Speech recognition with deep recurrent neural netw.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/4389KKQX/Graves et al. - 2013 - Speech recognition with deep recurrent neural netw.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/97XD8VS2/login.html:text/html;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/QSQBM8WS/6638947.html:text/html}
+}
+
+@book{edlund_prosodic_2009,
+  title = {Prosodic {{Features}} of {{Very Short Utterances}} in {{Dialogue}}},
+  abstract = {A large number of vocalizations in everyday conversation are traditionally not regarded as part of the information exchange. Examples include confirmations such as yeah and ok as well as traditionally non-lexical items, such as uh-huh, um, and hmm. Vocalizations like these have been grouped in different constellations},
+  timestamp = {2016-06-21T09:49:08Z},
+  author = {Edlund, Jens and Heldner, Mattias and Pelcé, Antoine},
+  date = {2009},
+  keywords = {*TO-DO,+Speech},
+  file = {Edlund et al. - 2009 - Prosodic Features of Very Short Utterances in Dial.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/Z7HMHBBT/Edlund et al. - 2009 - Prosodic Features of Very Short Utterances in Dial.pdf:application/pdf;Citeseer - Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/Q6NE65KH/summary.html:text/html}
+}
+
+@inproceedings{deng_new_2013,
+  title = {New Types of Deep Neural Network Learning for Speech Recognition and Related Applications: An Overview},
+  doi = {10.1109/ICASSP.2013.6639344},
+  shorttitle = {New Types of Deep Neural Network Learning for Speech Recognition and Related Applications},
+  abstract = {In this paper, we provide an overview of the invited and contributed papers presented at the special session at ICASSP-2013, entitled “New Types of Deep Neural Network Learning for Speech Recognition and Related Applications,” as organized by the authors. We also describe the historical context in which acoustic models based on deep neural networks have been developed. The technical overview of the papers presented in our special session is organized into five ways of improving deep learning methods: (1) better optimization; (2) better types of neural activation function and better network architectures; (3) better ways to determine the myriad hyper-parameters of deep neural networks; (4) more appropriate ways to preprocess speech for deep neural networks; and (5) ways of leveraging multiple languages or dialects that are more easily achieved with deep neural networks than with Gaussian mixture models.},
+  eventtitle = {2013 IEEE International Conference on Acoustics, Speech and Signal Processing},
+  timestamp = {2016-06-20T13:39:58Z},
+  booktitle = {2013 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}}},
+  author = {Deng, L. and Hinton, G. and Kingsbury, B.},
+  date = {2013-05},
+  pages = {8599--8603},
+  keywords = {*DONE,+DL,+Overview,+Speech},
+  file = {Deng et al. - 2013 - New types of deep neural network learning for spee.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/N28PV4GN/Deng et al. - 2013 - New types of deep neural network learning for spee.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/ST3TR9C9/Deng et al. - 2013 - New types of deep neural network learning for spee.html:text/html}
+}
+
+@inproceedings{boakye_overlapped_2008,
+  title = {Overlapped Speech Detection for Improved Speaker Diarization in Multiparty Meetings},
+  doi = {10.1109/ICASSP.2008.4518619},
+  abstract = {State-of-the-art speaker diarization systems for meetings are now at a point where overlapped speech contributes significantly to the errors made by the system. However, little if no work has yet been done on detecting overlapped speech. We present our initial work toward developing an overlap detection system for improved meeting diarization. We investigate various features, with a focus on high-precision performance for use in the detector, and examine performance results on a subset of the AMI Meeting Corpus. For the high-quality signal case of a single mixed-headset channel signal, we demonstrate a relative improvement of about 7.4\% DER over the baseline diarization system, while for the more challenging case of the single far-field channel signal relative improvement is 3.6\%. We also outline steps towards improvement and moving beyond this initial phase.},
+  eventtitle = {2008 IEEE International Conference on Acoustics, Speech and Signal Processing},
+  timestamp = {2017-08-22T21:42:01Z},
+  booktitle = {2008 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}}},
+  author = {Boakye, K. and Trueba-Hornero, B. and Vinyals, O. and Friedland, G.},
+  date = {2008-03},
+  pages = {4353--4356},
+  keywords = {!REN,*DONE,+Speech,Ambient intelligence,AMI Meeting Corpus,baseline diarization system,channel signal relative improvement,Computer science,Density estimation robust algorithm,Detectors,Error analysis,Merging,multiparty meetings,overlap detection,Overlapped speech detection,overlapped speech detection,single mixed-headset channel signal,speaker diarization,speaker diarization systems,Speech analysis,Speech processing,Speech recognition,speech recognition},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/3G34JU9J/Boakye et al. - 2008 - Overlapped speech detection for improved speaker d.pdf:application/pdf;IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/GMPZ2NTE/Boakye et al. - 2008 - Overlapped speech detection for improved speaker d.pdf:application/pdf;Boakye et al. - 2008 - Overlapped speech detection for improved speaker d.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/J3SENVN8/Boakye et al. - 2008 - Overlapped speech detection for improved speaker d.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/5KKR74QP/Boakye et al. - 2008 - Overlapped speech detection for improved speaker d.html:text/html;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/FTZQARBI/4518619.html:text/html;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/HUCWSVSA/4518619.html:text/html}
+}
+
+@article{lee_deep_2016,
+  title = {Deep {{CNNs}} along the {{Time Axis}} with {{Intermap Pooling}} for {{Robustness}} to {{Spectral Variations}}},
+  url = {http://arxiv.org/abs/1606.03207},
+  abstract = {Convolutional neural networks (CNNs) with convolutional and pooling operations along the frequency axis have been proposed to attain invariance to frequency shifts of features. However, this is inappropriate with regard to the fact that acoustic features vary in frequency. In this paper, we contend that convolution along the time axis is more effective. We also propose the addition of an intermap pooling (IMP) layer to deep CNNs. In this layer, filters in each group extract common but spectrally variant features, then the layer pools the feature maps of each group. As a result, the proposed IMP CNN can achieve insensitivity to spectral variations characteristic of different speakers and utterances. The effectiveness of the IMP CNN architecture is demonstrated on several LVCSR tasks. Even without speaker adaptation techniques, the architecture achieved a WER of 12.7\% on the SWB part of the Hub5'2000 evaluation test set, which is competitive with other state-of-the-art methods.},
+  timestamp = {2016-06-22T13:22:59Z},
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1606.03207},
+  primaryClass = {cs},
+  author = {Lee, Hwaran and Kim, Geonmin and Kim, Ho-Gyeong and Oh, Sang-Hoon and Lee, Soo-Young},
+  urldate = {2016-06-22},
+  date = {2016-06-10},
+  keywords = {*TO-DO,+CNN,+Speech,Computer Science - Computation and Language,Computer Science - Learning,Computer Science - Neural and Evolutionary Computing},
+  file = {Lee et al. - 2016 - Deep CNNs along the Time Axis with Intermap Poolin.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/ERBIR9D5/Lee et al. - 2016 - Deep CNNs along the Time Axis with Intermap Poolin.pdf:application/pdf;arXiv.org Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/PRD8SFAJ/1606.html:text/html}
+}
+
+@inproceedings{bahdanau_end--end_2016,
+  title = {End-to-End Attention-Based Large Vocabulary Speech Recognition},
+  doi = {10.1109/ICASSP.2016.7472618},
+  abstract = {Many state-of-the-art Large Vocabulary Continuous Speech Recognition (LVCSR) Systems are hybrids of neural networks and Hidden Markov Models (HMMs). Recently, more direct end-to-end methods have been investigated, in which neural architectures were trained to model sequences of characters [1,2]. To our knowledge, all these approaches relied on Connectionist Temporal Classification [3] modules. We investigate an alternative method for sequence modelling based on an attention mechanism that allows a Recurrent Neural Network (RNN) to learn alignments between sequences of input frames and output labels. We show how this setup can be applied to LVCSR by integrating the decoding RNN with an n-gram language model and by speeding up its operation by constraining selections made by the attention mechanism and by reducing the source sequence lengths by pooling information over time. Recognition accuracies similar to other HMM-free RNN-based approaches are reported for the Wall Street Journal corpus.},
+  eventtitle = {2016 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  timestamp = {2016-07-12T18:51:31Z},
+  booktitle = {2016 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Bahdanau, D. and Chorowski, J. and Serdyuk, D. and Brakel, P. and Bengio, Y.},
+  date = {2016-03},
+  pages = {4945--4949},
+  keywords = {+Attention,+RNN,+Speech},
+  file = {Bahdanau et al. - 2016 - End-to-end attention-based large vocabulary speech.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/7PIUZV9B/Bahdanau et al. - 2016 - End-to-end attention-based large vocabulary speech.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/SR4MQ9JX/abs_all.html:text/html}
+}
+
+@inproceedings{ben-harush_frame_2009,
+  title = {Frame Level Entropy Based Overlapped Speech Detection as a Pre-Processing Stage for Speaker Diarization},
+  doi = {10.1109/MLSP.2009.5306205},
+  abstract = {Speaker diarization systems attempt to assign temporal speech segments in a conversation to the appropriate speaker, and non-speech segments to non-speech. Speaker diarization systems basically provide an answer to the question "Who spoke when ?". One inherent deficiency of most current systems is their inability to handle co-channel or overlapped speech. During the past few years, several studies have attempted dealing with the problem of overlapped or co-channel speech detection and separation, however, most of the algorithms suggested perform under unique conditions, require high computational complexity and require both time and frequency domain analysis of the audio data. In this study, frame based entropy analysis of the audio data in the time domain serves as a single feature for an overlapped speech detection algorithm. Identification of overlapped speech segments is performed using Gaussian Mixture Modeling (GMM) along with well known classification algorithms applied on two speaker conversations. By employing this methodology, the proposed method eliminates the need for setting a hard threshold for each conversation or database. LDC CALLHOME American English corpus is used for evaluation of the suggested algorithm. The proposed method successfully detects 60.0\% of the frames labeled as overlapped speech by the baseline (ground-truth) segmentation , while keeping a 5\% false-alarm rate.},
+  eventtitle = {2009 IEEE International Workshop on Machine Learning for Signal Processing},
+  timestamp = {2016-09-18T10:19:12Z},
+  booktitle = {2009 {{IEEE International Workshop}} on {{Machine Learning}} for {{Signal Processing}}},
+  author = {Ben-Harush, O. and Guterman, H. and Lapidot, I.},
+  date = {2009-09},
+  pages = {1--6},
+  keywords = {!REN,*SKIMPED,+Speech,audio data,Autocorrelation,Automatic speech recognition,Computational complexity,computational complexity,Detection algorithms,Educational institutions,Entropy,frame level entropy analysis,frequency domain analysis,Gaussian mixture modeling,Gaussian processes,Hidden Markov models,LDC CALLHOME American English corpus,Linear predictive coding,overlapped speech detection,speaker diarization system,Speech analysis,speech detection,Speech processing,speech processing,speech separation,temporal databases,time domain analysis,time-varying networks},
+  file = {Ben-Harush et al. - 2009 - Frame level entropy based overlapped speech detect.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/DXCI5UTZ/Ben-Harush et al. - 2009 - Frame level entropy based overlapped speech detect.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/P5CW5G9V/Ben-Harush et al. - 2009 - Frame level entropy based overlapped speech detect.html:text/html}
+}
+
+@inproceedings{xiao_overlapped_2011,
+  title = {Overlapped Speech Detection Using Long-Term Spectro-Temporal Similarity in Stereo Recording},
+  doi = {10.1109/ICASSP.2011.5947533},
+  abstract = {The problem of detecting overlapped speech in stereo recordings using close-talk microphones is important for a variety of applications including the identification of back-channels, interruptions etc. in a dyadic or multi-party interactions. For detecting overlapped speech, we propose a feature derived using the spectral similarity of two channels over a range of acoustic frames. During overlapped speech frames the proposed spectro-temporal similarity-based feature values decrease and during non-overlapped speech frames the feature values increase due to the presence of cross-talk. Thus the proposed feature helps to discriminate the overlapped speech frames from the non-overlapped ones. Using overlapped speech detection experiments on a dyadic interaction corpus, it is shown that the proposed feature provides a significant improvement 26\% absolute, in the accuracy of detecting the overlapped speech frames when used as an additional feature to the baseline feature obtained from the two channels' intensity profiles.},
+  eventtitle = {2011 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  timestamp = {2016-09-18T10:19:03Z},
+  booktitle = {2011 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Xiao, B. and Ghosh, P. K. and Georgiou, P. and Narayanan, S. S.},
+  date = {2011-05},
+  pages = {5216--5219},
+  keywords = {!REN,*DONE,+Speech,Accuracy,close-talk microphones,Correlation,correlation coefficient,Erbium,long-term spectro-temporal similarity,overlapped speech,spectrogram,Speech,speech detection,speech processing,stereo recording,Strontium,Tin,Training},
+  file = {Xiao et al. - 2011 - Overlapped speech detection using long-term spectr.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/WMNRANC9/Xiao et al. - 2011 - Overlapped speech detection using long-term spectr.pdf:application/pdf;Xiao et al. - 2011 - Overlapped speech detection using long-term spectr.html:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/V9BJBJ9E/Xiao et al. - 2011 - Overlapped speech detection using long-term spectr.html:text/html}
+}
+
+@article{sak_long_2014,
+  title = {Long {{Short}}-{{Term Memory Based Recurrent Neural Network Architectures}} for {{Large Vocabulary Speech Recognition}}},
+  url = {http://arxiv.org/abs/1402.1128},
+  abstract = {Long Short-Term Memory (LSTM) is a recurrent neural network (RNN) architecture that has been designed to address the vanishing and exploding gradient problems of conventional RNNs. Unlike feedforward neural networks, RNNs have cyclic connections making them powerful for modeling sequences. They have been successfully used for sequence labeling and sequence prediction tasks, such as handwriting recognition, language modeling, phonetic labeling of acoustic frames. However, in contrast to the deep neural networks, the use of RNNs in speech recognition has been limited to phone recognition in small scale tasks. In this paper, we present novel LSTM based RNN architectures which make more effective use of model parameters to train acoustic models for large vocabulary speech recognition. We train and compare LSTM, RNN and DNN models at various numbers of parameters and configurations. We show that LSTM models converge quickly and give state of the art speech recognition performance for relatively small sized models.},
+  timestamp = {2016-07-05T20:04:13Z},
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1402.1128},
+  primaryClass = {cs, stat},
+  author = {Sak, Haşim and Senior, Andrew and Beaufays, Françoise},
+  urldate = {2016-07-05},
+  date = {2014-02-05},
+  keywords = {+RNN,+Speech},
+  file = {Sak et al. - 2014 - Long Short-Term Memory Based Recurrent Neural Netw.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/BTTJWBZX/Sak et al. - 2014 - Long Short-Term Memory Based Recurrent Neural Netw.pdf:application/pdf;arXiv.org Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/7EHN24NW/1402.html:text/html}
+}
+
+@article{sercu_advances_2016,
+  title = {Advances in {{Very Deep Convolutional Neural Networks}} for {{LVCSR}}},
+  url = {http://arxiv.org/abs/1604.01792},
+  abstract = {Very deep CNNs with small 3x3 kernels have recently been shown to achieve very strong performance as acoustic models in hybrid NN-HMM speech recognition systems. In this paper we investigate how to efficiently scale these models to larger datasets. Specifically, we address the design choice of pooling and padding along the time dimension which renders convolutional evaluation of sequences highly inefficient. We propose a new CNN design without timepadding and without timepooling, which is slightly suboptimal for accuracy, but has two significant advantages: it enables sequence training and deployment by allowing efficient convolutional evaluation of full utterances, and, it allows for batch normalization to be straightforwardly adopted to CNNs on sequence data. Through batch normalization, we recover the lost peformance from removing the time-pooling, while keeping the benefit of efficient convolutional evaluation. We demonstrate the performance of our models both on larger scale data than before, and after sequence training. Our very deep CNN model sequence trained on the 2000h switchboard dataset obtains 9.4 word error rate on the Hub5 test-set, matching with a single model the performance of the 2015 IBM system combination, which was the previous best published result.},
+  timestamp = {2017-01-04T16:21:44Z},
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1604.01792},
+  primaryClass = {cs},
+  author = {Sercu, Tom and Goel, Vaibhava},
+  urldate = {2016-12-21},
+  date = {2016-04-06},
+  keywords = {_tablet_modified,!REN,*TO-READ,+CNN,+Speech,Computer Science - Computation and Language,Computer Science - Learning,Computer Science - Neural and Evolutionary Computing},
+  file = {Sercu and Goel - 2016 - Advances in Very Deep Convolutional Neural Network.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/4Z3A7EVT/Sercu and Goel - 2016 - Advances in Very Deep Convolutional Neural Network.pdf:application/pdf;arXiv.org Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/SU8W7HFG/1604.html:text/html}
+}
+
+@article{abdel-hamid_exploring_2013,
+  title = {Exploring {{Convolutional Neural Network Structures}} and {{Optimization Techniques}} for {{Speech Recognition}}},
+  url = {https://www.microsoft.com/en-us/research/publication/exploring-convolutional-neural-network-structures-and-optimization-techniques-for-speech-recognition/},
+  abstract = {Recently, convolutional neural networks (CNNs) have been shown to outperform the standard fully connected deep neural networks within the hybrid deep neural network / hidden Markov model (DNN/HMM) framework on the phone recognition task. In this paper, we extend the earlier basic form of the CNN and explore it in multiple ways. We first investigate …},
+  timestamp = {2017-01-02T23:28:14Z},
+  journaltitle = {Microsoft Research},
+  author = {Abdel-Hamid, Ossama and Deng, Li and Yu, Dong},
+  urldate = {2017-01-02},
+  date = {2013-08-01},
+  keywords = {*TO-READ,+CNN,+Speech},
+  file = {Abdel-Hamid et al. - 2013 - Exploring Convolutional Neural Network Structures .pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/DKSVFKKM/Abdel-Hamid et al. - 2013 - Exploring Convolutional Neural Network Structures .pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/JENNUB3G/exploring-convolutional-neural-network-structures-and-optimization-techniques-for-speech-recogn.html:text/html}
+}
+
+@inproceedings{dahl_improving_2013,
+  title = {Improving Deep Neural Networks for {{LVCSR}} Using Rectified Linear Units and Dropout},
+  url = {http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=6639346},
+  timestamp = {2017-01-02T23:29:12Z},
+  booktitle = {2013 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}}},
+  publisher = {{IEEE}},
+  author = {Dahl, George E. and Sainath, Tara N. and Hinton, Geoffrey E.},
+  urldate = {2017-01-02},
+  date = {2013},
+  pages = {8609--8613},
+  keywords = {*TO-DO,+DNN,+Speech},
+  file = {Dahl et al. - 2013 - Improving deep neural networks for LVCSR using rec.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/T855TNWJ/Dahl et al. - 2013 - Improving deep neural networks for LVCSR using rec.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/5DA62RB9/6639346.html:text/html}
+}
+
+@inproceedings{deng_deep_2013,
+  title = {A Deep Convolutional Neural Network Using Heterogeneous Pooling for Trading Acoustic Invariance with Phonetic Confusion},
+  doi = {10.1109/ICASSP.2013.6638952},
+  abstract = {We develop and present a novel deep convolutional neural network architecture, where heterogeneous pooling is used to provide constrained frequency-shift invariance in the speech spectrogram while minimizing speech-class confusion induced by such invariance. The design of the pooling layer is guided by domain knowledge about how speech classes would change when formant frequencies are modified. The convolution and heterogeneous-pooling layers are followed by a fully connected multi-layer neural network to form a deep architecture interfaced to an HMM for continuous speech recognition. During training, all layers of this entire deep net are regularized using a variant of the “dropout” technique. Experimental evaluation demonstrates the effectiveness of both heterogeneous pooling and dropout regularization. On the TIMIT phonetic recognition task, we have achieved an 18.7\% phone error rate, lowest on this standard task reported in the literature with a single system and with no use of information about speaker identity. Preliminary experiments on large vocabulary speech recognition in a voice search task also show error rate reduction using heterogeneous pooling in the deep convolutional neural network.},
+  eventtitle = {2013 IEEE International Conference on Acoustics, Speech and Signal Processing},
+  timestamp = {2017-01-02T23:32:23Z},
+  booktitle = {2013 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}}},
+  author = {Deng, L. and Abdel-Hamid, O. and Yu, D.},
+  date = {2013-05},
+  pages = {6669--6673},
+  keywords = {*TO-READ,+CNN,+Speech,Abstracts,acoustic invariance,Acoustics,acoustic signal processing,Computer architecture,constrained frequency-shift invariance,continuous speech recognition,convolution,deep,deep convolutional neural network architecture,discrimination,dropout regularization,error rate reduction,formant frequency modification,formants,heterogeneous pooling,heterogeneous pooling layers,Hidden Markov models,HMM,Image recognition,Indexes,invariance,large vocabulary speech recognition,minimisation,multilayer neural network,multilayer perceptrons,neural net architecture,neural network,phone error rate,phonetic confusion,Speech,speech-class confusion minimization,Speech recognition,speech spectrogram,TIMIT phonetic recognition,voice search task},
+  file = {Deng et al. - 2013 - A deep convolutional neural network using heteroge.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/IG4XAZVD/Deng et al. - 2013 - A deep convolutional neural network using heteroge.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/38I9JDTB/6638952.html:text/html}
+}
+
+@inproceedings{huang_audio-visual_2013,
+  title = {Audio-Visual Deep Learning for Noise Robust Speech Recognition},
+  doi = {10.1109/ICASSP.2013.6639140},
+  abstract = {Deep belief networks (DBN) have shown impressive improvements over Gaussian mixture models for automatic speech recognition. In this work we use DBNs for audio-visual speech recognition; in particular, we use deep learning from audio and visual features for noise robust speech recognition. We test two methods for using DBNs in a multimodal setting: a conventional decision fusion method that combines scores from single-modality DBNs, and a novel feature fusion method that operates on mid-level features learned by the single-modality DBNs. On a continuously spoken digit recognition task, our experiments show that these methods can reduce word error rate by as much as 21\% relative over a baseline multi-stream audio-visual GMM/HMM system.},
+  eventtitle = {2013 IEEE International Conference on Acoustics, Speech and Signal Processing},
+  timestamp = {2017-01-02T23:37:23Z},
+  booktitle = {2013 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}}},
+  author = {Huang, J. and Kingsbury, B.},
+  date = {2013-05},
+  pages = {7596--7599},
+  keywords = {Acoustics,audio visual deep learning,audio visual speech recognition,Audio-visual speech recognition,Automatic speech recognition,belief networks,DBN,decision fusion method,deep belief networks,feature fusion method,Gaussian distribution,Gaussian mixture models,Hidden Markov models,learning (artificial intelligence),multistream audio visual GMM/HMM system,Noise measurement,noise robustness,noise robust speech recognition,Speech,Speech recognition,Training,Visualization,word error rate},
+  file = {Huang and Kingsbury - 2013 - Audio-visual deep learning for noise robust speech.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/6965TUM5/Huang and Kingsbury - 2013 - Audio-visual deep learning for noise robust speech.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/UIEKBACT/6639140.html:text/html}
+}
+
+@inproceedings{sainath_deep_2013,
+  title = {Deep Convolutional Neural Networks for {{LVCSR}}},
+  doi = {10.1109/ICASSP.2013.6639347},
+  abstract = {Convolutional Neural Networks (CNNs) are an alternative type of neural network that can be used to reduce spectral variations and model spectral correlations which exist in signals. Since speech signals exhibit both of these properties, CNNs are a more effective model for speech compared to Deep Neural Networks (DNNs). In this paper, we explore applying CNNs to large vocabulary speech tasks. First, we determine the appropriate architecture to make CNNs effective compared to DNNs for LVCSR tasks. Specifically, we focus on how many convolutional layers are needed, what is the optimal number of hidden units, what is the best pooling strategy, and the best input feature type for CNNs. We then explore the behavior of neural network features extracted from CNNs on a variety of LVCSR tasks, comparing CNNs to DNNs and GMMs. We find that CNNs offer between a 13-30\% relative improvement over GMMs, and a 4-12\% relative improvement over DNNs, on a 400-hr Broadcast News and 300-hr Switchboard task.},
+  eventtitle = {2013 IEEE International Conference on Acoustics, Speech and Signal Processing},
+  timestamp = {2017-01-02T23:38:20Z},
+  booktitle = {2013 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}}},
+  author = {Sainath, T. N. and r Mohamed, A. and Kingsbury, B. and Ramabhadran, B.},
+  date = {2013-05},
+  pages = {8614--8618},
+  keywords = {*TO-DO,+CNN,+Speech,Acoustics,broadcast news,CNN,convolution,convolutional layers,correlation methods,deep convolutional neural networks,DNN,Hidden Markov models,hidden units,large vocabulary continuous speech recognition,LVCSR tasks,neural nets,Neural networks,pooling strategy,spectral correlations model,spectral variations reduction,Speech,Speech recognition,speech signals,switchboard task,time 300 hr,time 400 hr,Training},
+  file = {Sainath et al. - 2013 - Deep convolutional neural networks for LVCSR.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/H6FTT4S8/Sainath et al. - 2013 - Deep convolutional neural networks for LVCSR.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/AGEXQ9A8/6639347.html:text/html}
+}
+
+@inproceedings{long_fully_2015,
+  title = {Fully Convolutional Networks for Semantic Segmentation},
+  url = {http://www.cv-foundation.org/openaccess/content_cvpr_2015/html/Long_Fully_Convolutional_Networks_2015_CVPR_paper.html},
+  timestamp = {2017-06-28T06:50:28Z},
+  booktitle = {Proceedings of the {{IEEE Conference}} on {{Computer Vision}} and {{Pattern Recognition}}},
+  author = {Long, Jonathan and Shelhamer, Evan and Darrell, Trevor},
+  urldate = {2017-01-03},
+  date = {2015},
+  pages = {3431--3440},
+  keywords = {+CNN,+DL,+Image,Computer Science - Computer Vision and Pattern Recognition},
+  file = {Long et al. - 2015 - Fully convolutional networks for semantic segmenta.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/M7QJD35H/Long et al. - 2015 - Fully convolutional networks for semantic segmenta.pdf:application/pdf;arXiv\:1605.06211 PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/VSIU37XW/Shelhamer et al. - 2016 - Fully Convolutional Networks for Semantic Segmenta.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/KW32V7TP/Long_Fully_Convolutional_Networks_2015_CVPR_paper.html:text/html;arXiv.org Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/UDNRPANG/1605.html:text/html}
+}
+
+@article{hand_classifier_2006,
+  title = {Classifier {{Technology}} and the {{Illusion}} of {{Progress}}},
+  volume = {21},
+  issn = {0883-4237, 2168-8745},
+  url = {http://projecteuclid.org/euclid.ss/1149600839},
+  doi = {10.1214/088342306000000060},
+  abstract = {A great many tools have been developed for supervised classification, ranging from early methods such as linear discriminant analysis through to modern developments such as neural networks and support vector machines. A large number of comparative studies have been conducted in attempts to establish the relative superiority of these methods. This paper argues that these comparisons often fail to take into account important aspects of real problems, so that the apparent superiority of more sophisticated methods may be something of an illusion. In particular, simple methods typically yield performance almost as good as more sophisticated methods, to the extent that the difference in performance may be swamped by other sources of uncertainty that generally are not considered in the classical supervised classification paradigm.},
+  timestamp = {2017-01-03T15:57:02Z},
+  number = {1},
+  journaltitle = {Statist. Sci.},
+  author = {Hand, David J.},
+  urldate = {2017-01-03},
+  date = {2006-02},
+  pages = {1--14},
+  keywords = {*DONE,empirical comparisons,error rate,flat maximum effect,misclassification rate,population drift,principle of parsimony,problem uncertainty,selectivity bias,simplicity,Supervised classification},
+  file = {Hand - 2006 - Classifier Technology and the Illusion of Progress__annotated.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/F5DAHRDG/Hand - 2006 - Classifier Technology and the Illusion of Progress__annotated.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/QA24UQBD/1149600839.html:text/html},
+  mrnumber = {MR2275965},
+  zmnumber = {05191849}
+}
+
+@article{hand_assessing_2012,
+  title = {Assessing the {{Performance}} of {{Classification Methods}}},
+  volume = {80},
+  issn = {1751-5823},
+  url = {http://onlinelibrary.wiley.com/doi/10.1111/j.1751-5823.2012.00183.x/abstract},
+  doi = {10.1111/j.1751-5823.2012.00183.x},
+  timestamp = {2017-01-04T14:30:27Z},
+  langid = {english},
+  number = {3},
+  journaltitle = {International Statistical Review},
+  author = {Hand, David J.},
+  urldate = {2017-01-04},
+  date = {2012-12-01},
+  pages = {400--414},
+  keywords = {*TO-DO},
+  file = {Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/M4VMZ4MH/Hand - 2012 - Assessing the Performance of Classification Method.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/VG356RR7/full.html:text/html}
+}
+
+@article{cheng_bic-based_2010,
+  title = {{{BIC}}-{{Based Speaker Segmentation Using Divide}}-and-{{Conquer Strategies With Application}} to {{Speaker Diarization}}},
+  volume = {18},
+  issn = {1558-7916},
+  doi = {10.1109/TASL.2009.2024730},
+  abstract = {In this paper, we propose three divide-and-conquer approaches for Bayesian information criterion (BlC)-based speaker segmentation. The approaches detect speaker changes by recursively partitioning a large analysis window into two sub-windows and recursively verifying the merging of two adjacent audio segments using DeltaBIC, a widely-adopted distance measure of two audio segments. We compare our approaches to three popular distance-based approaches, namely, Chen and Gopalakrishnan's window-growing-based approach, Siegler et al.'s fixed-size sliding window approach, and Delacourt and Wellekens's DISTBIC approach, by performing computational cost analysis and conducting speaker change detection experiments on two broadcast news data sets. The results show that the proposed approaches are more efficient and achieve higher segmentation accuracy than the compared distance-based approaches. In addition, we apply the segmentation approaches discussed in this paper to the speaker diarization task. The experiment results show that a more effective segmentation approach leads to better diarization accuracy.},
+  timestamp = {2017-01-27T09:02:55Z},
+  number = {1},
+  journaltitle = {IEEE Transactions on Audio, Speech, and Language Processing},
+  author = {Cheng, S. S. and Wang, H. M. and Fu, H. C.},
+  date = {2010-01},
+  pages = {141--157},
+  keywords = {*TO-DO,+Speech,audio segments,Bayesian information criterion,Bayesian information criterion (BIC),Bayes methods,BIC-based speaker segmentation,Computational complexity,computational cost analysis,divide-and-conquer,divide and conquer methods,divide-and-conquer strategies,fixed-size sliding window approach,speaker change detection,speaker change detection experiments,speaker diarization,speaker recognition,speaker segmentation,window-growing-based approach},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/CRIM936D/Cheng et al. - 2010 - BIC-Based Speaker Segmentation Using Divide-and-Co.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/HTZWX4FK/5067368.html:text/html}
+}
+
+@inproceedings{huang_deep_2014,
+  title = {Deep Learning for Monaural Speech Separation},
+  doi = {10.1109/ICASSP.2014.6853860},
+  abstract = {Monaural source separation is useful for many real-world applications though it is a challenging problem. In this paper, we study deep learning for monaural speech separation. We propose the joint optimization of the deep learning models (deep neural networks and recurrent neural networks) with an extra masking layer, which enforces a reconstruction constraint. Moreover, we explore a discriminative training criterion for the neural networks to further enhance the separation performance. We evaluate our approaches using the TIMIT speech corpus for a monaural speech separation task. Our proposed models achieve about 3.8 4.9 dB SIR gain compared to NMF models, while maintaining better SDRs and SARs.},
+  eventtitle = {2014 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  timestamp = {2017-03-31T18:28:17Z},
+  booktitle = {2014 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Huang, P. S. and Kim, M. and Hasegawa-Johnson, M. and Smaragdis, P.},
+  date = {2014-05},
+  pages = {1562--1566},
+  keywords = {!REN,*SKIMPED,+Speech,Artificial neural networks,deep learning,deep learning models,deep neural networks,Discrete Fourier transforms,learning (artificial intelligence),masking layer,monaural source separation,monaural speech separation,NMF models,reconstruction constraint,recurrent neural nets,Recurrent neural networks,SARs,SDRs,signal reconstruction,source separation,Speech,Speech processing,Time-frequency analysis,Time-Frequency Masking,TIMIT speech corpus,Training},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/PNK2782F/Huang et al. - 2014 - Deep learning for monaural speech separation.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/6TJKMXQQ/citations.html:text/html}
+}
+
+@article{hu_monaural_2003,
+  title = {Monaural Speech Separation},
+  volume = {15},
+  url = {https://papers.nips.cc/paper/2314-monaural-speech-separation.pdf},
+  timestamp = {2017-03-31T18:34:27Z},
+  journaltitle = {Advances in neural information processing systems},
+  author = {Hu, Guoning and Wang, DeLiang},
+  urldate = {2017-03-31},
+  date = {2003},
+  pages = {1245--1252},
+  keywords = {*SKIMPED,+Speech},
+  file = {[PDF] nips.cc:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/EPUHIUH8/Hu and Wang - 2003 - Monaural speech separation.pdf:application/pdf}
+}
+
+@article{rennie_single-channel_2010,
+  title = {Single-{{Channel Multitalker Speech Recognition}}},
+  volume = {27},
+  issn = {1053-5888},
+  doi = {10.1109/MSP.2010.938081},
+  abstract = {We have described some of the problems with modeling mixed acoustic signals in the log spectral domain using graphical models, as well as some current approaches to handling these problems for multitalker speech separation and recognition. We have also reviewed methods for inference on FHMMs (factorial hidden Markov model) and methods for handling the nonlinear interaction function in the log spectral domain. These methods are capable of separating and recognizing speech better than human listeners on the SSC task.},
+  timestamp = {2017-03-31T18:39:47Z},
+  number = {6},
+  journaltitle = {IEEE Signal Processing Magazine},
+  author = {Rennie, S. J. and Hershey, J. R. and Olsen, P. A.},
+  date = {2010-11},
+  pages = {66--80},
+  keywords = {*TO-DO,+HMM,+Speech},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/7B6WFFX4/Rennie et al. - 2010 - Single-Channel Multitalker Speech Recognition.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/936RVCDK/5563101.html:text/html}
+}
+
+@article{yella_overlapping_2014,
+  title = {Overlapping Speech Detection Using Long-Term Conversational Features for Speaker Diarization in Meeting Room Conversations},
+  volume = {22},
+  url = {http://dl.acm.org/citation.cfm?id=2719951},
+  timestamp = {2017-07-24T10:24:36Z},
+  number = {12},
+  journaltitle = {IEEE/ACM Transactions on Audio, Speech and Language Processing (TASLP)},
+  author = {Yella, Sree Harsha and Bourlard, Hervé},
+  urldate = {2017-03-31},
+  date = {2014},
+  pages = {1688--1700},
+  keywords = {!REN,*DONE,+Speech},
+  file = {[PDF] epfl.ch:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/WFID89JR/Yella and Bourlard - 2014 - Overlapping speech detection using long-term conve.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/4ABRTHDP/citation.html:text/html}
+}
+
+@article{stivers_universals_2009,
+  title = {Universals and Cultural Variation in Turn-Taking in Conversation},
+  volume = {106},
+  url = {http://www.pnas.org/content/106/26/10587.short},
+  timestamp = {2017-04-17T16:21:12Z},
+  number = {26},
+  journaltitle = {Proceedings of the National Academy of Sciences},
+  author = {Stivers, Tanya and Enfield, Nicholas J. and Brown, Penelope and Englert, Christina and Hayashi, Makoto and Heinemann, Trine and Hoymann, Gertie and Rossano, Federico and De Ruiter, Jan Peter and Yoon, Kyung-Eun and {others}},
+  urldate = {2017-04-17},
+  date = {2009},
+  pages = {10587--10592},
+  keywords = {+Speech},
+  file = {Stivers et al. - 2009 - Universals and cultural variation in turn-taking i.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/NZSTGJ7G/Stivers et al. - 2009 - Universals and cultural variation in turn-taking i.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/9I74EH3J/10587.html:text/html}
+}
+
+@inproceedings{glarner_factor_2016,
+  title = {Factor {{Graph Decoding}} for {{Speech Presence Probability Estimation}}},
+  abstract = {This paper is concerned with speech presence probability estimation employing an explicit model of the temporal and spectral correlations of speech. An undirected graphical model is introduced, based on a Factor Graph formulation. It is shown that this undirected model cures some of the theoretical issues of an earlier directed graphical model. Furthermore, we formulate a message passing inference scheme based on an approximate graph factorization, identify this inference scheme as a particular message passing schedule based on the turbo principle and suggest further alternative schedules. The experiments show an improved performance over speech presence probability estimation based on an IID assumption, and a slightly better performance of the turbo schedule over the alternatives.},
+  eventtitle = {Speech Communication; 12. ITG Symposium},
+  timestamp = {2017-04-17T16:47:24Z},
+  booktitle = {Speech {{Communication}}; 12. {{ITG Symposium}}},
+  author = {Glarner, T. and Momenzadeh, M. M. and Drude, L. and Haeb-Umbach, R.},
+  date = {2016-10},
+  pages = {1--5},
+  keywords = {*TO-DO,+Speech},
+  file = {Glarner et al. - 2016 - Factor Graph Decoding for Speech Presence Probabil.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/GWJW4TCD/Glarner et al. - 2016 - Factor Graph Decoding for Speech Presence Probabil.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/K46TK65P/7776142.html:text/html}
+}
+
+@article{li_overview_2014,
+  title = {An {{Overview}} of {{Noise}}-{{Robust Automatic Speech Recognition}}},
+  volume = {22},
+  issn = {2329-9290},
+  doi = {10.1109/TASLP.2014.2304637},
+  abstract = {New waves of consumer-centric applications, such as voice search and voice interaction with mobile devices and home entertainment systems, increasingly require automatic speech recognition (ASR) to be robust to the full range of real-world noise and other acoustic distorting conditions. Despite its practical importance, however, the inherent links between and distinctions among the myriad of methods for noise-robust ASR have yet to be carefully studied in order to advance the field further. To this end, it is critical to establish a solid, consistent, and common mathematical foundation for noise-robust ASR, which is lacking at present. This article is intended to fill this gap and to provide a thorough overview of modern noise-robust techniques for ASR developed over the past 30 years. We emphasize methods that are proven to be successful and that are likely to sustain or expand their future applicability. We distill key insights from our comprehensive overview in this field and take a fresh look at a few old problems, which nevertheless are still highly relevant today. Specifically, we have analyzed and categorized a wide range of noise-robust techniques using five different criteria: 1) feature-domain vs. model-domain processing, 2) the use of prior knowledge about the acoustic environment distortion, 3) the use of explicit environment-distortion models, 4) deterministic vs. uncertainty processing, and 5) the use of acoustic models trained jointly with the same feature enhancement or model adaptation process used in the testing stage. With this taxonomy-oriented review, we equip the reader with the insight to choose among techniques and with the awareness of the performance-complexity tradeoffs. The pros and cons of using different noise-robust ASR techniques in practical application scenarios are provided as a guide to interested practitioners. The current challenges and future research directions in this field is also carefully analyzed.},
+  timestamp = {2017-04-17T16:51:10Z},
+  number = {4},
+  journaltitle = {IEEE/ACM Transactions on Audio, Speech, and Language Processing},
+  author = {Li, J. and Deng, L. and Gong, Y. and Haeb-Umbach, R.},
+  date = {2014-04},
+  pages = {745--777},
+  keywords = {+Speech,acoustic distorting conditions,Acoustic distortion,ASR,Cepstral analysis,compensation,consumer centric applications,distortion modeling,feature enhancement,home entertainment systems,IEEE transactions,joint model training,mathematical analysis,mathematical foundation,mobile computing,mobile devices,noise robust automatic speech recognition,noise robustness,noise; robustness,noise robust techniques,Speech,Speech processing,Speech recognition,uncertainty processing,voice interaction,voice search},
+  file = {Li et al. - 2014 - An Overview of Noise-Robust Automatic Speech Recog.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/IV5BKT65/Li et al. - 2014 - An Overview of Noise-Robust Automatic Speech Recog.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/VRM56TG8/6732927.html:text/html}
+}
+
+@inproceedings{walter_source_2015,
+  title = {Source Counting in Speech Mixtures by Nonparametric {{Bayesian}} Estimation of an Infinite {{Gaussian}} Mixture Model},
+  doi = {10.1109/ICASSP.2015.7178011},
+  abstract = {In this paper we present a source counting algorithm to determine the number of speakers in a speech mixture. In our proposed method, we model the histogram of estimated directions of arrival with a non-parametric Bayesian infinite Gaussian mixture model. As an alternative to classical model selection criteria and to avoid specifying the maximum number of mixture components in advance, a Dirichlet process prior is employed over the mixture components. This allows to automatically determine the optimal number of mixture components that most probably model the observations. We demonstrate by experiments that this model outperforms a parametric approach using a finite Gaussian mixture model with a Dirichlet distribution prior over the mixture weights.},
+  eventtitle = {2015 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  timestamp = {2017-04-17T16:54:10Z},
+  booktitle = {2015 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Walter, O. and Drude, L. and Haeb-Umbach, R.},
+  date = {2015-04},
+  pages = {459--463},
+  keywords = {*TO-DO,+Speech},
+  file = {Walter et al. - 2015 - Source counting in speech mixtures by nonparametri.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/ZWVTRK4Q/Walter et al. - 2015 - Source counting in speech mixtures by nonparametri.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/98ATGR7Q/7178011.html:text/html}
+}
+
+@inproceedings{aversano_new_2001,
+  title = {A New Text-Independent Method for Phoneme Segmentation},
+  volume = {2},
+  doi = {10.1109/MWSCAS.2001.986241},
+  abstract = {A new approach for text-independent speech segmentation is proposed. The novelty consists in a preprocessing based on critical-band perceptual analysis and an original algorithm for the individuation of phoneme boundaries. The results are promising since the method gives 74\% of correct segmentation without presenting over-segmentation},
+  eventtitle = {Proceedings of the 44th IEEE 2001 Midwest Symposium on Circuits and Systems. MWSCAS 2001 (Cat. No.01CH37257)},
+  timestamp = {2017-04-17T17:19:18Z},
+  booktitle = {Proceedings of the 44th {{IEEE}} 2001 {{Midwest Symposium}} on {{Circuits}} and {{Systems}}. {{MWSCAS}} 2001 ({{Cat}}. {{No}}.{{01CH37257}})},
+  author = {Aversano, G. and Esposito, A. and Esposito, A. and Marinaro, M.},
+  date = {2001},
+  pages = {516--519 vol.2},
+  keywords = {+Speech,Algorithm design and analysis,Computer science,critical-band perceptual analysis,Environmental factors,Humans,Pattern recognition,phoneme boundaries,phoneme segmentation,preprocessing,signal processing,Speech analysis,speech intelligibility,Speech processing,Speech recognition,speech segmentation,System testing,text-independent method},
+  file = {Aversano et al. - 2001 - A new text-independent method for phoneme segmenta.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/8XE65RQT/Aversano et al. - 2001 - A new text-independent method for phoneme segmenta.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/A4ZH98XS/986241.html:text/html}
+}
+
+@inproceedings{toledano_neural_2000,
+  title = {Neural Network Boundary Refining for Automatic Speech Segmentation},
+  volume = {6},
+  doi = {10.1109/ICASSP.2000.860140},
+  abstract = {This work is an extension of a previous work in which an automatic speech segmentation and labeling system was proposed based on a hidden Markov model (HMM) speech recognizer followed by a fuzzy-logic boundary correction system. In this paper we explore the possibility of substituting that difficult to design fuzzy-logic system by a neural network (NN) based system that can be automatically trained. First, the whole fuzzy-logic boundary correction system, which used different rule sets for each kind of phonetic transition, has been substituted by a single NN. Results show that this single NN outperforms the complete fuzzy-logic system. Then, the possibility of using different NNs specialized in each kind of phonetic transition has been explored. Results are again clearly better than the results obtained with the fuzzy-logic system, but not clearly better than the results obtained with just one NN},
+  eventtitle = {2000 IEEE International Conference on Acoustics, Speech, and Signal Processing. Proceedings (Cat. No.00CH37100)},
+  timestamp = {2017-04-17T17:20:03Z},
+  booktitle = {2000 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}}, and {{Signal Processing}}. {{Proceedings}} ({{Cat}}. {{No}}.{{00CH37100}})},
+  author = {Toledano, D. T.},
+  date = {2000},
+  pages = {3438--3441 vol.6},
+  keywords = {+Speech,automatic speech labeling system,Automatic speech recognition,automatic speech segmentation,Databases,Electronic mail,fuzzy-logic boundary correction system,fuzzy-logic system,hidden Markov model,Hidden Markov models,HMM speech recognizer,Humans,Labeling,learning (artificial intelligence),MLP,multilayer perceptron,multilayer perceptrons,Natural languages,neural network boundary refining,Neural networks,phonetic transition,Speech processing,Speech recognition,speech synthesis,Training},
+  file = {Toledano - 2000 - Neural network boundary refining for automatic spe.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/XWTEQ6AE/Toledano - 2000 - Neural network boundary refining for automatic spe.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/KX7G5TG6/860140.html:text/html}
+}
+
+@article{toledano_automatic_2003,
+  title = {Automatic Phonetic Segmentation},
+  volume = {11},
+  issn = {1063-6676},
+  doi = {10.1109/TSA.2003.813579},
+  abstract = {This paper presents the results and conclusions of a thorough study on automatic phonetic segmentation. It starts with a review of the state of the art in this field. Then, it analyzes the most frequently used approach-based on a modified Hidden Markov Model (HMM) phonetic recognizer. For this approach, a statistical correction procedure is proposed to compensate for the systematic errors produced by context-dependent HMMs, and the use of speaker adaptation techniques is considered to increase segmentation precision. Finally, this paper explores the possibility of locally refining the boundaries obtained with the former techniques. A general framework is proposed for the local refinement of boundaries, and the performance of several pattern classification approaches (fuzzy logic, neural networks and Gaussian mixture models) is compared within this framework. The resulting phonetic segmentation scheme was able to increase the performance of a baseline HMM segmentation tool from 27.12\%, 79.27\%, and 97.75\% of automatic boundary marks with errors smaller than 5, 20, and 50 ms, respectively, to 65.86\%, 96.01\%, and 99.31\% in speaker-dependent mode, which is a reasonably good approximation to manual segmentation.},
+  timestamp = {2017-04-17T17:20:30Z},
+  number = {6},
+  journaltitle = {IEEE Transactions on Speech and Audio Processing},
+  author = {Toledano, D. T. and Gomez, L. A. H. and Grande, L. V.},
+  date = {2003-11},
+  pages = {617--625},
+  keywords = {+Speech,automatic phonetic segmentation,Error correction,fuzzy logic,Gaussian mixture model,hidden Markov model,Hidden Markov models,HMM segmentation tool,Labeling,neural nets,Neural networks,pattern classification,phonetic recognizer,Research and development,segmentation precision,speaker adaptation techniques,speaker recognition,Speech analysis,Speech processing,Speech recognition,speech synthesis,statistical correction procedure},
+  file = {Toledano et al. - 2003 - Automatic phonetic segmentation.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/EX4PHCC4/Toledano et al. - 2003 - Automatic phonetic segmentation.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/2BD99HXW/1255449.html:text/html}
+}
+
+@article{xiong_achieving_2016,
+  title = {Achieving {{Human Parity}} in {{Conversational Speech Recognition}}},
+  url = {http://arxiv.org/abs/1610.05256},
+  abstract = {Conversational speech recognition has served as a flagship speech recognition task since the release of the Switchboard corpus in the 1990s. In this paper, we measure the human error rate on the widely used NIST 2000 test set, and find that our latest automated system has reached human parity. The error rate of professional transcribers is 5.9\% for the Switchboard portion of the data, in which newly acquainted pairs of people discuss an assigned topic, and 11.3\% for the CallHome portion where friends and family members have open-ended conversations. In both cases, our automated system establishes a new state of the art, and edges past the human benchmark, achieving error rates of 5.8\% and 11.0\%, respectively. The key to our system's performance is the use of various convolutional and LSTM acoustic model architectures, combined with a novel spatial smoothing method and lattice-free MMI acoustic training, multiple recurrent neural network language modeling approaches, and a systematic use of system combination.},
+  timestamp = {2017-04-17T17:28:15Z},
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1610.05256},
+  primaryClass = {cs},
+  author = {Xiong, W. and Droppo, J. and Huang, X. and Seide, F. and Seltzer, M. and Stolcke, A. and Yu, D. and Zweig, G.},
+  urldate = {2017-04-17},
+  date = {2016-10-17},
+  keywords = {!REN,*TO-READ,+CNN,+Speech},
+  file = {Xiong et al. - 2016 - Achieving Human Parity in Conversational Speech Re.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/RGM3JAC3/Xiong et al. - 2016 - Achieving Human Parity in Conversational Speech Re.pdf:application/pdf;arXiv.org Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/H26KFIEV/1610.html:text/html}
+}
+
+@inproceedings{chowdhury_annotating_2015,
+  title = {Annotating and Categorizing Competition in Overlap Speech},
+  doi = {10.1109/ICASSP.2015.7178986},
+  abstract = {Overlapping speech is a common and relevant phenomenon in human conversations, reflecting many aspects of discourse dynamics. In this paper, we focus on the pragmatic role of overlaps in turn-in-progress, where it can be categorized as competitive or non-competitive. Previous studies on these two categories have mostly relied on controlled scenarios and small datasets. In our study, we focus on call center data, with customers and operators engaged in problem-solving tasks. We propose and evaluate an annotation scheme for these two overlap categories in the context of spontaneous and in-vivo human conversations. We analyze the distinctive predictive characteristics of a very large set of high-dimensional acoustic feature. We obtained a significant improvement in classification results as well as significant reduction in the feature set size.},
+  eventtitle = {2015 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  timestamp = {2017-04-18T16:54:20Z},
+  booktitle = {2015 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Chowdhury, S. A. and Danieli, M. and Riccardi, G.},
+  date = {2015-04},
+  pages = {5316--5320},
+  keywords = {*SKIMPED,+Speech,Acoustics,annotation scheme,Automatic Classification,call center data,call centres,competition categorization,customer,Discourse,distinctive predictive characteristic,feature extraction,Guidelines,high-dimensional acoustic feature,Lapping,noncompetitive overlap category,operator,overlapping speech,overlap speech,Pragmatics,problem solving,problem-solving task,Speech,Speech processing,Speech recognition,Spoken Conversation},
+  file = {Chowdhury et al. - 2015 - Annotating and categorizing competition in overlap.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/Q6IW85WP/Chowdhury et al. - 2015 - Annotating and categorizing competition in overlap.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/JXIMMJZ5/7178986.html:text/html}
+}
+
+@inproceedings{adda-decker_annotation_2008,
+  title = {Annotation and Analysis of Overlapping Speech in Political Interviews.},
+  url = {ftp://m170.limsi.fr/public/copte08.pdf},
+  timestamp = {2017-04-18T16:55:11Z},
+  booktitle = {{{LREC}}},
+  author = {Adda-Decker, Martine and Barras, Claude and Adda, Gilles and Paroubek, Patrick and de Mareüil, Philippe Boula and Habert, Benoit},
+  urldate = {2017-04-18},
+  date = {2008},
+  keywords = {*SKIMPED,+Speech},
+  options = {useprefix=true},
+  file = {Adda-Decker et al. - 2008 - Annotation and analysis of overlapping speech in p.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/FEUHUGX7/Adda-Decker et al. - 2008 - Annotation and analysis of overlapping speech in p.pdf:application/pdf}
+}
+
+@inproceedings{charlet_impact_2013,
+  title = {Impact of Overlapping Speech Detection on Speaker Diarization for Broadcast News and Debates},
+  url = {http://ieeexplore.ieee.org/abstract/document/6639163/},
+  timestamp = {2017-07-16T15:06:08Z},
+  booktitle = {Acoustics, {{Speech}} and {{Signal Processing}} ({{ICASSP}}), 2013 {{IEEE International Conference}} On},
+  publisher = {{IEEE}},
+  author = {Charlet, Delphine and Barras, Claude and Liénard, Jean-Sylvain},
+  urldate = {2017-04-18},
+  date = {2013},
+  pages = {7707--7711},
+  keywords = {!REN,*TO-READ,+Speech,Abstracts,Acoustics,Cepstral analysis,cepstral features,debates,Density estimation robust algorithm,diarization error rate,ETAPE evaluation campaign,ETAPE evaluation set,F1-measure,French broadcast news,multipitch analysis,nearest speaker labels,overlapping speech,overlapping speech detection systems,overlapping speech segments,overlapping speech systems,speaker diarization,speaker diarization stage,Speech,speech measurement,Speech recognition,temporal distance},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/2HW5Z8RX/Charlet et al. - 2013 - Impact of overlapping speech detection on speaker .pdf:application/pdf;Charlet et al. - 2013 - Impact of overlapping speech detection on speaker .pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/QIMJ2ENV/Charlet et al. - 2013 - Impact of overlapping speech detection on speaker .pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/9XQSXICJ/6639163.html:text/html;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/QP4I6SXQ/6639163.html:text/html}
+}
+
+@inproceedings{elizalde_lost_2013,
+  title = {Lost in Segmentation: {{Three}} Approaches for Speech/Non-Speech Detection in Consumer-Produced Videos},
+  doi = {10.1109/ICME.2013.6607486},
+  shorttitle = {Lost in Segmentation},
+  abstract = {Traditional speech/non-speech segmentation systems have been designed for specific acoustic conditions, such as broadcast news or meetings. However, little research has been done on consumer-produced audio. This type of media is constantly growing and has complex characteristics such as low quality recordings, environmental noise and overlapping sounds. This paper discusses an evaluation of three different approaches for speech/non-speech detection on consumer-produced audio. The approaches are state-of-the-art speech/non-speech detectors-one based on Gaussian Mixture Models (GMM), another on Support Vector Machines (SVM), and the last on Neural Networks (NN). Using the TRECVID MED 2012 database, we designed training/testing sets combinations to aid the understanding of what speech/non-speech detection on consumer-produced media entails and how traditional approaches to this detection performed in this domain. The results revealed that the cross-domain state-of-the-art GMM and SVM systems' tests underperformed a one-layer NN algorithm, which had 20\% higher accuracy and computed audio 5 times faster.},
+  eventtitle = {2013 IEEE International Conference on Multimedia and Expo (ICME)},
+  timestamp = {2017-04-18T17:06:54Z},
+  booktitle = {2013 {{IEEE International Conference}} on {{Multimedia}} and {{Expo}} ({{ICME}})},
+  author = {Elizalde, B. and Friedland, G.},
+  date = {2013-07},
+  pages = {1--6},
+  keywords = {+Speech,Abstracts,acoustic conditions,Artificial neural networks,audio databases,audio segmentation,audio signal processing,complex characteristics,consumer-produced audio,consumer-produced media,consumer-produced videos,Gaussian mixture models,Gaussian processes,GMM,neural nets,Neural networks,nonspeech detection,one-layer NN algorithm,Radiation detectors,Speech,speech detection,speech non-speech,Speech recognition,support vector machines,svm,SVM system testing,Testing,Training,TRECVID MED 2012 database,user-generated content neural networks,video signal processing},
+  file = {Elizalde and Friedland - 2013 - Lost in segmentation Three approaches for speech.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/EXT579E8/Elizalde and Friedland - 2013 - Lost in segmentation Three approaches for speech.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/87TBEB99/6607486.html:text/html}
+}
+
+@inproceedings{wu_universal_2003,
+  title = {Universal {{Background Models}} for {{Real}}-Time {{Speaker Change Detection}}.},
+  url = {https://www.researchgate.net/profile/Tingyao_Wu/publication/281644230_UNIVERSAL_BACKGROUND_MODELS_FOR_REAL-TIME_SPEAKER_CHANGE_DETECTION/links/55f28ab308ae199d47c4815e.pdf},
+  timestamp = {2017-04-24T08:34:22Z},
+  booktitle = {{{MMM}}},
+  author = {Wu, Ting-Yao and Lu, Lie and Chen, Ke and Zhang, HongJiang},
+  urldate = {2017-04-24},
+  date = {2003},
+  pages = {135--149},
+  keywords = {*SKIMPED,+Speech},
+  file = {[PDF] researchgate.net:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/P77F7RQP/Wu et al. - 2003 - Universal Background Models for Real-time Speaker .pdf:application/pdf}
+}
+
+@inproceedings{avanzi_analor._2008,
+  title = {{{ANALOR}}. {{A}} Tool for Semi-Automatic Annotation of French Prosodic Structure},
+  url = {https://hal.archives-ouvertes.fr/hal-00334656/},
+  timestamp = {2017-04-24T08:57:35Z},
+  booktitle = {{{ANALOR}}. {{A Tool}} for {{Semi}}-{{Automatic Annotation}} of {{French Prosodic Structure}}},
+  author = {Avanzi, Mathieu and Lacheret-Dujour, Anne and Victorri, Bernard},
+  urldate = {2017-04-24},
+  date = {2008},
+  pages = {119--122},
+  keywords = {+Speech},
+  file = {Avanzi et al. - 2008 - ANALOR. A tool for semi-automatic annotation of fr.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/SKJPMRVD/Avanzi et al. - 2008 - ANALOR. A tool for semi-automatic annotation of fr.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/8QXQSBWT/hal-00334656.html:text/html}
+}
+
+@inproceedings{mertens_prosogram:_2004,
+  title = {The Prosogram: {{Semi}}-Automatic Transcription of Prosody Based on a Tonal Perception Model},
+  url = {http://www.isca-speech.org/archive_open/sp2004/sp04_549.pdf},
+  shorttitle = {The Prosogram},
+  timestamp = {2017-04-24T08:58:08Z},
+  booktitle = {Speech {{Prosody}} 2004, {{International Conference}}},
+  author = {Mertens, Piet},
+  urldate = {2017-04-24},
+  date = {2004},
+  keywords = {+Speech},
+  file = {Mertens - 2004 - The prosogram Semi-automatic transcription of pro.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/NFQDEHUQ/Mertens - 2004 - The prosogram Semi-automatic transcription of pro.pdf:application/pdf}
+}
+
+@article{von_hippel_mean_2005,
+  title = {Mean, Median, and Skew: {{Correcting}} a Textbook Rule},
+  volume = {13},
+  url = {https://ww2.amstat.org/publications/jse/v13n2/vonhippel.html?ref=binfind.com/web&ref=binfind.com/web},
+  shorttitle = {Mean, Median, and Skew},
+  timestamp = {2017-04-24T14:34:39Z},
+  number = {2},
+  journaltitle = {Journal of Statistics Education},
+  author = {Von Hippel, Paul T.},
+  urldate = {2017-04-24},
+  date = {2005},
+  pages = {n2},
+  keywords = {+ML},
+  file = {[HTML] amstat.org:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/2MF795MG/vonhippel.html:text/html}
+}
+
+@article{anguera_speaker_2012,
+  title = {Speaker Diarization: {{A}} Review of Recent Research},
+  volume = {20},
+  url = {http://ieeexplore.ieee.org/abstract/document/6135543/},
+  shorttitle = {Speaker Diarization},
+  timestamp = {2017-05-04T11:51:36Z},
+  number = {2},
+  journaltitle = {IEEE Transactions on Audio, Speech, and Language Processing},
+  author = {Anguera, Xavier and Bozonnet, Simon and Evans, Nicholas and Fredouille, Corinne and Friedland, Gerald and Vinyals, Oriol},
+  urldate = {2017-05-04},
+  date = {2012},
+  pages = {356--370},
+  keywords = {!REN,*TO-READ},
+  file = {[PDF] archives-ouvertes.fr:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/EDJA8DFM/Anguera et al. - 2012 - Speaker diarization A review of recent research.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/ZAVC99XZ/6135543.html:text/html}
+}
+
+@article{tranter_overview_2006,
+  title = {An Overview of Automatic Speaker Diarization Systems},
+  volume = {14},
+  url = {http://ieeexplore.ieee.org/abstract/document/1677976/},
+  timestamp = {2017-05-04T11:51:36Z},
+  number = {5},
+  journaltitle = {IEEE Transactions on audio, speech, and language processing},
+  author = {Tranter, Sue E. and Reynolds, Douglas A.},
+  urldate = {2017-05-04},
+  date = {2006},
+  pages = {1557--1565},
+  file = {[PDF] psu.edu:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/MJK46PDN/Tranter and Reynolds - 2006 - An overview of automatic speaker diarization syste.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/8CBBWUUB/1677976.html:text/html}
+}
+
+@article{gatica-perez_automatic_2009,
+  title = {Automatic Nonverbal Analysis of Social Interaction in Small Groups: {{A}} Review},
+  volume = {27},
+  url = {http://www.sciencedirect.com/science/article/pii/S0262885609000109},
+  shorttitle = {Automatic Nonverbal Analysis of Social Interaction in Small Groups},
+  timestamp = {2017-05-04T11:51:36Z},
+  number = {12},
+  journaltitle = {Image and Vision Computing},
+  author = {Gatica-Perez, Daniel},
+  urldate = {2017-05-04},
+  date = {2009},
+  pages = {1775--1787},
+  file = {[PDF] idiap.ch:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/JJH5MQPQ/Gatica-Perez - 2009 - Automatic nonverbal analysis of social interaction.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/XF53QEAX/S0262885609000109.html:text/html}
+}
+
+@article{kenny_diarization_2010,
+  title = {Diarization of Telephone Conversations Using Factor Analysis},
+  volume = {4},
+  url = {http://ieeexplore.ieee.org/abstract/document/5587872/},
+  timestamp = {2017-05-04T11:51:36Z},
+  number = {6},
+  journaltitle = {IEEE Journal of Selected Topics in Signal Processing},
+  author = {Kenny, Patrick and Reynolds, Douglas and Castaldo, Fabio},
+  urldate = {2017-05-04},
+  date = {2010},
+  pages = {1059--1070},
+  file = {[PDF] crim.ca:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/PDD5P8PF/Kenny et al. - 2010 - Diarization of telephone conversations using facto.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/XZ4K8MVS/5587872.html:text/html}
+}
+
+@article{heldner_pauses_2010,
+  title = {Pauses, Gaps and Overlaps in Conversations},
+  volume = {38},
+  issn = {0095-4470},
+  url = {http://www.sciencedirect.com/science/article/pii/S0095447010000628},
+  doi = {10.1016/j.wocn.2010.08.002},
+  abstract = {This paper explores durational aspects of pauses, gaps and overlaps in three different conversational corpora with a view to challenge claims about precision timing in turn-taking. Distributions of pause, gap and overlap durations in conversations are presented, and methodological issues regarding the statistical treatment of such distributions are discussed. The results are related to published minimal response times for spoken utterances and thresholds for detection of acoustic silences in speech. It is shown that turn-taking is generally less precise than is often claimed by researchers in the field of conversation analysis or interactional linguistics. These results are discussed in the light of their implications for models of timing in turn-taking, and for interaction control models in speech technology. In particular, it is argued that the proportion of speaker changes that could potentially be triggered by information immediately preceding the speaker change is large enough for reactive interaction controls models to be viable in speech technology.},
+  timestamp = {2017-05-06T12:55:02Z},
+  number = {4},
+  journaltitle = {Journal of Phonetics},
+  author = {Heldner, Mattias and Edlund, Jens},
+  urldate = {2017-05-06},
+  date = {2010-10},
+  pages = {555--568},
+  keywords = {!REN,*DONE},
+  file = {ScienceDirect Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/MIZEIZ8H/Heldner and Edlund - 2010 - Pauses, gaps and overlaps in conversations.pdf:application/pdf;ScienceDirect Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/25UXBCV4/S0095447010000628.html:text/html}
+}
+
+@article{kingsbury_robust_1998,
+  title = {Robust Speech Recognition Using the Modulation Spectrogram},
+  volume = {25},
+  issn = {0167-6393},
+  url = {http://www.sciencedirect.com/science/article/pii/S0167639398000326},
+  doi = {10.1016/S0167-6393(98)00032-6},
+  abstract = {The performance of present-day automatic speech recognition (ASR) systems is seriously compromised by levels of acoustic interference (such as additive noise and room reverberation) representative of real-world speaking conditions. Studies on the perception of speech by human listeners suggest that recognizer robustness might be improved by focusing on temporal structure in the speech signal that appears as low-frequency (below 16 Hz) amplitude modulations in subband channels following critical-band frequency analysis. A speech representation that emphasizes this temporal structure, the “modulation spectrogram”, has been developed. Visual displays of speech produced with the modulation spectrogram are relatively stable in the presence of high levels of background noise and reverberation. Using the modulation spectrogram as a front end for ASR provides a significant improvement in performance on highly reverberant speech. When the modulation spectrogram is used in combination with log-RASTA-PLP (log RelAtive SpecTrAl Perceptual Linear Predictive analysis) performance over a range of noisy and reverberant conditions is significantly improved, suggesting that the use of multiple representations is another promising method for improving the robustness of ASR systems.},
+  timestamp = {2017-05-14T16:30:35Z},
+  issue = {1–3},
+  journaltitle = {Speech Communication},
+  author = {Kingsbury, Brian E. D and Morgan, Nelson and Greenberg, Steven},
+  urldate = {2017-05-14},
+  date = {1998-08},
+  pages = {117--132},
+  keywords = {Reverberation,Robust speech recognition},
+  file = {ScienceDirect Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/TDQ6HXPS/Kingsbury et al. - 1998 - Robust speech recognition using the modulation spe.pdf:application/pdf;ScienceDirect Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/T9QSAKNS/S0167639398000326.html:text/html}
+}
+
+@inproceedings{wang_training_2016,
+  title = {Training Deep Neural Networks on Imbalanced Data Sets},
+  doi = {10.1109/IJCNN.2016.7727770},
+  abstract = {Deep learning has become increasingly popular in both academic and industrial areas in the past years. Various domains including pattern recognition, computer vision, and natural language processing have witnessed the great power of deep networks. However, current studies on deep learning mainly focus on data sets with balanced class labels, while its performance on imbalanced data is not well examined. Imbalanced data sets exist widely in real world and they have been providing great challenges for classification tasks. In this paper, we focus on the problem of classification using deep network on imbalanced data sets. Specifically, a novel loss function called mean false error together with its improved version mean squared false error are proposed for the training of deep networks on imbalanced data sets. The proposed method can effectively capture classification errors from both majority class and minority class equally. Experiments and comparisons demonstrate the superiority of the proposed approach compared with conventional methods in classifying imbalanced data sets on deep neural networks.},
+  eventtitle = {2016 International Joint Conference on Neural Networks (IJCNN)},
+  timestamp = {2017-05-18T20:20:35Z},
+  booktitle = {2016 {{International Joint Conference}} on {{Neural Networks}} ({{IJCNN}})},
+  author = {Wang, S. and Liu, W. and Wu, J. and Cao, L. and Meng, Q. and Kennedy, P. J.},
+  date = {2016-07},
+  pages = {4368--4374},
+  keywords = {Australia,Classification algorithms,classification errors,data classification,data handling,data imbalance,deep learning,deep neural network,deep neural network training,imbalanced data sets,learning (artificial intelligence),loss function,Machine learning,mean squared false error,Neural networks,pattern classification,Sampling methods,Standards,Training},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/94DR797G/Wang et al. - 2016 - Training deep neural networks on imbalanced data s.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/MR84H3NW/7727770.html:text/html}
+}
+
+@inproceedings{huang_learning_2016,
+  title = {Learning Deep Representation for Imbalanced Classification},
+  url = {http://www.cv-foundation.org/openaccess/content_cvpr_2016/html/Huang_Learning_Deep_Representation_CVPR_2016_paper.html},
+  timestamp = {2017-05-18T20:23:42Z},
+  booktitle = {Proceedings of the {{IEEE Conference}} on {{Computer Vision}} and {{Pattern Recognition}}},
+  author = {Huang, Chen and Li, Yining and Change Loy, Chen and Tang, Xiaoou},
+  urldate = {2017-05-18},
+  date = {2016},
+  pages = {5375--5384},
+  file = {[PDF] cv-foundation.org:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/NBQBWS7S/Huang et al. - 2016 - Learning deep representation for imbalanced classi.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/X2B8CVMN/Huang_Learning_Deep_Representation_CVPR_2016_paper.html:text/html}
+}
+
+@article{hinton_deep_2012,
+  title = {Deep Neural Networks for Acoustic Modeling in Speech Recognition: {{The}} Shared Views of Four Research Groups},
+  volume = {29},
+  url = {http://ieeexplore.ieee.org/abstract/document/6296526/},
+  shorttitle = {Deep Neural Networks for Acoustic Modeling in Speech Recognition},
+  timestamp = {2017-05-18T20:23:42Z},
+  number = {6},
+  journaltitle = {IEEE Signal Processing Magazine},
+  author = {Hinton, Geoffrey and Deng, Li and Yu, Dong and Dahl, George E. and Mohamed, Abdel-rahman and Jaitly, Navdeep and Senior, Andrew and Vanhoucke, Vincent and Nguyen, Patrick and Sainath, Tara N. and {others}},
+  urldate = {2017-05-18},
+  date = {2012},
+  pages = {82--97},
+  file = {[PDF] microsoft.com:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/V4X4EKZB/Hinton et al. - 2012 - Deep neural networks for acoustic modeling in spee.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/IGK33349/6296526.html:text/html}
+}
+
+@inproceedings{geiger_detecting_2013,
+  title = {Detecting Overlapping Speech with Long Short-Term Memory Recurrent Neural Networks.},
+  url = {http://lpp.ilpga.fr/PDF/IS130124/IS130124.PDF},
+  timestamp = {2017-06-28T06:51:02Z},
+  author = {Geiger, Jürgen T. and Eyben, Florian and Schuller, Björn W. and Rigoll, Gerhard},
+  date = {2013},
+  keywords = {!REN,*TO-READ},
+  file = {[PDF] ilpga.fr:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/BTXHW9AX/Geiger et al. - 2013 - Detecting overlapping speech with long short-term .pdf:application/pdf}
+}
+
+@inproceedings{milner_dnn-based_2016,
+  title = {{{DNN}}-Based Speaker Clustering for Speaker Diarisation},
+  url = {http://eprints.whiterose.ac.uk/109281/},
+  timestamp = {2017-06-28T06:53:55Z},
+  booktitle = {Proceedings of the {{Annual Conference}} of the {{International Speech Communication Association}}, {{INTERSPEECH}}},
+  publisher = {{Sheffield}},
+  author = {Milner, Rosanna and Hain, Thomas},
+  date = {2016},
+  pages = {2185--2189},
+  keywords = {*TO-READ},
+  file = {[PDF] whiterose.ac.uk:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/PM4JN7GU/Milner and Hain - 2016 - DNN-based speaker clustering for speaker diarisati.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/8S7H24J9/109281.html:text/html}
+}
+
+@inproceedings{bredin_tristounet:_2017,
+  title = {{{TristouNet}}: {{Triplet}} Loss for Speaker Turn Embedding},
+  doi = {10.1109/ICASSP.2017.7953194},
+  shorttitle = {{{TristouNet}}},
+  abstract = {TristouNet is a neural network architecture based on Long Short-Term Memory recurrent networks, meant to project speech sequences into a fixed-dimensional euclidean space. Thanks to the triplet loss paradigm used for training, the resulting sequence embeddings can be compared directly with the euclidean distance, for speaker comparison purposes. Experiments on short (between 500ms and 5s) speech turn comparison and speaker change detection show that TristouNet brings significant improvements over the current state-of-the-art techniques for both tasks.},
+  eventtitle = {2017 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  timestamp = {2017-07-07T10:31:02Z},
+  booktitle = {2017 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Bredin, H.},
+  date = {2017-03},
+  pages = {5430--5434},
+  keywords = {*SKIMPED,*TO-READ,Euclidean distance,feature extraction,long short-term memory network,Neural networks,sequence embedding,speaker recognition,Speech,Training,triplet loss,TV},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/25PIXKJA/Bredin - 2017 - TristouNet Triplet loss for speaker turn embeddin.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/JVFDG9AJ/7953194.html:text/html}
+}
+
+@article{shokouhi_teager_2017,
+  title = {Teager \#x2013;{{Kaiser Energy Operators}} for {{Overlapped Speech Detection}}},
+  volume = {25},
+  issn = {2329-9290},
+  doi = {10.1109/TASLP.2017.2678684},
+  abstract = {Overlapped speech is referred to a monophonic audio signal in which at least two speakers are present at the same time. In this study, the focus is on distinguishing overlapped from single-speaker speech, i.e., overlapped speech detection. We develop an overlap detection algorithm using an enhanced time-frequency representation, called Pyknogram, estimated directly from the input audio signal. Pyknograms use the Teager-Kaiser energy operator to detect resonant time-frequency units and thereby suppress nonharmonic structures. We show how the resulting Pyknograms provide high separability in terms of detecting the presence of interfering speech. Our proposed unsupervised Pyknogram-based detection results in over 30\% relative improvement in overlap detection error rates across different signal-to-interference ratios (SIR) compared to baseline systems. In addition, a case study is presented where we evaluate speaker verification performance under different overlap conditions using the GRID database and observe that speaker verification equal error rates (EER) vary from 2\% to 30\%, depending on the average SIR values introduced to train and test sets. In order to estimate the reliability of speaker verification scores across different trials, overlap detection results are interpreted as low-level information and stacked alongside verification outputs. The resulting high-dimensional space is passed through a support vector machine classifier to find the separating hyperplane between target and imposter scores. Combining overlap detection scores with speaker verification on average yields 20\% relative decrease in EER. We also provide an upper bound for this approach using existing overlap labels, which yields 23\% relative improvement.},
+  timestamp = {2017-07-07T13:27:51Z},
+  number = {5},
+  journaltitle = {IEEE/ACM Transactions on Audio, Speech, and Language Processing},
+  author = {Shokouhi, N. and Hansen, J. H. L.},
+  date = {2017-05},
+  pages = {1035--1047},
+  keywords = {!REN,*DONE,*TO-READ,audio signal processing,co-channel speech,enhanced time-frequency representation,Frequency estimation,GRID database,interfering speech detection,monophonic audio signal,nonharmonic structures suppression,overlap detection,overlap detection error rates,Overlapped speech detection,Reliability,resonant time-frequency units detection,signal classification,signal-to-interference ratios,speaker recognition,speaker verification equal error rates,speaker verification performance evaluation,speaker verification scores,Speech,Speech recognition,support vector machine classifier,support vector machines,Teager-Kaiser energy operators,Time-frequency analysis,unsupervised learning,unsupervised Pyknogram-based detection results,voice activity detection},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/7KMXRMW9/Shokouhi and Hansen - 2017 - Teager #x2013\;Kaiser Energy Operators for Overlapp.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/2TRUX6WD/7872488.html:text/html}
+}
+
+@article{keskar_large-batch_2016,
+  title = {On {{Large}}-{{Batch Training}} for {{Deep Learning}}: {{Generalization Gap}} and {{Sharp Minima}}},
+  url = {http://arxiv.org/abs/1609.04836},
+  shorttitle = {On {{Large}}-{{Batch Training}} for {{Deep Learning}}},
+  abstract = {The stochastic gradient descent (SGD) method and its variants are algorithms of choice for many Deep Learning tasks. These methods operate in a small-batch regime wherein a fraction of the training data, say \$32\$-\$512\$ data points, is sampled to compute an approximation to the gradient. It has been observed in practice that when using a larger batch there is a degradation in the quality of the model, as measured by its ability to generalize. We investigate the cause for this generalization drop in the large-batch regime and present numerical evidence that supports the view that large-batch methods tend to converge to sharp minimizers of the training and testing functions - and as is well known, sharp minima lead to poorer generalization. In contrast, small-batch methods consistently converge to flat minimizers, and our experiments support a commonly held view that this is due to the inherent noise in the gradient estimation. We discuss several strategies to attempt to help large-batch methods eliminate this generalization gap.},
+  timestamp = {2017-07-16T15:07:19Z},
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1609.04836},
+  primaryClass = {cs, math},
+  author = {Keskar, Nitish Shirish and Mudigere, Dheevatsa and Nocedal, Jorge and Smelyanskiy, Mikhail and Tang, Ping Tak Peter},
+  date = {2016-09-15},
+  keywords = {Computer Science - Learning,Mathematics - Optimization and Control},
+  file = {arXiv\:1609.04836 PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/ICR3M9SE/Keskar et al. - 2016 - On Large-Batch Training for Deep Learning General.pdf:application/pdf;arXiv.org Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/6U6K399J/1609.html:text/html}
+}
+
+@online{aaron_audio_????,
+  title = {Audio {{Alchemy}}: {{Getting Computers}} to {{Understand Overlapping Speech}}},
+  url = {https://www.scientificamerican.com/article/speech-getting-computers-understand-overlapping/},
+  shorttitle = {Audio {{Alchemy}}},
+  abstract = {You have little trouble hearing what your companion is saying in a noisy cafe, but computers are confounded by this \&quot;cocktail party problem.\&quot; New algorithms finally enable machines to tune in to the right speaker, sometimes even better than humans can},
+  timestamp = {2017-07-23T19:57:28Z},
+  journaltitle = {Scientific American},
+  author = {Aaron, Peder A. Olsen, Steven J. Rennie, Andy, John R. Hershey and Aaron, Peder A. Olsen, Steven J. Rennie, Andy, John R. Hershey},
+  urldate = {2017-07-23},
+  keywords = {*DONE,*TO-READ},
+  file = {Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/5BI2UBDU/speech-getting-computers-understand-overlapping.html:text/html}
+}
+
+@inproceedings{geiger_speech_2012-1,
+  title = {Speech Overlap Detection Using Convolutive Non-Negative Sparse Coding: {{New}} Improvements and Insights},
+  shorttitle = {Speech Overlap Detection Using Convolutive Non-Negative Sparse Coding},
+  abstract = {This paper presents recent advances in the application of convolutive non-negative sparse coding (CNSC) to the problem of overlap detection in the context of conference meetings and speaker diarization. CNSC is used to project a mixed speaker signal onto separate speaker bases and hence to detect intervals of competing speech. We present new energy ratio and total energy features which give significant improvements over our previous work. The system is assessed using a subset of the AMI meeting corpus. We report results which are comparable to the state of the art which support the potential of a new approach to overlap detection. An analysis of system performance highlights the importance of further work to addresses weaknesses in detecting particularly short segments of overlapping speech.},
+  eventtitle = {2012 Proceedings of the 20th European Signal Processing Conference (EUSIPCO)},
+  timestamp = {2017-08-22T21:42:03Z},
+  booktitle = {2012 {{Proceedings}} of the 20th {{European Signal Processing Conference}} ({{EUSIPCO}})},
+  author = {Geiger, J. T. and Vipperla, R. and Evans, N. and Schuller, B. and Rigoll, G.},
+  date = {2012-08},
+  pages = {340--344},
+  keywords = {!REN,AMI,CNSC,convolutive non-negative sparse coding,convolutive nonnegative sparse coding,Density estimation robust algorithm,feature extraction,Hidden Markov models,overlapping speech,Sparse matrices,speaker diarization,speaker recognition,speaker signal,Speech,speech coding,speech overlap detection},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/K3J3485U/Geiger et al. - 2012 - Speech overlap detection using convolutive non-neg.pdf:application/pdf;IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/NIXRA5AJ/Geiger et al. - 2012 - Speech overlap detection using convolutive non-neg.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/FTF49G59/6333888.html:text/html;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/KIXKTU2M/6333888.html:text/html}
+}
+
+@thesis{kumar_feature_2015,
+  location = {{Chennai, India}},
+  title = {Feature {{Normalisation}} for {{Robust Speech Recognition}}},
+  url = {http://arxiv.org/abs/1507.04019},
+  abstract = {Speech recognition system performance degrades in noisy environments. If the acoustic models are built using features of clean utterances, the features of a noisy test utterance would be acoustically mismatched with the trained model. This gives poor likelihoods and poor recognition accuracy. Model adaptation and feature normalisation are two broad areas that address this problem. While the former often gives better performance, the latter involves estimation of lesser number of parameters, making the system feasible for practical implementations. This research focuses on the efficacies of various subspace, statistical and stereo based feature normalisation techniques. A subspace projection based method has been investigated as a standalone and adjunct technique involving reconstruction of noisy speech features from a precomputed set of clean speech building-blocks. The building blocks are learned using non-negative matrix factorisation (NMF) on log-Mel filter bank coefficients, which form a basis for the clean speech subspace. The work provides a detailed study on how the method can be incorporated into the extraction process of Mel-frequency cepstral coefficients. Experimental results show that the new features are robust to noise, and achieve better results when combined with the existing techniques. The work also proposes a modification to the training process of SPLICE algorithm for noise robust speech recognition. It is based on feature correlations, and enables this stereo-based algorithm to improve the performance in all noise conditions, especially in unseen cases. Further, the modified framework is extended to work for non-stereo datasets where clean and noisy training utterances, but not stereo counterparts, are required. An MLLR-based computationally efficient run-time noise adaptation method in SPLICE framework has been proposed.},
+  timestamp = {2017-07-30T20:27:55Z},
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1507.04019},
+  institution = {{Indian Institute of Technology Madras, Chennai}},
+  author = {Kumar, D. S. Pavan},
+  date = {2015-07-14},
+  keywords = {*TO-READ,Computer Science - Computation and Language,Computer Science - Sound},
+  file = {arXiv\:1507.04019 PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/X9UM96WB/Kumar - 2015 - Feature Normalisation for Robust Speech Recognitio.pdf:application/pdf;arXiv.org Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/TFQR4WQ8/1507.html:text/html}
+}
+
+@article{rabiner_tutorial_1989,
+  title = {A Tutorial on Hidden {{Markov}} Models and Selected Applications in Speech Recognition},
+  volume = {77},
+  issn = {0018-9219},
+  doi = {10.1109/5.18626},
+  abstract = {This tutorial provides an overview of the basic theory of hidden Markov models (HMMs) as originated by L.E. Baum and T. Petrie (1966) and gives practical details on methods of implementation of the theory along with a description of selected applications of the theory to distinct problems in speech recognition. Results from a number of original sources are combined to provide a single source of acquiring the background required to pursue further this area of research. The author first reviews the theory of discrete Markov chains and shows how the concept of hidden states, where the observation is a probabilistic function of the state, can be used effectively. The theory is illustrated with two simple examples, namely coin-tossing, and the classic balls-in-urns system. Three fundamental problems of HMMs are noted and several practical techniques for solving these problems are given. The various types of HMMs that have been studied, including ergodic as well as left-right models, are described},
+  timestamp = {2017-07-30T20:37:51Z},
+  number = {2},
+  journaltitle = {Proceedings of the IEEE},
+  author = {Rabiner, L. R.},
+  date = {1989-02},
+  pages = {257--286},
+  keywords = {*DONE,*TO-READ,balls-in-urns system,coin-tossing,discrete Markov chains,Distortion,ergodic models,Hidden Markov models,hidden states,left-right models,Markov processes,Mathematical model,Multiple signal classification,probabilistic function,signal processing,Speech recognition,Statistical analysis,Stochastic processes,Temperature measurement,Tutorial},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/IJXU9DSS/Rabiner - 1989 - A tutorial on hidden Markov models and selected ap.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/7MR3FSE2/18626.html:text/html}
+}
+
+@inproceedings{cetin_speaker_2006,
+  title = {Speaker {{Overlaps}} and {{ASR Errors}} in {{Meetings}}: {{Effects Before}}, {{During}}, and {{After}} the {{Overlap}}},
+  volume = {1},
+  doi = {10.1109/ICASSP.2006.1660031},
+  shorttitle = {Speaker {{Overlaps}} and {{ASR Errors}} in {{Meetings}}},
+  abstract = {We analyze automatic speech recognition (ASR) errors made by a state-of-the-art meeting recognizer, with respect to locations of overlapping speech. Our analysis focuses on recognition errors made both during an overlap and in the regions immediately preceding and following the location of overlapped speech. We devise an experimental paradigm to allow examination of the same foreground speech both with and without naturally occurring cross-talk. We then analyze ASR errors with respect to a number of factors, including the severity of the cross-talk and distance from the overlap region. In addition to reporting effects on ASR errors, we discover a number of interesting phenomena. First, we find that overlaps tend to occur at high-perplexity regions in the foreground talker's speech. Second, word sequences within overlaps have higher perplexity than those in nonoverlaps, if using trigrams or 4-grams, but the unigram perplexity within overlaps is considerably lower than that of nonoverlaps. An explanation for this behavior is proposed, based on the preponderance of multiple short dialog acts found in overlap regions. Third, we discover that the word error rate (WER) after overlaps is consistently lower than that before the overlap. This finding cannot be explained by the recognition process itself; rather, the foreground speaker appears to reduce perplexity shortly after being overlapped. Taken together, these observations suggest that the automatic modeling of meetings could benefit from a broader view of the relationship between speaker overlap and ASR in natural conversation},
+  eventtitle = {2006 IEEE International Conference on Acoustics Speech and Signal Processing Proceedings},
+  timestamp = {2017-08-22T21:41:59Z},
+  booktitle = {2006 {{IEEE International Conference}} on {{Acoustics Speech}} and {{Signal Processing Proceedings}}},
+  author = {Cetin, O. and Shriberg, E.},
+  date = {2006-05},
+  pages = {I--I},
+  keywords = {!REN,*TO-READ,Automatic speech recognition,Computer errors,Computer science,cross-talk,Error analysis,Loudspeakers,Microphones,NIST,overlapping speech,speaker overlaps,Speech analysis,Speech recognition,state-of-the-art meeting recognizer,Telephony,word error rate,word sequences},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/DUKMZKFX/Cetin and Shriberg - 2006 - Speaker Overlaps and ASR Errors in Meetings Effec.pdf:application/pdf;IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/FPETWT7B/Cetin and Shriberg - 2006 - Speaker Overlaps and ASR Errors in Meetings Effec.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/66T74GND/1660031.html:text/html;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/CJUFC4AH/1660031.html:text/html}
+}
+
+@article{ryant_speech_2013,
+  title = {Speech {{Activity Detection}} on {{YouTube Using Deep Neural Networks}}},
+  url = {https://www.researchgate.net/profile/Mark_Liberman2/publication/289409617_Speech_activity_detection_on_youtube_using_deep_neural_networks/links/57430ef308ae9f741b37a027.pdf},
+  timestamp = {2017-07-30T20:43:13Z},
+  author = {Ryant, Neville and Liberman, Mark and Yuan, Jiahong},
+  date = {2013},
+  file = {[PDF] researchgate.net:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/KVTP62II/Ryant et al. - Speech Activity Detection on YouTube Using Deep Ne.pdf:application/pdf}
+}
+
+@incollection{gracia_phoneme-lattice_2014,
+  title = {Phoneme-{{Lattice}} to {{Phoneme}}-{{Sequence Matching Algorithm Based}} on {{Dynamic Programming}}},
+  isbn = {978-3-319-13622-6 978-3-319-13623-3},
+  url = {https://link.springer.com/chapter/10.1007/978-3-319-13623-3_11},
+  abstract = {A novel phoneme-lattice to phoneme-sequence matching algorithm based on dynamic programming is presented in this paper. Phoneme lattices have been shown to be a good choice to encode in a compact way alternative decoding hypotheses from a speech recognition system. These are typically used for the spoken term detection and keyword-spotting tasks, where a phoneme sequence query is matched to a reference lattice. Most current approaches suffer from a lack of flexibility whenever a match allowing phoneme insertions, deletions and substitutions is to be found. We introduce a matching approach based on dynamic programming, originally proposed for Minimum Bayes decoding on speech recognition systems. The original algorithm is extended in several ways. First, a self-trained phoneme confusion matrix for phoneme comparison is applied as phoneme penalties. Also, posterior probabilities are computed per arc, instead of likelihoods and an acoustic matching distance is combined with the edit distance at every arc. Finally, total matching scores are normalized based on the length of the optimum alignment path. The resulting algorithm is compared to a state-of-the-art phoneme-lattice-to-string matching algorithm showing relative precision improvements over 20\% relative on an isolated word retrieval task.},
+  timestamp = {2017-07-30T21:17:10Z},
+  langid = {english},
+  booktitle = {Advances in {{Speech}} and {{Language Technologies}} for {{Iberian Languages}}},
+  series = {Lecture Notes in Computer Science},
+  publisher = {{Springer, Cham}},
+  author = {Gracia, Ciro and Anguera, Xavier and Luque, Jordi and Artzi, Ittai},
+  urldate = {2017-07-30},
+  date = {2014},
+  pages = {99--108},
+  keywords = {*TO-READ},
+  file = {Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/A6DWWBVF/Gracia et al. - 2014 - Phoneme-Lattice to Phoneme-Sequence Matching Algor.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/PWSF4CGC/978-3-319-13623-3_11.html:text/html},
+  doi = {10.1007/978-3-319-13623-3_11}
+}
+
+@article{ioffe_batch_2015,
+  title = {Batch {{Normalization}}: {{Accelerating Deep Network Training}} by {{Reducing Internal Covariate Shift}}},
+  url = {http://arxiv.org/abs/1502.03167},
+  shorttitle = {Batch {{Normalization}}},
+  abstract = {Training Deep Neural Networks is complicated by the fact that the distribution of each layer's inputs changes during training, as the parameters of the previous layers change. This slows down the training by requiring lower learning rates and careful parameter initialization, and makes it notoriously hard to train models with saturating nonlinearities. We refer to this phenomenon as internal covariate shift, and address the problem by normalizing layer inputs. Our method draws its strength from making normalization a part of the model architecture and performing the normalization for each training mini-batch. Batch Normalization allows us to use much higher learning rates and be less careful about initialization. It also acts as a regularizer, in some cases eliminating the need for Dropout. Applied to a state-of-the-art image classification model, Batch Normalization achieves the same accuracy with 14 times fewer training steps, and beats the original model by a significant margin. Using an ensemble of batch-normalized networks, we improve upon the best published result on ImageNet classification: reaching 4.9\% top-5 validation error (and 4.8\% test error), exceeding the accuracy of human raters.},
+  timestamp = {2017-07-31T10:26:46Z},
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1502.03167},
+  primaryClass = {cs},
+  author = {Ioffe, Sergey and Szegedy, Christian},
+  date = {2015-02-10},
+  keywords = {Computer Science - Learning},
+  file = {arXiv\:1502.03167 PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/AWBX23GD/Ioffe and Szegedy - 2015 - Batch Normalization Accelerating Deep Network Tra.pdf:application/pdf;arXiv.org Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/MCM45W5P/1502.html:text/html}
+}
+
+@article{bengio_practical_2012,
+  title = {Practical Recommendations for Gradient-Based Training of Deep Architectures},
+  url = {http://arxiv.org/abs/1206.5533},
+  abstract = {Learning algorithms related to artificial neural networks and in particular for Deep Learning may seem to involve many bells and whistles, called hyper-parameters. This chapter is meant as a practical guide with recommendations for some of the most commonly used hyper-parameters, in particular in the context of learning algorithms based on back-propagated gradient and gradient-based optimization. It also discusses how to deal with the fact that more interesting results can be obtained when allowing one to adjust many hyper-parameters. Overall, it describes elements of the practice used to successfully and efficiently train and debug large-scale and often deep multi-layer neural networks. It closes with open questions about the training difficulties observed with deeper architectures.},
+  timestamp = {2017-07-31T10:33:44Z},
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1206.5533},
+  primaryClass = {cs},
+  author = {Bengio, Yoshua},
+  date = {2012-06-24},
+  keywords = {Computer Science - Learning},
+  file = {arXiv\:1206.5533 PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/C36JF2NJ/Bengio - 2012 - Practical recommendations for gradient-based train.pdf:application/pdf;arXiv.org Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/D3TA6937/1206.html:text/html}
+}
+
+@article{hershey_cnn_2016,
+  title = {{{CNN Architectures}} for {{Large}}-{{Scale Audio Classification}}},
+  url = {http://arxiv.org/abs/1609.09430},
+  abstract = {Convolutional Neural Networks (CNNs) have proven very effective in image classification and show promise for audio. We use various CNN architectures to classify the soundtracks of a dataset of 70M training videos (5.24 million hours) with 30,871 video-level labels. We examine fully connected Deep Neural Networks (DNNs), AlexNet [1], VGG [2], Inception [3], and ResNet [4]. We investigate varying the size of both training set and label vocabulary, finding that analogs of the CNNs used in image classification do well on our audio classification task, and larger training and label sets help up to a point. A model using embeddings from these classifiers does much better than raw features on the Audio Set [5] Acoustic Event Detection (AED) classification task.},
+  timestamp = {2017-08-01T19:43:57Z},
+  archivePrefix = {arXiv},
+  eprinttype = {arxiv},
+  eprint = {1609.09430},
+  primaryClass = {cs, stat},
+  author = {Hershey, Shawn and Chaudhuri, Sourish and Ellis, Daniel P. W. and Gemmeke, Jort F. and Jansen, Aren and Moore, R. Channing and Plakal, Manoj and Platt, Devin and Saurous, Rif A. and Seybold, Bryan and Slaney, Malcolm and Weiss, Ron J. and Wilson, Kevin},
+  date = {2016-09-29},
+  keywords = {Computer Science - Learning,Computer Science - Sound,Statistics - Machine Learning},
+  file = {arXiv\:1609.09430 PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/4WDZFRI2/Hershey et al. - 2016 - CNN Architectures for Large-Scale Audio Classifica.pdf:application/pdf;arXiv.org Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/7SZVXCMV/1609.html:text/html}
+}
+
+@online{haytham_fayek_speech_2016,
+  title = {Speech {{Processing}} for {{Machine Learning}}: {{Filter}} Banks, {{Mel}}-{{Frequency Cepstral Coefficients}} ({{MFCCs}}) and {{What}}'s {{In}}-{{Between}}},
+  url = {http://haythamfayek.com/2016/04/21/speech-processing-for-machine-learning.html},
+  timestamp = {2017-08-03T09:38:37Z},
+  author = {{Haytham Fayek}},
+  urldate = {2017-08-03},
+  date = {2016-04-21},
+  keywords = {*TO-READ}
+}
+
+@article{friedland_prosodic_2009,
+  title = {Prosodic and Other {{Long}}-{{Term Features}} for {{Speaker Diarization}}},
+  volume = {17},
+  issn = {1558-7916},
+  doi = {10.1109/TASL.2009.2015089},
+  abstract = {Speaker diarization is defined as the task of determining ldquowho spoke whenrdquo given an audio track and no other prior knowledge of any kind. The following article shows how a state-of-the-art speaker diarization system can be improved by combining traditional short-term features (MFCCs) with prosodic and other long-term features. First, we present a framework to study the speaker discriminability of 70 different long-term features. Then, we show how the top-ranked long-term features can be combined with short-term features to increase the accuracy of speaker diarization. The results were measured on standardized datasets (NIST RT) and show a consistent improvement of about 30\% relative in diarization error rate compared to the best system presented at the NIST evaluation in 2007.},
+  timestamp = {2017-08-16T13:00:17Z},
+  number = {5},
+  journaltitle = {IEEE Transactions on Audio, Speech, and Language Processing},
+  author = {Friedland, G. and Vinyals, O. and Huang, Y. and Muller, C.},
+  date = {2009-07},
+  pages = {985--993},
+  keywords = {*SKIMPED,audio signal processing,audio track,Cepstral analysis,Computer science,Density estimation robust algorithm,Error analysis,long-term features,Mel frequency cepstral coefficient,mel-frequency cepstral coefficients,MFCC,NIST,prosody,speaker diarization,speaker discriminability,speaker recognition,Speech analysis,Speech processing,System testing},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/DX3WKRRC/Friedland et al. - 2009 - Prosodic and other Long-Term Features for Speaker .pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/IQAKE88B/5067417.html:text/html}
+}
+
+@thesis{zelenak_detection_2012,
+  title = {Detection and Handling of Overlapping Speech for Speaker Diarization},
+  rights = {Open Access},
+  url = {http://www.tdx.cat/handle/10803/72431},
+  abstract = {For the last several years, speaker diarization has been attracting substantial research attention as one of the spoken
+language technologies applied for the improvement, or enrichment, of recording transcriptions. Recordings of meetings,
+compared to other domains, exhibit an increased complexity due to the spontaneity of speech, reverberation effects, and also
+due to the presence of overlapping speech.
+Overlapping speech refers to situations when two or more speakers are speaking simultaneously. In meeting data, a
+substantial portion of errors of the conventional speaker diarization systems can be ascribed to speaker overlaps, since usually
+only one speaker label is assigned per segment. Furthermore, simultaneous speech included in training data can eventually
+lead to corrupt single-speaker models and thus to a worse segmentation.
+This thesis concerns the detection of overlapping speech segments and its further application for the improvement of speaker
+diarization performance. We propose the use of three spatial cross-correlationbased parameters for overlap detection on
+distant microphone channel data. Spatial features from different microphone pairs are fused by means of principal component
+analysis, linear discriminant analysis, or by a multi-layer perceptron.
+In addition, we also investigate the possibility of employing longterm prosodic information. The most suitable subset from a set
+of candidate prosodic features is determined in two steps. Firstly, a ranking according to mRMR criterion is obtained, and then,
+a standard hill-climbing wrapper approach is applied in order to determine the optimal number of features.
+The novel spatial as well as prosodic parameters are used in combination with spectral-based features suggested previously in
+the literature. In experiments conducted on AMI meeting data, we show that the newly proposed features do contribute to the
+detection of overlapping speech, especially on data originating from a single recording site.
+In speaker diarization, for segments including detected speaker overlap, a second speaker label is picked, and such segments
+are also discarded from the model training. The proposed overlap labeling technique is integrated in Viterbi decoding, a part of
+the diarization algorithm. During the system development it was discovered that it is favorable to do an independent
+optimization of overlap exclusion and labeling with respect to the overlap detection system.
+We report improvements over the baseline diarization system on both single- and multi-site AMI data. Preliminary experiments
+with NIST RT data show DER improvement on the RT ¿09 meeting recordings as well.
+The addition of beamforming and TDOA feature stream into the baseline diarization system, which was aimed at improving the
+clustering process, results in a bit higher effectiveness of the overlap labeling algorithm. A more detailed analysis on the
+overlap exclusion behavior reveals big improvement contrasts between individual meeting recordings as well as between
+various settings of the overlap detection operation point. However, a high performance variability across different recordings is
+also typical of the baseline diarization system, without any overlap handling.},
+  timestamp = {2017-08-16T13:35:46Z},
+  langid = {english},
+  institution = {{Universitat Politècnica de Catalunya}},
+  type = {Ph.{{D}}. {{Thesis}}},
+  author = {Zelenák, Martin},
+  urldate = {2017-08-16},
+  date = {2012-01-31},
+  keywords = {!REN,*DONE,621.3,Cross-correlation,Overlapping speech detection,prosody,Spatial features,speaker diarization,Speaker overlap},
+  file = {Zelenák - 2012 - Detection and handling of overlapping speech for s.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/A7CXMRQ8/Zelenák - 2012 - Detection and handling of overlapping speech for s.pdf:application/pdf}
+}
+
+@inproceedings{lukic_speaker_2016,
+  title = {Speaker Identification and Clustering Using Convolutional Neural Networks},
+  doi = {10.1109/MLSP.2016.7738816},
+  abstract = {Deep learning, especially in the form of convolutional neural networks (CNNs), has triggered substantial improvements in computer vision and related fields in recent years. This progress is attributed to the shift from designing features and subsequent individual sub-systems towards learning features and recognition systems end to end from nearly unprocessed data. For speaker clustering, however, it is still common to use handcrafted processing chains such as MFCC features and GMM-based models. In this paper, we use simple spectrograms as input to a CNN and study the optimal design of those networks for speaker identification and clustering. Furthermore, we elaborate on the question how to transfer a network, trained for speaker identification, to speaker clustering. We demonstrate our approach on the well known TIMIT dataset, achieving results comparable with the state of the art-without the need for handcrafted features.},
+  eventtitle = {2016 IEEE 26th International Workshop on Machine Learning for Signal Processing (MLSP)},
+  timestamp = {2017-08-16T19:30:35Z},
+  booktitle = {2016 {{IEEE}} 26th {{International Workshop}} on {{Machine Learning}} for {{Signal Processing}} ({{MLSP}})},
+  author = {Lukic, Y. and Vogt, C. and Dürr, O. and Stadelmann, T.},
+  date = {2016-09},
+  pages = {1--6},
+  keywords = {convolution,Convolutional Neural Network,convolutional neural networks,deep learning,GMM-based models,learning (artificial intelligence),MFCC features,neural nets,Neural networks,pattern clustering,speaker clustering,speaker identification,speaker recognition,spectrogram,spectrograms,Speech,Speech recognition,TIMIT dataset,Training},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/ZSWH869R/Lukic et al. - 2016 - Speaker identification and clustering using convol.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/GP577EXR/7738816.html:text/html}
+}
+
+@thesis{molau_normalization_2003,
+  title = {Normalization in the Acoustic Feature Space for Improved Speech Recognition},
+  url = {http://sylvester.bth.rwth-aachen.de/dissertationen/2003/138/},
+  timestamp = {2017-08-17T02:17:22Z},
+  institution = {{Bibliothek der RWTH Aachen}},
+  author = {Molau, Sirko},
+  date = {2003},
+  keywords = {!REN,*DONE},
+  file = {[PDF] rwth-aachen.de:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/NE3PRP32/Molau - 2003 - Normalization in the acoustic feature space for im.pdf:application/pdf;Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/C8HCA9FD/138.html:text/html}
+}
+
+@inproceedings{dighe_detecting_2014,
+  title = {Detecting and Labeling Speakers on Overlapping Speech Using Vector Taylor Series},
+  url = {http://mazsola.iit.uni-miskolc.hu/~czap/letoltes/IS14/IS2014/PDF/AUTHOR/IS141101.PDF},
+  timestamp = {2017-08-20T21:16:27Z},
+  booktitle = {Fifteenth {{Annual Conference}} of the {{International Speech Communication Association}}},
+  author = {Dighe, Pranay and Ferras, Marc and Bourlard, Hervé},
+  date = {2014},
+  keywords = {!REN,*SKIMPED},
+  file = {[PDF] uni-miskolc.hu:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/SI598E6Q/Dighe et al. - 2014 - Detecting and labeling speakers on overlapping spe.pdf:application/pdf}
+}
+
+@thesis{minna_stolt_many_2008,
+  title = {{{THE MANY FACES OF OVERLAP}} - {{NON}}-{{COMPETITIVE OVERLAP IN A CONVERSATION BETWEEN FINNISH AND BRITISH SPEAKERS OF ENGLISH}}},
+  timestamp = {2017-08-20T21:33:10Z},
+  institution = {{UNIVERSITY OF JYVÄSKYLÄ}},
+  author = {{Minna Stolt}},
+  date = {2008},
+  keywords = {_tablet,!REN,*DONE},
+  file = {Minna Stolt - 2008 - THE MANY FACES OF OVERLAP - NON-COMPETITIVE OVERLA.pdf:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/QTJ4X274/Minna Stolt - 2008 - THE MANY FACES OF OVERLAP - NON-COMPETITIVE OVERLA.pdf:application/pdf}
+}
+
+@inproceedings{cieri_switchboard_2003,
+  title = {From {{Switchboard}} to {{Fisher}}: {{Telephone}} Collection Protocols, Their Uses and Yields},
+  url = {https://pdfs.semanticscholar.org/b405/fb217a9c6d735ba2081d000947ea5b993f82.pdf},
+  shorttitle = {From {{Switchboard}} to {{Fisher}}},
+  timestamp = {2017-08-21T00:28:29Z},
+  booktitle = {Eighth {{European Conference}} on {{Speech Communication}} and {{Technology}}},
+  author = {Cieri, Christopher and Miller, David and Walker, Kevin},
+  date = {2003},
+  file = {[PDF] semanticscholar.org:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/U8NV6BV5/Cieri et al. - 2003 - From Switchboard to Fisher Telephone collection p.pdf:application/pdf}
+}
+
+@article{chen_advances_2006,
+  title = {Advances in Speech Transcription at {{IBM}} under the {{DARPA EARS}} Program},
+  volume = {14},
+  issn = {1558-7916},
+  doi = {10.1109/TASL.2006.879814},
+  abstract = {This paper describes the technical and system building advances made in IBM's speech recognition technology over the course of the Defense Advanced Research Projects Agency (DARPA) Effective Affordable Reusable Speech-to-Text (EARS) program. At a technical level, these advances include the development of a new form of feature-based minimum phone error training (fMPE), the use of large-scale discriminatively trained full-covariance Gaussian models, the use of septaphone acoustic context in static decoding graphs, and improvements in basic decoding algorithms. At a system building level, the advances include a system architecture based on cross-adaptation and the incorporation of 2100 h of training data in every system component. We present results on English conversational telephony test data from the 2003 and 2004 NIST evaluations. The combination of technical advances and an order of magnitude more training data in 2004 reduced the error rate on the 2003 test set by approximately 21\% relative-from 20.4\% to 16.1\%-over the most accurate system in the 2003 evaluation and produced the most accurate results on the 2004 test sets in every speed category},
+  timestamp = {2017-08-21T00:36:47Z},
+  number = {5},
+  journaltitle = {IEEE Transactions on Audio, Speech, and Language Processing},
+  author = {Chen, S. F. and Kingsbury, B. and Mangu, Lidia and Povey, D. and Saon, G. and Soltau, H. and Zweig, G.},
+  date = {2006-09},
+  pages = {1596--1608},
+  keywords = {Acoustic testing,basic decoding algorithm,Buildings,Context modeling,covariance analysis,DARPA EARS program,Decoding,Defense Advanced Research Projects Agency,Discriminative training,Ear,Effective Affordable Reusable Speech-to-Text (EARS),effective affordable reusable speech-to-text program,English conversational telephony test data,error rate,error statistics,feature-based minimum phone error training,finite-state transducer,full covariance modeling,Gaussian processes,IBM speech recognition technology,large-scale discriminatively trained full-covariance Gaussian models,Large-scale systems,large-vocabulary conversational speech recognition,NIST evaluations,septaphone acoustic context,speech coding,Speech recognition,speech synthesis,speech transcription,static decoding graphs,system building advances,System testing,technical building advances,Telephony,Training data,Viterbi decoding},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/U2IXHCNS/Chen et al. - 2006 - Advances in speech transcription at IBM under the .pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/NBKTDPD5/1677980.html:text/html}
+}
+
+@inproceedings{wang_blind_2016,
+  title = {Blind Separation Method of Overlapped Speech Mixtures in {{STFT}} Domain with Noise and Residual Crosstalk Suppression},
+  doi = {10.1109/ICCA.2016.7505388},
+  abstract = {Noise and residual crosstalk are two important issues that have to be addressed in practical applications of underdetermined blind source separation (UBSS) for speech mixture. This paper proposes a noise-robust UBSS algorithm to deal with highly overlapped speech sources with residual crosstalk suppression scheme in the short-time Fourier transform (STFT) domain. The proposed algorithm is firstly to estimate the mixture matrix of noisy sources and then the original sources are recovered by suppressing the crosstalk. To reduce the noise effect on the detection of auto-source points in the STFT spectrum, we propose a method to effectively detect the auto-term locations of the sources by using the principal component analysis (PCA) on the STFTs of noisy mixtures. To mitigate the crosstalk of separated speech sources, a Gaussian mixture model (GMM) is implemented. Simulation results show that substantial performance improvement has been achieved.},
+  eventtitle = {2016 12th IEEE International Conference on Control and Automation (ICCA)},
+  timestamp = {2017-08-22T18:27:53Z},
+  booktitle = {2016 12th {{IEEE International Conference}} on {{Control}} and {{Automation}} ({{ICCA}})},
+  author = {Wang, A. Z. and Bi, C. G. and Li, B. X.},
+  date = {2016-06},
+  pages = {876--880},
+  keywords = {!REN,*SKIMPED,blind separation method,blind source separation,Crosstalk,Fourier transforms,Gaussian mixture model,Gaussian processes,GMM,mixture models,Noise measurement,noise robustness,noise-robust UBSS algorithm,overlapped speech mixtures,PCA,principal component analysis,residual crosstalk suppression,separated speech sources,short-time Fourier transform domain,source auto-term location detection,Speech,Speech processing,STFT domain,Time-frequency analysis,underdetermined blind source separation},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/DNDB7JJJ/Wang et al. - 2016 - Blind separation method of overlapped speech mixtu.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/IIVETGEG/7505388.html:text/html}
+}
+
+@inproceedings{quinlan_detection_2007,
+  title = {Detection of Overlapping Speech in Meeting Recordings Using the Modified Exponential Fitting Test},
+  abstract = {Detection of overlapping speech in meeting recordings is a challenging problem due to both the nature of the conversation itself and the surrounding environment. Accurate identification of these sections of the recording is a crucial first step for speech recognition techniques as their non-detection leads to severe degradation in performance. A possible approach to solving this problem is the use of source number estimation techniques based on the ordered profile of the spatial correlation matrix eigenvalues. In this paper we propose two approaches for detecting overlapping speech based on the Exponential Fitting Test (EFT) a source number estimation technique proposed in [1]. Firstly we propose a frequency domain implementation of the EFT, which is more appropriate when dealing with the broadband speech signals encountered in meetings. We then propose a second approach in which a correction factor is added to allow for the presence of reverberation. The performances of the proposed schemes are evaluated and compared to that of the original EFT using real meeting recordings.},
+  eventtitle = {2007 15th European Signal Processing Conference},
+  timestamp = {2017-08-22T18:28:39Z},
+  booktitle = {2007 15th {{European Signal Processing Conference}}},
+  author = {Quinlan, A. and Asano, F.},
+  date = {2007-09},
+  pages = {2360--2364},
+  keywords = {*SKIMPED,broadband speech signals,correction factor,Correlation,EFT,eigenvalues and eigenfunctions,estimation theory,exponential fitting test,Fitting,frequency-domain analysis,frequency domain implementation,matrix algebra,meeting recordings,Noise,ordered profile,Overlapping speech detection,Reverberation,source number estimation techniques,spatial correlation matrix eigenvalues,Speech,Speech recognition,speech recognition techniques},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/IK5ICC7U/Quinlan and Asano - 2007 - Detection of overlapping speech in meeting recordi.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/PGA8QHC4/7099230.html:text/html}
+}
+
+@inproceedings{espi_spectrogram_2014,
+  title = {Spectrogram Patch Based Acoustic Event Detection and Classification in Speech Overlapping Conditions},
+  doi = {10.1109/HSCMA.2014.6843263},
+  abstract = {Speech does not always contain all the information needed to understand a conversation scene. Non-speech events can reveal aspects of the scene that speakers miss or neglect to mention, which could further support speech enhancement and recognition systems with information about the surrounding noise. This paper focuses on the task of detecting and classifying acoustic events in a conversation scene where these often overlap with speech. State-of-the-art techniques are based on derived features (e.g. MFCC, or Mel-filter banks), which have successfully parameterized speech spectrograms, but that reduce both resolution and detail when we are targeting other kinds of events. In this paper, we propose a method that learns hidden features directly from spectrogram patches, and integrates them within the deep neural network framework to detect and classify acoustic events. The result is a model that performs feature extraction and classification simultaneously. Experiments confirm that the proposed method outperforms deep neural networks with derived features as well as related work on the CHIL2007-AED task, showing that there is room for further improvement.},
+  eventtitle = {2014 4th Joint Workshop on Hands-free Speech Communication and Microphone Arrays (HSCMA)},
+  timestamp = {2017-08-22T18:31:15Z},
+  booktitle = {2014 4th {{Joint Workshop}} on {{Hands}}-Free {{Speech Communication}} and {{Microphone Arrays}} ({{HSCMA}})},
+  author = {Espi, M. and Fujimoto, M. and Kubo, Y. and Nakatani, T.},
+  date = {2014-05},
+  pages = {117--121},
+  keywords = {*SKIMPED,acoustic event detection,Acoustics,CHIL2007-AED task,communication scene understanding,Conferences,deep neural network framework,feature classification,feature extraction,Hidden Markov models,neural nets,nonspeech events,parameterized speech spectrograms,spectrogram,spectrogram patch,spectrogram patch based acoustic event detection,Speech,speech enhancement,speech overlapping conditions,Speech recognition,speech recognition system,Training},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/SP9EGGSH/Espi et al. - 2014 - Spectrogram patch based acoustic event detection a.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/J9CQRSGU/6843263.html:text/html}
+}
+
+@article{zelenak_speaker_2012,
+  title = {Speaker Overlap Detection with Prosodic Features for Speaker Diarisation},
+  volume = {6},
+  issn = {1751-9675},
+  doi = {10.1049/iet-spr.2011.0233},
+  abstract = {The handling of overlapping speech in the context of speaker diarisation attracted in recent years the interest of the scientific community, since speaker overlap was identified as one of the factors degrading the performance of conventional diarisation systems. In this study, the authors are discussing the possibility of using long-term prosodic features for the detection of overlapping speech, which is subsequently employed in speaker diarisation to improve the baseline system. The most relevant subset from the set of candidate prosodic features is determined in two steps. First, a ranking according to minimal-redundancy-maximal-relevance criterion is obtained, and then a hill-climbing wrapper strategy is applied for determining the optimal number of prosodic features, which should accompany short-term spectral features for overlap detection. In experiments on the augmented multi-party interaction (AMI) meeting distant-channel data, the authors show that the addition of prosodic features decreased overlap detection error. Detected overlap segments were used in speaker diarisation to recover missed speech by assigning multiple speaker labels and to increase the purity of speaker clusters. Improvements of the baseline diarisation system are reported in both single- and multi-site data conditions. However, the extension of the diarisation system with TDOAs showed its incompatibility with the overlap exclusion technique.},
+  timestamp = {2017-08-22T18:31:56Z},
+  number = {8},
+  journaltitle = {IET Signal Processing},
+  author = {Zelenak, M. and Hernando, J.},
+  date = {2012-10},
+  pages = {798--804},
+  keywords = {!REN,*DONE,AMI,augmented multiparty interaction,augmented reality,baseline diarisation system,baseline system,candidate prosodic features,diarisation systems,distant-channel data,hill-climbing wrapper strategy,long-term prosodic features,minimal-redundancy-maximal-relevance criterion,missed speech,multiple speaker labels,multisite data conditions,optimal number,overlap detection error,overlap exclusion technique,overlapping speech,redundancy,scientific community,short-term spectral features,single-data conditions,speaker clusters,speaker diarisation,speaker overlap detection,speaker recognition},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/HZ8HWR93/Zelenak and Hernando - 2012 - Speaker overlap detection with prosodic features f.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/Q6QFV47E/6410956.html:text/html}
+}
+
+@inproceedings{otterson_efficient_2007,
+  title = {Efficient Use of Overlap Information in Speaker Diarization},
+  doi = {10.1109/ASRU.2007.4430194},
+  abstract = {Speaker overlap in meetings is thought to be a significant contributor to error in speaker diarization, but it is not clear if overlaps are problematic for speaker clustering and/or if errors could be addressed by assigning multiple labels in overlap regions. In this paper, we look at these issues experimentally, assuming perfect detection of overlaps, to assess the relative importance of these problems and the potential impact of overlap detection. With our best features, we find that detecting overlaps could potentially improve diarization accuracy by 15\% relative, using a simple strategy of assigning speaker labels in overlap regions according to the labels of the neighboring segments. In addition, the use of cross-correlation features with MFCC's reduces the performance gap due to overlaps, so that there is little gain from removing overlapped regions before clustering.},
+  eventtitle = {2007 IEEE Workshop on Automatic Speech Recognition Understanding (ASRU)},
+  timestamp = {2017-08-22T18:37:56Z},
+  booktitle = {2007 {{IEEE Workshop}} on {{Automatic Speech Recognition Understanding}} ({{ASRU}})},
+  author = {Otterson, S. and Ostendorf, M.},
+  date = {2007-12},
+  pages = {683--686},
+  keywords = {!REN,*SKIMPED,diarization,Error analysis,Independent component analysis,localization,MFCC,Microphones,NIST,overlap,overlap detection,overlap information,Performance analysis,Performance gain,source separation,speaker clustering,speaker diarization,speaker identification,speaker recognition,Speech analysis,Speech processing,Testing},
+  file = {IEEE Xplore Full Text PDF:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/VNFJJ7C7/Otterson and Ostendorf - 2007 - Efficient use of overlap information in speaker di.pdf:application/pdf;IEEE Xplore Abstract Record:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/MIHBPXH4/4430194.html:text/html}
+}
+
+@article{ward_challenges_????,
+  title = {Challenges in {{Building Highly}}-{{Interactive Dialog Systems}}.},
+  url = {https://pdfs.semanticscholar.org/e4c8/0f87afeae044afb22f5b8da21cb20bbd1b9f.pdf},
+  timestamp = {2017-08-22T21:50:31Z},
+  author = {Ward, Nigel G. and DeVault, David},
+  keywords = {!REN,*SKIMPED},
+  file = {[PDF] semanticscholar.org:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/P3FB7IMD/Ward and DeVault - Challenges in Building Highly-Interactive Dialog S.pdf:application/pdf}
+}
+
+@article{martinez-gonzalez_spatial_2017,
+  title = {Spatial Features Selection for Unsupervised Speaker Segmentation and Clustering},
+  volume = {73},
+  issn = {0957-4174},
+  url = {http://www.sciencedirect.com/science/article/pii/S0957417416306807},
+  doi = {10.1016/j.eswa.2016.12.005},
+  abstract = {The selection of the best features to be used in expert systems is a key issue in obtaining a satisfactory performance. Unsupervised speaker segmentation and clustering is the task of the automatic identification of the number of participants in a meeting and the determination of their speaking turns (also called “diarization”). This is part of an intelligent system that replaces human intervention in several tasks related to automatic language and speech processing. The segmentation and clustering of speakers is crucial if we want to transcribe any audio recording automatically when several people take their turn. It is a task necessary to archive automatically interventions of several people in meetings, broadcast radio, lectures, parliamentary sessions etc. since a simple transcription of what is said without assigning it to a specific speaker makes the information unusable. The automation of this task would save enormous amounts of resources currently spent on human transcribers. When used online it could also be useful to point a video camera automatically to the person talking when a videoconference with multiple speakers is taking place thus replacing a human operator. Furthermore it could also help to scan large amounts of audio automatically in search of crimes or audio interventions of a particular person. In the case of recordings with several distant microphones (MDM), spatial features may and should be used. The most widely used spatial features in diarization are the Time Delay of Arrival (TDOA) features. These delays are extracted from pairs of microphones of unknown location and quality, which makes the selection of the best pairs highly advisable. This paper analyses this issue and proposes and evaluates several methods that significantly improve the performance both in speaker error rate (SER) and in computational time. The methods propose a selection ofTDOA features based on the quality of the cross-correlation of signals coming from different pairs of microphones. We prove that the use of the wrong pairs can be highly detrimental to the overall performance. The methods proposed, based on cross correlation, are compared and combined with other two selection methods, based on the dynamic range of the delay features and the selection of every pair of microphones available followed by a reduction in dimensionality. Although all algorithms achieve some improvements, it is proved that selection methods based on cross correlation have the fewest errors. The improvements on the baseline system for the two best proposed systems are 25.14\% and 33.70\% for the development set, and 55.06\% and 46.09\% for the test set. Furthermore the best method for the test set also reduces the computational cost by 20\%.},
+  timestamp = {2017-08-23T17:08:02Z},
+  journaltitle = {Expert Systems with Applications},
+  author = {Martínez-González, Beatriz and Pardo, José M. and Echeverry-Correa, Julián D. and San-Segundo, Ruben},
+  date = {2017-05-01},
+  pages = {27--42},
+  keywords = {feature selection,speaker clustering,speaker diarization,Speaker localization,speaker segmentation},
+  file = {ScienceDirect Snapshot:/Users/abdullah/Library/Application Support/Zotero/Profiles/3emga9ze.default/zotero/storage/XMKDEUJB/S0957417416306807.html:text/html}
+}
+
+
