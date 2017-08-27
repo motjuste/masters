@@ -22,7 +22,7 @@ To Ammi, Abbu, Gudiya, Bushra, and Khushi
 
 * Table of Contents
 
-* DOIN [0/2] Introduction
+* DOIN [0/3] Introduction
 ** WAIT [0/4] Motivations
 Conversations are the dominant form of social interaction between two or more
 people. While text based messaging has seen meteoric rise in recent years,
@@ -458,20 +458,21 @@ where recordings from multiple microphones is present.
 - Make the assistants more natural to converse with, especially with back-channels, etc.
   + [ ] Search for continuous conversation type AI assistant research.
 
-** [0/3] Objectives and expected challenges                           :cite:
-The larger project that the work done in thesis is a part of, aims towards
-improving the conversational analysis workflows performed in the area of linguistics. A diarization system, at least
-an ideal one, is nearly perfect for the task of automating annotation of
-conversations which are otherwise done manually and cost time and expertise.
-Furthermore, as noted earlier, this system also assists the speech recognition
-system in it's automatic transcription task. As discussed in Section [[Speaker
-Diarization]], an overlap detection system can help improve the overall
-performance of a diarization system, especially when applied to conversational
-scenarios containing a lot of overlapping speech. And finally, as motivated in
-Section [[Double Talk in Conversations]], a system that can detect double talk
-situations itself is directly valuable to conversation analysis. The ultimate goal of the
-work done in thesis, within this context, is the automatic detection and temporal
-localization of double talk (aka overlapping speech) that occur in conversations.
+** WAIT [0/0] Objectives and expected challenges                      :cite:
+The work done during this thesis is part of a larger project which aims towards
+improving the conversational analysis workflows performed in the area of
+linguistics. A diarization system, at least an ideal one, is nearly perfect for
+the task of automating annotation of conversations which are otherwise done
+manually and cost time and expertise. Furthermore, as noted earlier, this system
+also assists the speech recognition system in it's automatic transcription task.
+As discussed in Section [[Speaker Diarization]], an overlap detection system can
+help improve the overall performance of a diarization system, especially when
+applied to conversational scenarios containing situations with overlapping speech. And
+finally, as motivated in Section [[Double Talk in Conversations]], a system that can
+detect double talk situations itself is directly valuable to conversation
+analysis. The ultimate goal of the work done in thesis, within this context, is
+the automatic detection and temporal localization of double talk (aka
+overlapping speech) that occur in natural conversations.
 
 On the technical side, the objectives of this thesis include investigating the
 use of deep learning technologies in realizing such an overlapping speech
@@ -479,66 +480,158 @@ detection system. As previously motivated, these technolgies can help avoid the
 need for manually engineering problem-specific features (a common theme in the
 existing approaches), while promising ground breaking and well generalizable
 results. The task of detecting overlapping speech has proven to be extremely
-challenging, especially in case of the short duration ones (that nonetheless
-make the biggest contribution), so it is perhaps worthwhile to investigate the
+challenging ~[]~, especially in case of the short duration ones (which are
+dominant in most natural conversations), so it is worthwhile to investigate the
 powerful promises of deep learning methods. If successful, the deep neural
 network could have learned the appropriate representations from low-level
 acoustic features that best discriminate and predict the number of speakers
-active at a particular time in an audio recording (0, 1, or 2 speakers).
-Nevertheless, even before starting, many opportunities to tune the system exist,
-from the nature of low-level acoustic features being used as inputs, to the
-configurations of various layers in the deep neural network, how they are
-trained and later fine-tuned, etc. These result in a combinatorial explosion of
-methologies that should ideally be investigated in a comprehensive study, and is
-especially warranted by the lack of (as of yet) any existing published work along the same
-lines.
+active at a particular time in an audio recording (0, 1, or more).
 
-Restrictions imposed to the duration of this thesis, which are further
-taxed by the amount of computation time and power necessary for properly working
-with deep learning technologies, limit the number of possible approaches that
-could be investigated in the allotted time. Therefore, in addition to prioritizing
-more straightforward approaches in the investigations, an important goal of the work done for this
-thesis was to also implement an end-to-end pipeline for speech segmentation
-research (and perhaps deployment) based on reputed open source technologies
-which can be used for further research with related goals. The former
-comprise the rest of thesis starting in Chapter [[Methodology]], while the latter
-are appropriately discussed as per need.
+Nevertheless, even before starting, many (informed) decisions need to be made in
+designing such a system, from the nature of low-level acoustic features to be
+used as inputs, to the configurations of various layers in the deep neural
+network, how they are trained and later fine-tuned, etc. Furthermore, the unique
+challenges posed by naturally occurring double talk situations, that of short
+duration and the consequent imbalance in the dataset with respect to their
+representation in the dataset, need to be addressed using different possible
+approaches. These result in a combinatorial explosion of avenues that should
+ideally be investigated in a comprehensive study, and are especially warranted by
+the lack of (as of yet) any existing published work that use such a methodology.
 
-In the rest of this section, the objectives are formalized further alongside the
-expected challenges that shape them.
+Restrictions imposed to the duration of this thesis, which are further taxed by
+the amount of computation (power and) time necessary for properly working with
+deep learning technologies, limit the number of possible approaches that could
+be investigated in the allotted time. Therefore, in addition to prioritizing
+more straightforward approaches in the investigations, an important goal of the
+work done during this thesis was to also implement an end-to-end pipeline for
+speech segmentation research (and perhaps deployment) based on reputed open
+source technologies which can be used for further research with related goals.
+Work is expected to continue beyond this thesis's duration, and it is hoped that
+it can build upon the learnings documented here and the implementation available
+to the stakeholders.
 
-- We still attempt to solve a more difficult version of the task.
-  - mono-aural
-  - Speaker identity and number of speaker and language indpendent model.
-    - Assuming it to be a purely acoustic phenomena.
-    - we still limit ourselves to 2-speaker overlaps
+The rest of this section formalizes the objectives alongside the expected
+challenges that shape them. It is a fair summary of Section [[Methodology]] which
+will go into the details of the approaches that are proposed. These are then
+evaluted in Section [[Evaluations]]. Finally, conclusions from this work and
+possible directions for future work are discussed in Section [[Conclusions and
+Future Work]].
+*** Setup and Assumptions
+- **Acoustic Model:** :: The fundamental assumption of the work done in this
+     thesis for detecting double talk situations is that it is a purely acoustic
+     phenomenon, and hence, the underlying classification task will only use
+     acoustic information (in the form of low-level acoustic features) extracted
+     from the audio of a given recording. The audio data will be mono-aural
+     where a single stream has speech from all speakers. This makes the task
+     more challenging than a mult-channel/-microphone setup, but also makes the
+     solutions more versatile.
 
-- Incredible recent results using deep learning.
-- Cons:
-  + Need lots of data.
-  + Hence Fisher, even though other reason is more practical.
-    - difficult to judge ground-truth anyway.
-  + Long training times.
-    * Esp when the hardware is not upto par.
-    * [ ] Long lead times meant use reliable and easy to use Keras framework.
-  + fine-tuning is still an art.
+- **Dataset Used:** :: All experiments (trainings and evaluations) will be
+     carried out on the conversational telephone speech recordings from the
+     **Fisher Corpus** ~[]~, as opposed to the standard NIST RT ~[]~ or AMI ~[]~
+     datasets used by most other works on this task. The choice is motivated
+     (Section ~[]~) by the fact that the Fisher corpus is a much larger dataset
+     (necessary in general for deep learning technologies) which has a lot of
+     /natural/ double talk situations. Nevertheless, this choice theoretically
+     limits the maximum number of active speakers in a detected overlapping
+     situation to 2, and further only proves the applicability of the proposal
+     here to recordings of telephone based conversations.
 
-- Heavily imbalanced classes, with two being extremely closely related.
-  - [ ] essentially a linear combination.
 
-- precision vs. recall
+- **Acoustic Features:** :: Inspired by recent studies ~[]~, the goal to
+     circumvent the need for feature engineering done in related works ~[]~, and
+     based on initial experiments, only low-level acoustic feautures will be
+     used for training the acoustic model. These, for similar reasons, will be
+     fixed to **64 dimensional $log_{10}$ Mel-Filterbank Coefficients /
+     Vectors** extracted every **10 ms** over a window of **32 ms** (Section
+     ~[]~). Furthermore, for all experiments, each such vector will be
+     accompanied by ±10 neighboring frames as contextual information, resulting
+     in the input to the classifier having a shape of $(21, 64)$ and the ground
+     truth label from that of the frame in the center (Section ~[]~).
+
+- **Supervised Learning:** :: Similar to other approaches ~[]~, the overlap
+     detection system will classfy for every frame of the acoustic features
+     extracted from an audio recording into 3 classes: /**(0 speakers, 1
+     speaker, more than 1 speakers)**/ (Section ~[]~). Consequently, how many
+     speakers are active in situations of overlap is not inferred. The
+     classifier is to be trained in a supervised setting, employing ground-truth
+     labels inferred for speaker activity from the transciption of the audio
+     during training and evalution. Nevertheless, due to the possibility that
+     the presence of silence (0 speakers) in the training data can degrade the
+     performance of an overlap detection system ~[]~, another configuration
+     where such frames are omitted based on ground truth annotation (Section
+     ~[]~), one with /**(1 speaker, more than 1 speakers)**/, will also be be
+     evaluated.
+
+- **DCN based Classifier:** :: The architecture of the deep neural network will
+     be that of a Deep Convolutional Neural Network (DCN), with multiple
+     (stacked) convolutional layers at the input to learn appropriately low- and
+     high-level patterns, and multiple (stacked) fully connected layers at the
+     output to classify these patterns into the 3 classes mentioned above. The
+     decision to work with DCN's was taken after the failure of purely
+     feed-forward deep neural networks (with only fully connected layers) during
+     initial experiments. The architecture of the network was fixed for all
+     experiments to evaluate impact of other variables, and was inspired by
+     recent research in acoustic modelling with DCN's and pragmatic concerns
+     (Section ~[]~).
+
+- **Evaluation Metrics:** :: As done in previous works ~[]~, the effectiveness of the
+     system is measured with respect to overlap detection in terms of the
+     frame-wise precision and recall, and their harmonic mean (F1-score)
+     (Section ~[]~). Nevertheless, since the dataset used for these evaluations
+     is from the Fisher corpus which is not the standard dataset used by other
+     works, the results reported in this thesis cannot be directly compared to those
+     works. Adaptations and evaluations on such datasets are planned to be
+     carried out in the future, but were not included in the objectives of this
+     thesis due to time limitations.
+
+- **Fine-Tuning:** :: Where necessary and possible, any fine-tuning or
+     comparisons of overlap detection systems will be performed by
+     giving preference to higher precision over higher recall (Section ~[]~).
+*** Variables
+- **Normalization of Inputs:** :: Normalization is a standard step in preparing
+     inputs to many machine learning algorithms. However, since the implicit goal
+     is to learn appropriately discriminative features for the existence
+     overlapping speech, the normalization of low-level features has to be done
+     with some care. Impact of two standard approaches for normalizing speech
+     signals will be investigated, and compared to the baseline approach without
+     normalization (which is common in systems that want to perserve speaker
+     discriminative information in the inputs). The two normalization approaches
+     to evaluate are Mean Substraction, and further Variance Normalization
+     (these and other possible approaches are discussed in Section ~[]~).
+
+- **Presence of Silence:** :: To measure the impact of presence of silence in the
+     training data, in addition to the baseline task of working with the 3
+     possible classes /**(0 speakers, 1 speaker, more than 1 speakers)**/,
+     configurations where such silence frames are removed and the task becomes
+     that of a binary classification /**(1 speaker, more than 1 speakers)**/ are
+     also evaluated. The silence frames will, however, be removed based on
+     ground-truth annotations instead of by using an automated speech activity
+     detection system in order to avoid the impact additional variables brought
+     in by such an automated system (Section ~[]~).
+
+- **Tackling Class Imbalance:** :: The most potent challenge in detecting
+     naturally occurring double talk situations in a supervised machine learning
+     framework is the inherent imbalance between the number of examples
+     available in the training set to learn from. Dealing with imbalanced
+     classes in deep learning technologies is unfortunately not a well
+     researched topic. The most promising approach within this context, one
+     involving the re-sampling of inputs from different classes while training,
+     is compared against the baseline case where no such re-sampling is done
+     (these and other possible approaches are discussed in Section ~[]~).
+
 * Methodology
 
 ** Dataset
 *** Inferring Labels
 * Evaluations
 
-* Conclusions
+* Conclusions and Future Work
 - Context helps. Single frame is not enough for DT.
 - Deep learning relies heavily on the optimizer.
 - Summary statistics can definitely be misleading.
 
-* Future Work
+** Future Work
 - Evaluate on different dataset
 - More context?
   + Hardware limitations.
