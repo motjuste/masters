@@ -845,18 +845,21 @@ over-sampling, and in situations where the total size of the dataset is small
 more complicated methods might be warranted.
 
 Over-sampling from the examples of the minority class is the more popular
-approach taken by many studies where such imbalance in classes exist ~[]~. A naive
-argument in favor of this technique is that doing this does not introduce more
-information versus undersampling where potentially useful information is being
-thrown away. However, an easy counterargument against this technique, at least
-when implemented naively by simply duplicating random sets of examples, is that the
-variables associated with such an over-sampled class can appear to have lower
-variance than they do. There exist many techniques that can solve for this (like
-SMOTE, etc.) where instead of naively duplicating examples, new examples from
-the minority class are created artificially following some procedure which
-should not impact the ultimate classification task. In computer vision tasks,
-for example, new examples can be created by flipping, rotating, etc. existing
-examples, and have shown to improve performance of the classifier ~[]~.
+approach taken by many studies where such imbalance in classes exist ~[]~. A
+naive argument in favor of this technique is that doing this does not introduce
+more information versus undersampling where potentially useful information is
+being thrown away. However, an easy counterargument against this technique, at
+least when implemented naively by simply duplicating random sets of examples,
+and made worse in case of significant imbalance, is
+that the variables associated with such an over-sampled class can appear to have
+lower variance than they do, and can lead to overfitting of the classifier to
+the training set which will not generalize well later on. There exist many
+techniques that can solve for this (like SMOTE, etc.) where instead of naively
+duplicating examples, new examples from the minority class are created
+artificially following some procedure which should not impact the ultimate
+classification task. In computer vision tasks, for example, new examples can be
+created by flipping, rotating, etc. existing examples, and have shown to improve
+performance of the classifier ~[]~.
 
 Nevertheless, over-sampling from speech samples is usually not trivial. Popular
 transformations include warping of the feature vectors, etc., but for the task of
@@ -927,26 +930,107 @@ It must be noted that such under-sampling was only performed while preparing the
 training examples, and were not performed on either the validation or testing
 examples during evaluations. Silence frames, as noted earlier, were nevertheless
 removed during both the training and evaluation phases.
-***** Cost Sensitive Loss Function
+***** Cost Sensitive Objective
+While training a classifier, it's parameters are tuned with the objective of
+minimizing it's misclassification rate, which is based on measures of the
+errors the classifier makes in assigning categories to the inputs.
 
-- Loss function is used to train the classifier.
-- Simple: Cost of misclassifying the minority class could be set to be some fixed cost
-  higher than the cost for minority class, or based on priors, or based on mini-batch.
-- Results were inconclusive, because the neural network did not seem to have
-  converged to a stable state.
-- Reasons could be bad implementation, or bad choice of cost function.
-  + Slows down training in some ways, costing valuable time.
-- Labels are not 100% precise.
-- Furthermore, double talk necessarily consists of speech, which under
-  'irrationally' high costs, the NN was seen to emit false positives a lot more comfortably.
-- Later explained, why high precision (low false alarm) is preferred
-- Cost sensitive functions have also been proposed but implementation was not
-  available, and are definitely part of future avenues to explore.
+In cases where misclassifying instances from a particular class can be more
+costly, the error measures can be biased by some fixed or derived cost so that such
+misclassifications can have a larger impact on the tuning of the parameters of
+the classifier. This approach can also be employed in tackling class imbalance,
+where the error measures for misclassifying the minority class can be scaled with some
+cost (based on some priors) that is higher than the scaling done for the
+minority class.
+
+In implementation, for the categorical cross-entropy loss function used for
+training the DCNN (Section [[Deep Convolutional Neural Networks]]), experiments were
+performed with a fixed cost for overlapping speech class of $2 \times $ the cost
+for non-overlapping speech, and also costs based on priors derived from the
+training set. In either case, however, the classifier did not converge even
+after many times more the number of epochs for other experiments. It is possible
+that there were some issues with the particular implementation that was used, or
+that both choices of the cost used were inappropriate. One can also argue that since
+overlapping speech necessarily consists of speech anyway, associating such high
+cost to misclassifying overlapping speech
+could have misdirected the classfier's optimizer towards learning simpler
+patterns and getting stuck in a steep local minima, resulting in loss of
+generalizability. Furthermore, it is also possible that the adverse impact of
+inaccuracies in the ground-truth labels could have been magnified by using such
+costs.
+
+Nevertheless, more experiments could not be performed within the time
+limitations. The results of many attempts at taking this approach for tackling
+class imbalance were considered inconclusive and have not been reported. It will
+thus be an open avenue for systematic research in future works where other
+objective functions that might be more appropriate ~[]~ should also be
+experimented with.
 ***** Scaling Likelihoods
+- http://www.academia.edu/8472416/Tackling_Class_Imbalance_with_Deep_Convolutional_Neural_Networks
 - Scale the likelihoods by priors, effectively shifting the threshold.
 *** Evaluation Metrics
-**** True baseline Performance
-- 1/nclasses v/s dom v/s priors
+The imbalance between the classes makes using simple summary metrics for
+evaluating an overlap detection system less informative. The mean accuracy, for
+example, of a classifier that always assigns the priors of three classes
+(typically $(0.20, 0.72, 0.08)$) as the likelihoods for a given sample and then
+chooses the maximum likelihood class, will predict every sample to belong to
+single-speaker class and still achieve overall $72\%$ accuracy score.
+
+The two types of errors that an overlap detection system can make are: the total
+duration of missed overlaps $T_{miss}^{(ov)}$, and total duration of falsely
+detected overlap (aka False Alarms) $T_{false}_^{(ov)}$. The summary
+metric used for the reporting these errors, made by a system that assigned a total
+duration of $T_{sys}^{(ov)}$ as overlaps to a given set of inputs known to have a
+total duration of $T_{ref}^{(ov)}$ overlaps, are /precision/ and /recall/.
+
+/Precision/ ($P^{(ov)}$) is the proportion of times that the overlap detection system
+was correct in it's decision with respect to all of it's decisions of existence
+of overlap, calculated as:
+$$P^{(ov)} = \frac{T_{sys}^{(ov)} -
+T_{false}^{(ov)}}{T_{sys}^{(ov)}} = \frac{T_{ref}^{(ov)} -
+T_{miss}^{(ov)}}{T_{sys}^{(ov)}}$$.
+
+/Recall/ ($R^{(ov)}$) is the proportion of times that the overlap detection system was
+correct in it's decision with respect to known amount of times overlaps actually
+were present in the input, calculated as:
+$$R^{(ov)} = \frac{T_{sys}^{(ov)} -
+T_{false}^{(ov)}}{T_{ref}^{(ov)}} = \frac{T_{ref}^{(ov)} -
+T_{miss}^{(ov)}}{T_{ref}^{(ov)}}$$.
+
+Some related works on overlap detection system ~[]~ also report the $F-measure$,
+which is the harmonic mean of precision and recall defined above, but it seemed
+redundant and has not been reported in this thesis.
+
+Precision and recall, being ratios with value between 0 and 1, will be reported
+as percentages ($\%$) in this thesis. A perfect overlap detection system will
+then achieve $100\%$ on both $P^{(ov)}$ and $R^{(ov)}$, while the classifier
+from the toy example above will achieve a $0\%$ on both the metrics. Real
+classifiers, however, are not this perfect in being good or bad.
+
+In most practical scenarios, there will be direct tradeoff between being able to
+detect most overlap situations (recall) versus being precise about these
+detection (high precision). In situations where the classifier can be tuned to
+prefer one over the other (e.g. by moving the decision threshold), almost all
+studies ~[]~ that use an overlap detection system in a speaker diarization
+system prefer higher precision (with possibly low recall) over higher recall
+(with possibly low precision). False alarms (low precision) directly impact the
+diarization performance of the system since the extra speakers that will be
+predicted in such situations (Section [[Speaker Diarization]]) will certainly be
+errorneous decisions. Missed overlaps (low recall) will result in missing chance
+to predict extra speakers in a segment of speech, but then the system
+performance in such a situation will be atleast equivalent to one that does not
+use overlap detection at all.
+
+Furthemore, for conversation analysis, a high precision detection of overlapping
+situations can at least detect the time points that a linguist can later
+concentrate on to annotate manually. Too many false alarms may prove frustrating
+in this situation. Therefore, where necessary and possible, a system (operating
+point) with high precision will be preferred.
+
+Similar precision and recall metrics were also used for the silence class
+(as $P^{(no)}$ and $R^{(no)}$) and the single speaker speech class (as
+$P^{(sp)}$ and $R^{(sp)}$) when all three classes were being classified for, and
+will be reported appropriately (Section [[Removing Silence]]).
 ** Dataset
 *** WAIT [0/9] About
 - [ ] Where does the data come from, with reference to paper
