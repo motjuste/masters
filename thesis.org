@@ -208,7 +208,7 @@ In Table \ref{tab:actspk-all} the ratios of /inferred/ number of segments of
 speech and those of number of frames calculated with centers at every 10 ms (the
 temporal resolution of the transciptions) over 5850 telephone based
 conversations in the /Fisher English/ /Training Speech - Part 1 - Transcripts
-(**LDC2004T19**)/ are reported (details in Section [[Inferring Labels]]). It can be
+(**LDC2004T19**)/ are reported (details in Section [[Dataset]]). It can be
 seen that while segments with more than 1 speakers active at the same time
 account for a significant portion, they contribute proportionally less to the
 overall number of individual frames in time. This indicates, and is further
@@ -225,69 +225,71 @@ on number of speakers active at a time.
 
 Literature in the area of linguistics classify overlaps into further categories,
 but these are not discussed in this thesis. The reader should refer to
-@minna_stolt:2008many for an extensive overview. Pertinent to the work here,
-however, would be to analyse the genderwise raios and distributions of the
-occurences of double talk. Since there are necessarily more than one speakers
-active in segments with overlap, and that there can be significant differences
-or lack thereof between the voices in different combinations of genders,
-situations where the two speakers are of the same gender can prove
-more challenging than when they are of different genders. Approaches that target only
-certain combinations cannot be safely assumed to generalize well. This becomes
-especially important when the dataset being used is artificially generated,
-often done to mitigate the class imbalance issue mentioned earlier.
-However, for approaches using natural conversations, as is in the case of this
-thesis, this factor may be beyond their control.
+@minna_stolt:2008many for an extensive overview.
 
-#+LATEX: \begin{small}
-#+LATEX: \begin{table}
-|----------------+-----------------+---------------+-----------------+---------------|
-| /Gender/       | /Segments with/ | /Frames with/ | /Segments with/ | /Frames with/ |
-| /Combination/  |    /Speech (%)/ |  /Speech (%)/ |   /Overlap (%)/ | /Overlap (%)/ |
-|----------------+-----------------+---------------+-----------------+---------------|
-| Female, Female |           42.18 |         40.12 |           36.30 |         15.23 |
-| Female, Male   |           32.49 |         32.32 |           35.07 |         13.87 |
-| Male, Male     |           25.33 |         27.56 |           36.80 |         14.26 |
-|----------------+-----------------+---------------+-----------------+---------------|
-#+LATEX: \caption{Contribution of different gender combinations to speech (with >= 1 speakers) segments and frames, and the proportion of these segments and frames that have overlap, in the Fisher Corpus \emph{LDC2004T19}}
-#+LATEX: \label{tab:seg-gender-all}
-#+LATEX: \end{table}
-#+LATEX: \begin{table}
-|----------------+------------------------+----------------------|
-| /Gender/       |      /Contribution to/ |    /Contribution to/ |
-| /Combination/  | /Overlap Segments (%)/ | /Overlap frames (%)/ |
-|----------------+------------------------+----------------------|
-| Female, Female |                  42.50 |                42.05 |
-| Female, Male   |                  32.62 |                30.87 |
-| Male, Male     |                  25.88 |                27.06 |
-|----------------+------------------------+----------------------|
-#+LATEX: \caption{Contribution of different gender combinations to all overlaps, in the Fisher Corpus \emph{LDC2004T19}}
-#+LATEX: \label{tab:ovl-gender-all}
-#+LATEX: \end{table}
-#+LATEX: \end{small}
+# Pertinent to the work here,
+# however, would be to analyse the genderwise raios and distributions of the
+# occurences of double talk. Since there are necessarily more than one speakers
+# active in segments with overlap, and that there can be significant differences
+# or lack thereof between the voices in different combinations of genders,
+# situations where the two speakers are of the same gender can prove
+# more challenging than when they are of different genders. Approaches that target only
+# certain combinations cannot be safely assumed to generalize well. This becomes
+# especially important when the dataset being used is artificially generated,
+# often done to mitigate the class imbalance issue mentioned earlier.
+# However, for approaches using natural conversations, as is in the case of this
+# thesis, this factor may be beyond their control.
 
-**LDC2004T19** consists of 5850 calls, all of roughly the same duration, and all
-have conversations between two speakers. Table \ref{tab:seg-gender-all} shows
-that there are more number of calls (and hence segments and frames where at
-least one speaker is active) where both participants are female, and,
-since the ratio of segments and frames that have overlapping speech within each
-combination are roughly the same, the final contribution to all overlap segments
-and frames are similarly skewed \ref{tab:ovl-gender-all}. Nevertheless, almost
-all approaches for detecting overlapping speech, including the one presented
-here, do not separate examples of overlaps based on genders, especially when
-working with naturally occuring double talk, mainly to avoid
+# #+LATEX: \begin{small}
+# #+LATEX: \begin{table}
+# |----------------+-----------------+---------------+-----------------+---------------|
+# | /Gender/       | /Segments with/ | /Frames with/ | /Segments with/ | /Frames with/ |
+# | /Combination/  |    /Speech (%)/ |  /Speech (%)/ |   /Overlap (%)/ | /Overlap (%)/ |
+# |----------------+-----------------+---------------+-----------------+---------------|
+# | Female, Female |           42.18 |         40.12 |           36.30 |         15.23 |
+# | Female, Male   |           32.49 |         32.32 |           35.07 |         13.87 |
+# | Male, Male     |           25.33 |         27.56 |           36.80 |         14.26 |
+# |----------------+-----------------+---------------+-----------------+---------------|
+# #+LATEX: \caption{Contribution of different gender combinations to speech (with >= 1 speakers) segments and frames, and the proportion of these segments and frames that have overlap, in the Fisher Corpus \emph{LDC2004T19}}
+# #+LATEX: \label{tab:seg-gender-all}
+# #+LATEX: \end{table}
+# #+LATEX: \begin{table}
+# |----------------+------------------------+----------------------|
+# | /Gender/       |      /Contribution to/ |    /Contribution to/ |
+# | /Combination/  | /Overlap Segments (%)/ | /Overlap frames (%)/ |
+# |----------------+------------------------+----------------------|
+# | Female, Female |                  42.50 |                42.05 |
+# | Female, Male   |                  32.62 |                30.87 |
+# | Male, Male     |                  25.88 |                27.06 |
+# |----------------+------------------------+----------------------|
+# #+LATEX: \caption{Contribution of different gender combinations to all overlaps, in the Fisher Corpus \emph{LDC2004T19}}
+# #+LATEX: \label{tab:ovl-gender-all}
+# #+LATEX: \end{table}
+# #+LATEX: \end{small}
+
+# **LDC2004T19** consists of 5850 calls, all of roughly the same duration, and all
+# have conversations between two speakers. Table \ref{tab:seg-gender-all} shows
+# that there are more number of calls (and hence segments and frames where at
+# least one speaker is active) where both participants are female, and,
+# since the ratio of segments and frames that have overlapping speech within each
+# combination are roughly the same, the final contribution to all overlap segments
+# and frames are similarly skewed \ref{tab:ovl-gender-all}.
+Almost all approaches for detecting overlapping speech, including the one
+presented in this thesis, do not further categorize examples of overlaps,
+especially when working with naturally occuring double talk, mainly to avoid
 further decimation of which is already a minority class.
 
-What the analysis above motivates is to use information that can capture
-differences in the voices of the speakers involved. A straightforward approach
-can thus be to have a system that can identify individual speakers, as is done
-in speaker identification and also in some speaker diarization (which aim to
-recognize who spoke and when in a conversation). This system can then be used to
-detect overlaps if it identifies multiple speakers with similar confidence in a given
-segment of speech. Unfortunately, in addition to needing prior information about
-all possible speakers (which is often not available in the application phase),
-so far these systems do not work at high temporal resolutions. A simple reason
-for this is that speaker specific information can only be reliably calculated
-over long durations.
+# What the analysis above motivates is to use information that can capture
+# differences in the voices of the speakers involved.
+
+A straightforward approach can be to have a system that can identify individual
+speakers, as is done in speaker identification systems. This system can then be
+used to detect overlaps if it identifies multiple speakers with similar
+confidence in a given segment of speech. Unfortunately, in addition to needing
+prior information about all possible speakers (which is often not available in
+the application phase), so far these systems do not work at high temporal
+resolutions. A simple reason for this is that speaker specific information can
+only be reliably calculated over long durations.
 
 #+LATEX: \begin{figure}
 # \centering
@@ -673,8 +675,8 @@ although could pose significant challenges during development, will nevertheless
 be ultimately more versatile. However, it must be pointed out that the audio
 recordings available in the Fisher Corpus are technically dual channel (1
 channel per speaker), but these were merged into one channel following a trivial
-and reproducible method before before being used for acoustic feature
-extraction. More detail on this is available in Section [[Merging Channels]].
+and reproducible method before being used for acoustic feature
+extraction. More detail on this is available in Section [[Data Preparation and Analysis]].
 
 The choice of the Fisher Corpus was made necessary to appropriately train the
 DCNN. As discussed earlier (Section [[Double Talk in Conversations]]), the total
@@ -702,7 +704,7 @@ implementation perspective are provided at the end (Section [[Implementation -
 Highlights]]). The final application of this work in a speaker diarization system
 (introduced in Section [[Speaker Diarization]]) was however not within the purview
 of this thesis and is therefore not discussed.
-** DOIN Supervised Machine Learning for Classification
+** WAIT Supervised Machine Learning for Classification
 The ultimate goal of a /classifier/ is to map a new observation to a category
 (or class) given what has been /learned/ from the categorization of perviously
 seen observations, where the set of possible categories is finite and predefined
@@ -950,14 +952,13 @@ for non-overlapping speech, and also costs based on priors derived from the
 training set. In either case, however, the classifier did not converge even
 after many times more the number of epochs for other experiments. It is possible
 that there were some issues with the particular implementation that was used, or
-that both choices of the cost used were inappropriate. One can also argue that since
-overlapping speech necessarily consists of speech anyway, associating such high
-cost to misclassifying overlapping speech
-could have misdirected the classfier's optimizer towards learning simpler
-patterns and getting stuck in a steep local minima, resulting in loss of
-generalizability. Furthermore, it is also possible that the adverse impact of
-inaccuracies in the ground-truth labels could have been magnified by using such
-costs.
+that both choices of the cost used were inappropriate. One can also argue that
+since overlapping speech necessarily consists of speech anyway, associating such
+high cost to misclassifying overlapping speech could have misdirected the
+classfier's optimizer towards learning simpler patterns and getting stuck in a
+steep local minima, resulting in loss of generalizability. Lastly, it is also
+possible that the adverse impact of inaccuracies in the ground-truth labels
+could have been magnified by using such costs.
 
 Nevertheless, more experiments could not be performed within the time
 limitations. The results of many attempts at taking this approach for tackling
@@ -1031,66 +1032,244 @@ Similar precision and recall metrics were also used for the silence class
 (as $P^{(no)}$ and $R^{(no)}$) and the single speaker speech class (as
 $P^{(sp)}$ and $R^{(sp)}$) when all three classes were being classified for, and
 will be reported appropriately (Section [[Removing Silence]]).
-** Dataset
+** WAIT Dataset
+The dataset that should be used in training (and evaluating) a classifier should
+be representative of goals the of the task.
+
+As has been mentioned earlier, for
+the task of building an overlapping speech detection system, datasets like AMI,
+NIST RT, ~[]~ ~and others~ have been used by most of the previous works ~[]~.
+These corpora are made up of annotated audio (and sometimes also video)
+recordings from different meeting scenarios where the number of participants in
+a particular recording can be between 4 (most common) to 11 (maximum). The
+audios are usualy recorded from multiple microphones, placed near each speaker
+and/or on a table shared by the participants. These corpora represent the
+flagship scenarios in which state of the art diarization systems are evaluated.
+
+Pertinent to the task of detecting overlapping speech, since these recordings
+are of natural conversations, there are a fair number of examples of the
+relevant situations available in most such recordings (in fact, in some cases
+there could be as many as 4 speakers active simultaneously). These corpora are
+thus suitable for training an overlapping speech detection system.
+
+Nevertheless,
+- [ ] ~Explain why Fisher was chosen.~
 *** WAIT [0/9] About
-- [ ] Where does the data come from, with reference to paper
-- [ ] What does the data have
-+ [ ] From the main readme of the dataset, all the params
-- [ ] Why use this dataset
-+ Real Double Talks, similar to KA3
-+ [ ] Some examples
-+ Not a laboratory dataset (?)
-+ SNR (?)
-+ Giant, may help the models generalize better
-+ [ ] How have others used it?
-- [ ] What part was used
-- [ ] How is double talk inferred
-- [ ] What are the limitations / problems
-+ Only Telephone conversations, and only in English
-+ Designed for speech recognition for conversations
-+ VAD done automatically, not manually, only transcription done manually
-+ No way to explicitly determine unique number of speakers over the dataset
-+ Segmentation not as fine as TIMIT
-+ Some parts are not annotated, and have to be taken out carefully
-*** WAIT [0/13] Analysis of segment lengths : General, 0T, 1T, 2T
-- [ ] *Do all analysis in a notebook, either here or `rennet-x`*
-- [ ] *Do All analysis at /frame level/*
-- [ ] *Use consistent colors*
-- [ ] What is the annotation length + histogram
-- [ ] What are the inferred segment lengths for 0T, 1T and 2T + histograms
-- [ ] When do 2T segments occur? Check also @heldner:2010pauses
-+ [ ] S1 -> DT -> S1 (back-channel)
-+ [ ] S1 -> DT -> S2 (turn)
-+ [ ] S1 -> DT -> No (back-channel)
-+ [ ] No -> DT -> Sx (overlapping-start and takeover)
-+ [ ] No -> DT -> No (overlapping-start and backing down)
-- [ ] What is the gender distribution for different segment lengths, 1T and
-2T, + pie-chart of n-frames + /maybe/ histograms
-- [ ] /maybe/ What are the distributions for other params, like topic-id,
-dialect, etc.
-*** Inferring Labels
-*** Merging Channels
+The Fisher English training corpus ~[]~ was made available by ~LDC~ in two parts
+in 2004 and 2005, catalogued as **LDC2004S13** and **LDC2005S13** containing
+speech data and **LDC2004T19** and **LDC2005T19** containing the corresponding
+transcripts. Taken as a whole, the corpus is made up of $11,699 (= 5850 + 5849)$
+recorded telephone conversations, each given a unique 5-digit ~CALLID~, starting
+from ~00001~. The corpus is predominently used in conversational speech
+recorgnition systems in literature ~[]~. For this thesis, only data from the
+first part (**LDC2004S13** and **LDC2004T19**) were used.
+
+Each conversation is upto 10 minutes long, and is carried out between two
+participants in English on a provided topic. Over 12,000 participants were
+initially recruited, including both native and non-native speakers of English,
+and each were assigned a unique ~PIN~. However, due to the procedures used while
+collecting these recordings, it is not guaranteed that the same PIN in different
+conversations represent the same speaker. Therefore, it is also not possible to
+determine exactly how many unique speakers are present in the entire dataset.
+Nevertheless, it is obviously guaranteed that the two speakers within a
+conversation are not the same.
+
+The audios are available in NIST SPHERE format containing two channels (one
+channel dedicated to each speaker's side in the telephone conversations) sampled
+at 8,000 Hertz. The corresponding transcripts are available as plain text files
+(example in Figure ~[]~) alongside a separate database with information about
+the recording situation and the speakers for each conversation.
+
+The transcripts were created by first performing automatic speech detection on each
+channel (independently) of the audio data to identify start- and end-points (in
+seconds) of utterances in that channel, and then the spoken content of these
+utterances were transcribed manually. The final transcript file then has one
+line per utterance, with start- and end-time stamps and the corresponding
+channel/speaker as "A:" for channel 1, "B:" for channel 2 (Figure ~[]~). The
+maximum resolution (theoritically minimum utterance length) of these time stamps
+is 10 milli-seconds, which govern the frame-rate of the acoustic feature
+extraction process (Section [[Acoustic Features]]) and how various statistics are
+duration related statistics are reported in this thesis.
+
+It has been explicitly pointed out in the documentation that no manual attempts
+were made to modify the automatically derived utterance boundaries, leaving the
+possibility that the start- and end-points may not be as precise as would have
+been possible if done manually, or even by a more recent speech detection approaches.
+The characteristics of the automatic speech detector that was used in the
+transcription process have unfortunately not been discussed in the
+documentation. Such lack of precision does not impact speech-to-text systems,
+the primary intended user of this dataset, since the outputs of such systems do
+not need to be localized in time. But for systems that do want to localize
+different events in the audio, these imprecisions could adversely impact the
+final evaluation results. It was indeed observed for the systems proposed in
+this thesis that the predicted segment boundaries for overlapping speech were
+sometimes more accurate than the boundaries derived from ground-truth,
+especially in cases where the derived ground-truth labels were longer than 4
+seconds (Section [[Evaluations]]). It would have been impractical to perform speech
+detection properly again on the entire dataset to get more precise boundaries due to time
+and resource limitations, and thus such a process was not performed during this thesis.
+*** Data Preparation and Analysis
+Each NIST SPHERE format audio file was first converted to two-channel WAV
+format using the ~sph2pipe_v2.5~ utility provided by LDC ~[]~. These two channels
+contain speech from one speaker's side in the conversation, and were merged
+into a final single-channel WAV file using ~FFMPEG~ by giving both channels
+equal weights. The sample rate of the audio files during all these steps were
+kept to the original value of /8000 Hz/.
+
+The class label for speech from 0 speakers, 1 speaker, or more than 1 speakers
+for a given time stamp in the audio was derived based on if utterance from none
+of the channels, only 1 of the channels, or both the channels were,
+respectively, present at the particular time stamp in the corresponding
+transcript.
+
+The entire dataset of 5850 calls (~960.3 hours) was then split to make training,
+validation and testing sets. The validation set was only used during the
+training phase for monitoring or experimentation, but were not used for training
+or evaluation. Final evaluations that have been presented in this thesis were
+done on the testing set. Since there were no obvious correlations between the
+~CALLID~'s (which order the conversations in the dataset) and any properties
+pertinent to the task of overlap detection, for simplicity, these sets were made
+in a sequential order as follows: the first 99 calls (~16.71 hours, 1.74%) were
+assigned to the validation set, next 4,000 calls (~652.85 hours, ~68.00%) to the
+training set, and the last 1,751 calls (~290.74 hours, ~30.26%) to the testing
+set.
+
+#+LATEX: \begin{small}
+#+LATEX: \begin{table}
+|------------+-------------------------+----------+------------+---------|
+| /Set/      | ~CALLIDs~               | /#Calls/ | /Duration/ | /Ratio/ |
+|            |                         |          |  /(hours)/ |   /(%)/ |
+|------------+-------------------------+----------+------------+---------|
+|------------+-------------------------+----------+------------+---------|
+| Validation | ~{00007, 00013, 00028,~ |       99 |       1.34 |    0.48 |
+|            | ~00062, 00065, 00069,~  |          |            |         |
+|            | ~00086}~                |          |            |         |
+|------------+-------------------------+----------+------------+---------|
+| Training   | ~{00100, 00101, ...~    |     1200 |     188.22 |   66.97 |
+|            | ~..., 01298, 01299}~    |          |            |         |
+|------------+-------------------------+----------+------------+---------|
+| Testing    | ~{05300, 05301, ...~    |      551 |      91.48 |   32.55 |
+|            | ~..., 05849, 05850}~    |          |            |         |
+|------------+-------------------------+----------+------------+---------|
+|------------+-------------------------+----------+------------+---------|
+| Total      |                         |     1850 |     281.04 |  100.00 |
+|------------+-------------------------+----------+------------+---------|
+#+LATEX: \caption{Final list of calls used to form different sets, their total durations and ratios.}
+#+LATEX: \label{tab:splits}
+#+LATEX: \end{table}
+#+LATEX: \end{small}
+
+However, due to hardware and time limitations, the final sets that were actually
+used during the works in this thesis were only subsets from the initial
+assignment above. The final calls that were used in each set are shown in Table
+\ref{tab:splits}. The particular choice of validation calls was made to control
+for gender ratios and certain other properties, while the first 1,200 calls from
+the originally assigned training set, and the last 551 calls from the originally
+assigned testing set were chosen for the respective final sets. It is noteworthy
+that the even this subset of training and testing data used is almost $20
+\times$ larger than such sets used in other studies ~[]~, affording a good
+amount of training examples and, hopefully, more thorough evaluation.
+
+Table \ref{tab:actspk-val} shows the ratios of the segments and the total
+durations with different number of active speakers for the final validation set.
+Figure \ref{fig:actspk-hist-val} shows the histogram of propotional (weighted by
+duration) contributions of segments of different lengths to the total set of
+segments with respective number of speakers active in the validation set. Table
+\ref{tab:actspk-trn} and Figure \ref{fig:actspk-hist-trn} do the same for the
+final training set, and Table \ref{tab:actspk-trn} and Figure
+\ref{fig:actspk-hist-trn} do it for the final testing set. It can be seen that,
+as discussed in Section [[Double Talk in Conversations]], 0.5 seconds to 1.5 seconds
+long segments contribute the most the overlapping speech situations. Particular
+peaks could depend on the nature of the dataset, but overall characteristics of
+the data matche what has been reported for other conversational datsets ~[]~.
+
+#+LATEX: \begin{small}
+  #+LATEX: \begin{table}
+    |-------------+-----------------+---------------------|
+    | /#Speakers/ | /#Segments (%)/ | /#10 ms Frames (%)/ |
+    |-------------+-----------------+---------------------|
+    |-------------+-----------------+---------------------|
+    |           0 |           15.41 |                6.25 |
+    |           1 |           50.59 |               77.77 |
+    |           2 |           34.00 |               15.98 |
+    |-------------+-----------------+---------------------|
+    |-------------+-----------------+---------------------|
+    |       Total |          100.00 |              100.00 |
+    |-------------+-----------------+---------------------|
+    #+LATEX: \caption{Overall ratio of active number of speakers at a time in terms of segments and frames in the final \textbf{validation set}.}
+    #+LATEX: \label{tab:actspk-val}
+  #+LATEX: \end{table}
+
+  #+LATEX: \begin{figure}
+    #+LATEX: \includegraphics[width=\textwidth]{img/actspk-whist-val}
+    #+LATEX: \caption{Histogram of durations of segments (truncated to < 4 second long) with different number of active speakers in the final \textbf{validation set}.}
+    #+LATEX: \label{fig:actspk-hist-val}
+  #+LATEX: \end{figure}
+#+LATEX: \end{small}
+
+
+#+LATEX: \begin{small}
+#+LATEX: \begin{table}
+|-------------+-----------------+---------------------|
+| /#Speakers/ | /#Segments (%)/ | /#10 ms Frames (%)/ |
+|-------------+-----------------+---------------------|
+|-------------+-----------------+---------------------|
+|           0 |           29.18 |               14.26 |
+|           1 |           50.44 |               76.04 |
+|           2 |           20.37 |                9.70 |
+|-------------+-----------------+---------------------|
+|-------------+-----------------+---------------------|
+|       Total |          100.00 |              100.00 |
+|-------------+-----------------+---------------------|
+#+LATEX: \caption{Overall ratio of active number of speakers at a time in terms of segments and frames in the final \textbf{training set}.}
+#+LATEX: \label{tab:actspk-trn}
+#+LATEX: \end{table}
+# #+LATEX: \end{small}
+
+# #+LATEX: \begin{small}
+#+LATEX: \begin{figure}
+# \centering
+#+LATEX: \includegraphics[width=\textwidth]{img/actspk-whist-trn}
+#+LATEX: \caption{Histogram of durations of segments (truncated to < 4 second long) with different number of active speakers in the final \textbf{training set}.}
+#+LATEX: \label{fig:actspk-hist-trn}
+#+LATEX: \end{figure}
+#+LATEX: \end{small}
+
+#+LATEX: \begin{small}
+#+LATEX: \begin{table}
+|-------------+-----------------+---------------------|
+| /#Speakers/ | /#Segments (%)/ | /#10 ms Frames (%)/ |
+|-------------+-----------------+---------------------|
+|-------------+-----------------+---------------------|
+|           0 |           17.48 |                4.81 |
+|           1 |           51.58 |               81.20 |
+|           2 |           30.93 |               13.99 |
+|-------------+-----------------+---------------------|
+|-------------+-----------------+---------------------|
+|       Total |          100.00 |              100.00 |
+|-------------+-----------------+---------------------|
+#+LATEX: \caption{Overall ratio of active number of speakers at a time in terms of segments and frames in the final \textbf{testing set}.}
+#+LATEX: \label{tab:actspk-tst}
+#+LATEX: \end{table}
+# #+LATEX: \end{small}
+
+# #+LATEX: \begin{small}
+#+LATEX: \begin{figure}
+# \centering
+#+LATEX: \includegraphics[width=\textwidth]{img/actspk-whist-tst}
+#+LATEX: \caption{Histogram of durations of segments (truncated to < 4 second long) with different number of active speakers in the final \textbf{testing set}.}
+#+LATEX: \label{fig:actspk-hist-tst}
+#+LATEX: \end{figure}
+#+LATEX: \end{small}
+
+** DOIN Acoustic Features
+- [[http://recognize-speech.com/][The Speech Recognition Wiki]]
+- [ ] The values are normalized at the time of feature-extraction to be in
+  range (-1, 1) and mean 0 when getting input to feature extraction. Done by =librosa.load=.
 - [ ] Mention that we only export parts of the audio that are within =min-start=
   and =max-end=, although we actually do it before feature extraction on the
   read =numpy-data= later on.
-- [ ] Check how it is being done in =pydub= and document
-- [ ] expected to be =int16= files, without compression, and equal weights for
-  all channels.
-  + [ ] The values are normalized at the time of feature-extraction to be in
-    range (-1, 1) and mean 0 when getting input to feature extraction. Done by =librosa.load=.
-  + [ ] Check for each split to confirm.
-- [ ] this is where the model hyperparameters have already started to
-  accumulate, although it is arguable if using only Telephone conversations
-  should be made part of that, especially since we are working with Deep Learning.
-  - [ ] how to account for robustness?
-*** Splits
-- [ ] Which groups were added to which split, and possibly why.
-- [ ] Check the distributions of different statistics
-  + [ ] segment lengths : general, 0T, 1T, 2T + histograms
-  + [ ] gender distributions for 1T, 2T + pie-chart + /maybe/ histograms
-  + [ ] /maybe/ the distribution of other params
-** Acoustic Features
-- [[http://recognize-speech.com/][The Speech Recognition Wiki]]
+
 *** Acoustic Features
 - 64 dim MFB also allow for using different orig samplerate audio since all will
   end up as 64 dim anyway ...
