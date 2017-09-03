@@ -1386,7 +1386,7 @@ and finally a /2D max-pooling layer/, in that order. The max-pooling in the
 final convolutional block is performed globally so that the inputs to the
 following /dense block/ are vectors of the same size as the number of filters
 learned in the final convolutional block. Each of the **dense block** then has a
-/densely connected layer/, followed by an /activation layer/ and then a
+/densely layer/, followed by an /activation layer/ and then a
 /drop-out layer/. The final outputs in the form of per-class likelihoods are
 obtained from the appropriately sized /dense layer/ with /softmax/ as the
 activation function. In total, then, there are 7 layers (excluding
@@ -1526,69 +1526,113 @@ filter size equal to the shape of the input feature maps, making the striding
 ratio irrelevant. The other popular option of using the average function, or a
 different combination/location in the network, is alas left for future works.
 **** Dense Layer
+Similar to a typical DCNN based classifier's architecture, the convolutional
+blocks near the input's end are designed to learn and extract the features that
+will prove to be the most relevant to the task at hand. The actual
+classification task is then learned and performed by multiple layers of fully
+connected dense layers at the end. In the network then, these dense layers
+(learn to) perform high-level /reasoning/ with the features that have been
+learned by the feature extractor.
 
-_________________________________________________________________
-Layer (type)                 Output Shape              Param #
-=================================================================
-c1_3_64_1 (Conv2D)           (None, 19, 62, 64)        640
-_________________________________________________________________
-c1_bn (BatchNormalization)   (None, 19, 62, 64)        256
-_________________________________________________________________
-c1_relu (Activation)         (None, 19, 62, 64)        0
-_________________________________________________________________
-c1_d_10 (Dropout)            (None, 19, 62, 64)        0
-_________________________________________________________________
-c1_mxp2_2 (MaxPooling2D)     (None, 9, 31, 64)         0
-_________________________________________________________________
-c2_3_128_1 (Conv2D)          (None, 7, 29, 128)        73856
-_________________________________________________________________
-c2_bn (BatchNormalization)   (None, 7, 29, 128)        512
-_________________________________________________________________
-c2_relu (Activation)         (None, 7, 29, 128)        0
-_________________________________________________________________
-c2_d_10 (Dropout)            (None, 7, 29, 128)        0
-_________________________________________________________________
-c2_mxp2_2 (MaxPooling2D)     (None, 3, 14, 128)        0
-_________________________________________________________________
-c3_3_256_1 (Conv2D)          (None, 1, 12, 256)        295168
-_________________________________________________________________
-c3_bn (BatchNormalization)   (None, 1, 12, 256)        1024
-_________________________________________________________________
-c3_relu (Activation)         (None, 1, 12, 256)        0
-_________________________________________________________________
-c3_d_10 (Dropout)            (None, 1, 12, 256)        0
-_________________________________________________________________
-gmxp (GlobalMaxPooling2D)    (None, 256)               0
-_________________________________________________________________
-f1_512_relu (Dense)          (None, 512)               131584
-_________________________________________________________________
-f1_d_10 (Dropout)            (None, 512)               0
-_________________________________________________________________
-f2_128_relu (Dense)          (None, 128)               65664
-_________________________________________________________________
-f2_d_10 (Dropout)            (None, 128)               0
-_________________________________________________________________
-f3_32_relu (Dense)           (None, 32)                4128
-_________________________________________________________________
-f3_d_10 (Dropout)            (None, 32)                0
-_________________________________________________________________
-sfmx (Dense)                 (None, 3)                 99
-=================================================================
-Total params: 572,931
-Trainable params: 572,035
-Non-trainable params: 896
-_________________________________________________________________
+From the perspective of topology, each unit (neuron) in a dense layer is
+performs a weighted sum of all the inputs, which are then passed through a
+non-linear activation function. The multiplicative weight and
+the additive bias are not shared between the individual neurons. Hence, the
+output size of such a layer will be of the size of the number of neural units in
+that layer.
 
+In the proposed DCNN, max-pooling is performed globally in the final
+convolutional block so as to end up with a vector of the size of the number of
+feature maps. These then behave as the extracted feature vector for
+/dense blocks/ to be used for classification. Each such dense block consists of
+a dense layer such as one explained above, with the number of neural units
+decreasing as the position of the block (and hence the layer) goes deeper. After
+each dense block, however, a dropout layer was used for regularization during
+training, as has been explained previously.
+
+The activation function used all such dense blocks was the ReLU function, except
+in case of the final output layer, which used the Soft-max function.
 *** Training
 - adam and backpropagation
 - Categorical cross entropy
   - using cost sensitive objective
 - No early stopping, no learning rate scheduling
 - 20 passes at least, then choose best based on overfitting
-- Keras and Tensorflow, with custom data provider
-  - ~5 days for full, 3 to 4 days for skipping / subsampling
-- monitored for by the class-wise precision and recall using a custom implementation
 ** Implementation - Highlights
+All implementations in this thesis were done using the Python programming
+language ~[]~, and it was hence also the medium of choice for working with the
+APIs of the libraries that were used. Where possible, reputed open source
+libraries were used, and where necessary, the custom implementations were done
+with a test-driven-development (TDD) methodology. The versions of some of the
+key libraries used are listed below:
+
+- ~Python 3.5.3~ ~[]~
+- ~NumPy 1.12.1~ ~[]~
+- ~FFMPEG 3.2~ ~[]~
+- ~LibROSA 0.5.0~ ~[]~
+- ~Dask 0.14.3~ ~[]~
+- ~h5py 2.7.0~ ~[]~
+- ~Keras 2.0.2~ ~[]~
+- ~TensorFlow 1.0.0~ ~[]~
+- ~matplotlib 2.0.2~ ~[]~
+- ~Jupyter 5.0.0~ ~[]~
+- ~pytest 3.0.7~ ~[]~
+
+Figure ~[]~ shows the simplified flow-diagram of the process used in works done
+during this thesis. It is designed to be modular and each step is configurable
+and reproducible, which should be helpful for works that are to continue beyond
+this thesis. They are briefly explained next with context of the relevant
+implementation highlights.
+
+- Data Preparation :: The original NIST SPHERE audio files were converted to WAV
+     using the ~sph2pipe_v2~ tool ~[]~, whose individual speaker channels were
+     merged using ~FFMPEG~. The labels were parsed from the corresponding
+     transcripts using a custom implementation that heavily exploited ~NumPy~
+     . This also the stage where the dataset was split into training,
+     validation and testing dataset.
+- Feature Extraction :: The audios were loaded and the feature extraction
+     procedure was performed using slightly modified versions of the relevant
+     functions available in ~LibROSA~. The process was parallelized across
+     multiple audio files using ~Dask~. The final features and the
+     corresponding class labels were then stored in ~HDF5~ format, one for each
+     split.
+- Neural Network :: The DCNN was implemented using ~Keras~ while the actual
+                    computation backend was provided by (GPU enabled)
+                    ~Tensorflow~. Any parameters that have not been mentioned in
+                    earlier descriptions were kept to the default values set in
+                    ~Keras~. All networks were trained for 20 to 40 passes over
+                    the entire dataset, and each took between 5 to 7 days on a
+                    Nvidia GeForce GTX TITAN X Black GPU (~cuda 8.0~) when a
+                    custom /data provider/ was used.
+- Batch Preparation :: A custom /data provider/ was implemented using ~NumPy~
+     and ~h5py~ for preparing batches for the neural network on the fly and in
+     parallel to the training loop running on a GPU. This performed
+     context-adding, normalization, under-sampling of classes, seeded shuffling, etc.
+     on the data read from the saved ~HDF5~ files, and, since it was done in
+     parallel to the training loop, improved training times by an order of
+     magnitude when compared to a more straightforward approach. Furthermore, a
+     striding trick ~[]~ was used to keep the operations memory efficient as
+     well. The efficiency came at the cost that all samples in a batch, even
+     though shuffled, came from a single conversation. It would have been
+     impractically inefficient otherwise, and, at least, consecutive batches
+     were made sure (upto a random shuffle) to come from different
+     conversations.
+- Monitoring :: The validation set was used to monitor the performance of the
+                DCNN over each epoch by using callbacks provided in ~Keras~ to build a
+                ~Tensorboard~ ~[]~, and the learned weights were saved after each
+                epoch using another in-built callback. A custom callback was
+                implemented using ~NumPy~ and ~Keras~ to also monitor the class
+                confusion matrix to indicate the classwise precision and recall
+                metrics on the validation set.
+- Evaluations :: A slightly modified version of the above data provider (one
+                 with no shuffling, subsampling, or skipping) was also used to
+                 generate raw predictions from the neural network set with
+                 learned weights obtained after training. These predictions were
+                 then analyzed by functions implemented using ~NumPy~, and
+                 almost all of the graphical analysis was done using
+                 ~Matplotlib~. A custom and numerically stable ~NumPy~ based
+                 implementation of Viterbi algorithm for temporal smoothing was
+                 used where relevant.
 * Evaluations
 + Initial experiments were done on simple FFNN, but were not successful
 * Conclusions and Future Work
