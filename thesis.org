@@ -455,7 +455,7 @@ where recordings from multiple microphones is present.
 - backchannels are ... and often occur in overlapping condition, where the
   listener is not competing
 
-*** Deep learning
+** Deep Learning
 
 - Deep learning technologies have proven to be this strong, and are still being
   investigated. Particularly interesting are end-to-end approaches.
@@ -541,7 +541,8 @@ future work are discussed in Section [[Conclusions and Future Work]].
      phenomenon, and hence, the underlying classification task will only use
      acoustic information (in the form of low-level acoustic features) extracted
      from the audio of a given recording. The audio data will be mono-aural
-     where a single stream has speech from all speakers. This makes the task
+     where a single stream has speech from all speakers, and no other
+     modalities, like spoken content, extra microphones, etc. will be used. This makes the task
      more challenging than a mult-channel/-microphone setup, but also makes the
      solutions more versatile.
 
@@ -574,38 +575,30 @@ future work are discussed in Section [[Conclusions and Future Work]].
      speakers are active in situations of overlap is not inferred. The
      classifier is to be trained in a supervised setting, employing ground-truth
      labels inferred for speaker activity from the transciption of the audio
-     during training and evalution. Nevertheless, due to the possibility that
-     the presence of silence (0 speakers) in the training data can degrade the
-     performance of an overlap detection system ~[]~, another configuration
-     where such frames are omitted based on ground truth annotation (Section
-     ~[]~), one with /**(1 speaker, more than 1 speakers)**/, will also be be
-     evaluated.
+     during training and evalution.
 
 - **DCNN based Classifier:** :: The architecture of the deep neural network will
      be that of a Deep Convolutional Neural Network (DCNN), with multiple
      (stacked) convolutional layers at the input to learn appropriately low- and
-     high-level patterns, and multiple (stacked) fully connected layers at the
-     output to classify these patterns into the 3 classes mentioned above. The
-     decision to work with DCNN's was taken after the failure of purely
-     feed-forward deep neural networks (with only fully connected layers) during
-     initial experiments. The architecture of the network was fixed for all
-     experiments to evaluate impact of other variables, and was inspired by
-     recent research in acoustic modelling with DCNN's and pragmatic concerns
-     (Section ~[]~).
+     high-level patterns, and multiple (stacked) fully connected (dense) layers
+     at the output to classify these patterns into the 3 classes mentioned
+     above. The architecture of the network was fixed for all experiments to
+     evaluate impact of other variables, and was inspired by recent research in
+     acoustic modelling with DCNN's and other practical concerns (Section ~[]~).
 
-- **Evaluation Metrics:** :: As done in previous works ~[]~, the effectiveness of the
-     system is measured with respect to overlap detection in terms of the
-     frame-wise precision and recall, and their harmonic mean (F1-score)
-     (Section ~[]~). Nevertheless, since the dataset used for these evaluations
-     is from the Fisher corpus which is not the standard dataset used by other
-     works, the results reported in this thesis cannot be directly compared to those
-     works. Adaptations and evaluations on such datasets are planned to be
-     carried out in the future, but were not included in the objectives of this
-     thesis due to time limitations.
-
-- **Fine-Tuning:** :: Where necessary and possible, any fine-tuning or
-     comparisons of overlap detection systems will be performed by
-     giving preference to higher precision over higher recall (Section ~[]~).
+# - **Evaluation Metrics:** :: As done in previous works ~[]~, the effectiveness of the
+#      system will be measured with respect to overlap detection in terms of the
+#      frame-wise precision and recall.
+#      (Section ~[]~). Nevertheless, since the dataset used for these evaluations
+#      is from the Fisher corpus which is not the standard dataset used by other
+#      works, the results reported in this thesis cannot be directly compared to those
+#      works. Adaptations and evaluations on such datasets are planned to be
+#      carried out in the future, but were not included in the objectives of this
+#      thesis due to time limitations.
+#
+# - **Fine-Tuning:** :: Where necessary and possible, any fine-tuning or
+#      comparisons of overlap detection systems will be performed by
+#      giving preference to higher precision over higher recall (Section ~[]~).
 *** Variables
 - **Normalization of Inputs:** :: Normalization is a standard step in preparing
      inputs to many machine learning algorithms. However, since the implicit goal
@@ -747,7 +740,7 @@ frame however, the classifier does not exploit it's predictions for the
 neighboring frames (the input to the DCNN classifier consists of neighboring
 frames to provide contextual information, but the labels of such contextual
 frames are not provided to the classifier while training; more in Section
-[[Inputs]]). But, in a speech recording these three events occur as contiguous
+[[Architecture]]). But, in a speech recording these three events occur as contiguous
 segments in time. That is, ~FINISH~
 - [ ] FINISH
 *** WAIT Temporal Smoothing
@@ -795,6 +788,9 @@ impact on performance that may get introduced by using an automatic speech
 activity detector. Under such configurations then, the task becomes that of
 binary classification, i.e. /**(1 speaker active, more than 1 speakers
 active)**/.
+
+- [ ] Silence is ~not~ removed during evaluation, and is instead set to GT
+  before calculating prec_rec
 *** Tackling Class Imbalance
 It was shown in Section [[Double Talk in Conversations]] that, even though
 individual double talk situations can occur quite frequently in normal
@@ -1297,41 +1293,304 @@ the data matche what has been reported for other conversational datsets ~[]~.
   especially related to channel distortions.
 - Also: Make it more suitable for the machine learning algorithm.
 ** Deep Convolutional Neural Networks
-- There is essentially just one model based on the code below.
-- There is one output per-sequence, as in, we do sequence classification, but
-  not at utterance level.
-- The configurations will decide:
-  + The input shape, and hence the context per frame.
-  + The number of classes.
-- We use BatchNormalization *BEFORE* Activation, to follow the original paper.
-- We use Categorical crossentropy, and categorical accuracy.
-- [X] We use adamax as optimizer, but this can change
-  + Nah .. we're sticking with it ... too many other things waiting
-- [ ] Use Average Pooling instead of Max Pooling?
-- [ ] Check more conv nets for speech and decide one final that we can run.
-  - [ ] @deng:2013deep
-*** Inputs
-- We can go for ±20 or ±30 as in @xiong:2016achieving, but why not:
-+ hardware limitations
-+ Run time limitations
-+ [ ] Add this to future works
-**** Skipping Silence frames
-- *We only experiment with skipping 0T when we choose to, and it is preferable*
-+ skipping 1T does not make sense, use subsampling instead
-- We *still* maintain the same number of steps per chunk, even though the
-batches now may be of different sizes
-- [ ] should check it out offline first to see that there are no unforseen
-circumstances where the batches may end up being empty.
-- We want to avoid making copies of giant arrays, so the convoluted algo below.
-- *Skipping will be done on validation/test data as well*
+The use of a deep learning based classifier was motivated in Section [[Deep
+Learning]]. Ground breaking results have been achieved using these methods in
+almost all areas of maching learning. For detecting overlapping speech in
+conversations, Geiger /et al/ ~[]~ used Long Short-Term Memory based Recurrent
+Neural Networks to achieve comparable performance to the traditional method
+using GMM-HMMs, and improved the results further when they were used in a tandem
+setting (Section [[Speaker Diarization]]).
+
+As discussed earlier, almost all previous works on overlap detection, including
+the work by Geiger /et al/ ~[]~ mentioned above, have concentrated on finding
+the right set of acoustic features that give the best performance. Deep learning
+technologies, especially Deep Convolutional Neural Networks (DCNN), promise the
+capability to /automatically learn/ robust representations from low-level features
+that are most appropriate for a given task. And recent results ~[]~ have
+demonstrated that these promises are being satisfactorily fulfilled.
+Particularly interesting are the studies where neural network architectures
+originally designed for one problem domain (e.g. computer vision) have shown to
+perform surprisingly well in other domains as well (e.g. speech recognition)
+~[]~.
+
+It was for these reasons that a Deep Convolutional Neural Network (DCNN) was
+used in this thesis to build the classifier. No works that have used DCNN for
+overlap detection in conversations have been published, so it was made necessary
+that the investigation be a comprehensive one. The basic approaches that need to
+be evaluated in building an overlap detection system are already numerous
+(Section [[Supervised Machine Learning for Classification]]), and the long training
+times that any sufficiently deep neural network requires would prove taxing to
+the limited time allotted for this thesis. It would have been impractical to
+then also investigate different DCNN architectures, or even the impact of
+different hyper-parameters or the ordering of individual layers in even a single
+one. The DCNN architecture that was used then, therefore, was fixed for
+evaluations performed in this thesis, while fine-tuning and experimentation with
+other variations would continue in the works beyond this thesis's submission.
+
+This DCNN architecture is presented in the next section where each of it's
+components are also briefly discussed. Most of these components are fairly
+standard in any DCNN, and since almost each of them can warrant a scholarly
+article, their discussion in this thesis has been kept brief. The reader is
+encouraged to follow many freely available resources for deeper discussions ~[]~.
+
+*** Architecture
+Figure ~[]~ shows the final DCNN architecture that was used in this thesis. It
+was decided upon after some initial experiments, and was limited by what seemed
+reasonable for the given task and by available hardware and time. There are a
+total number of 572,035 trainable parameters, which were trained using the
+/adam/ optimizer (a popular variant of batched stochastic gradient descent) on
+the /categorical cross entropy/ (objective function) between the output
+likelihoods and the categorical ground-truth labels.
+
+This architecture is a heavily simplified version of VGG-net ~[]~ ~which won the
+...~ and a recent investigation of using VGG-net for speech recorgnition by Deng
+/et al/ ~[]~. The network was simplified to have fewer layers and hence much
+fewer number of learnable parameters than the original ~85 million. This
+decision was made since, in addition to other practical reasons, the network was
+to be trained for only 3 classes (Section [[Supervised Machine Learning for
+Classification]]) as opposed to in the order of 1,000's in the case of the
+original purposes of VGG-net. Early experiments with even smaller architectures,
+or even those without any convolutional layers, had not shown satisfactory
+results.
+
+The DCNN consists of three /convolutional blocks/ at the input, followed by 3
+/dense blocks/ before the final /softmax/ output layer for the three
+classes /**(0 speakers, 1 speaker, more than 1 speakers)**/. No padding was
+performed on inputs or outputs of any layers, so the depth of the network (i.e. the
+number of blocks and layers) is also partly constrained by the shape of the /input/.
+
+The **inputs** are formed for a given frame by attaching 10 frames immediately
+before and 10 frames immediately after as contextual information. This leads to
+a 2D input of the shape $(21, 64)$ where the two dimensions are /(time,
+mel-frequency)/, and, since these frames were calculated every 10 ms, represent
+a total contextual information of 210 ms available to the DCNN for each
+classification. The **class label** for each such input is decided by the frame
+at the center, and is provided to the network in categorical form (3 dimensional
+vector with value 1 for true class and 0 otherwise). Other works with DCNN in
+speech recognition prepare their inputs in a similar manner to capture a typical
+phoneme length, with the amount of context added between 5 to 9 from both sides
+being popular ~[]~. The decision to choose 10 contextual frames was made after
+determining that lower number of such frames lead to relatively worse results in
+initial exploratory experiments, while larger numbers would have imposed severe
+penalty on training times as well as, given the typically small duration of
+segments with overlapping speech, would have made the decision to choose label
+from only the center frame questionable. Within a context size of 210 ms, it is
+hoped that enough information can be captured also about acoustic events which
+could last longer than a typical phoneme (like laughter, backchannels, etc.) but
+nevertheless occur in overlap situations, and also to somewhat mitigate for any
+inaccuracies the ground-truth annotations.
+
+Each **convolutional block** consists of a /2D convolutional layer/,
+/batch-normalization layer/, non-linear /activation layer/, /drop-out layer/,
+and finally a /2D max-pooling layer/, in that order. The max-pooling in the
+final convolutional block is performed globally so that the inputs to the
+following /dense block/ are vectors of the same size as the number of filters
+learned in the final convolutional block. Each of the **dense block** then has a
+/densely connected layer/, followed by an /activation layer/ and then a
+/drop-out layer/. The final outputs in the form of per-class likelihoods are
+obtained from the appropriately sized /dense layer/ with /softmax/ as the
+activation function. In total, then, there are 7 layers (excluding
+batch-normalization layers) with learnable weights. These layers are discussed next.
 *** Layers
-*** Outputs
-*** Hyper-Parameters
-**** N-passes, Batchsize
-*** Run Time
+**** Convolutional Layer
+The use of /convolutional/ layers gives a Deep /Convlutional/ Neural network
+it's name. Within this layer, a set of filters (of size smaller than the inputs)
+are /convolved/ over the inputs ~[]~. Each filter of a given size (called it's
+receptive field) is moved over the entire input with some striding ratio (aka
+step-size), and the output at a position is the weighted sum of the overlapped
+region of the input at the corresponding position. These multiplicative weight
+and additive bias parameters are learned during training after having been
+initialized with some appropriate values. In this way, each filter produces a
+feature map from a given input, which, in crude terms, represents the presence
+of the /local patterns/ that the filter has learned to distinguish from others.
+The number of such filters learned in a layer are increased as the position of
+the convolutional layers goes deeper (Figure ~[]~), with the intuition of
+learning fewer lower level features (e.g. utterance specific) at the beginning
+which are combined to form more number of higher-level features (e.g. speaker
+specific) as the network goes deeper.
+
+All convolutional layers in the proposed architecture used filters with
+receptive field of shape $(3, 3)$, i.e. 2-dimensional convolution, and also used
+a striding ratio of $1$ in both dimensions. The hope is that these filters will
+learn the temporal and spectral patterns that occur during the three situations
+where different number of speakers are active, while also being invariant to the
+particular characteristics of what is being spoken, by whom, and when.
+Furthermore, since none of the layers performed any padding to their inputs
+before convolution, the final size of each feature map will be reduced by an
+absolute value of $2 \times \lfloor{\frac{3}{2}}\rfloor = 2$ in each dimension.
+No weight or bias regularization (often done to improve stability) were done.
+
+**** Batch-Normalization Layer
+In recent works using DCNN's ~[]~, the output of a convolutional layer is often
+normalized to have zero-mean and unit-variance. During batch-wise training, this
+/batch-normalization layer/ performs this in an online manner, learning the
+mean and variance of the entire dataset at the particular position of the layer
+for each component of it's input. During evaluation, the learned mean and
+variance are used to normalize the inputs to the next layer. The goal is to
+standardize the internal representations inside the network (similar to how the
+inputs were normalized in Section [[Normalization]]), and have been
+shown to help the network converge faster and generalize better ~[]~. To enable
+such a layer to learn the mean and variance statistics more robustly in a
+batch-wise online manner, care should be taken when the batches are constructed.
+For this, the batch-size was kept relatively large and it was made /sure/ (upto
+a random decision function) that consecutive batches did not come from the same
+recording (while being shuffled within themselves anyway).
+
+It is a subject of many informal debates within the deep learning community on
+whether such a normalization should be performed on the outputs of the
+convolutional layer, or the /activation layer/. Unfortunately, there have not
+been any thorough investigations into the impact of the two decisions. It is the
+personal view of the author of this thesis that using batch-normalization before
+activation may lead to loss of potentially useful information especially when
+using Rectified Linear Unit (ReLU) as the activation function. This is because
+ReLU is inactive for values $<= 0$, and batch-normalization will necessarily
+center all it's inputs around zero. Nevertheless, the decision was made to honour
+the original architecture that inspired this work's DCNN, and
+batch-normalization was always performed before activation. Further works are
+planned to investigate the other options, including ones skipping this layer altogether.
+
+**** Activation Layer
+The /activation layer/, essentially, applies a non-linear function to it's
+inputs while sometimes promising certain properties for it's outputs as well.
+The application of a non-linear activation function in the neural units
+(neurons) to the weighted sum of it's in coming values is what lies at the heart
+of what makes a neural network capable of learning universal functions, both
+theoretically ~[]~ and, with recent ground-breaking results, probably also in
+practice. Such an activation function should be non-linear, bounded, and
+monotonically increasing, preferably continuous functions. Traditionally,
+functions like the logistic (sigmoid) function $f_{sigmoid}(x) = \frac{1}{1 + e^{-x}}$, or the
+hyperbolic tangent function $f_{tanh}(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$, etc.
+have been used. Recently however, the Rectified Linear Unit (ReLU) function
+$f_{relu}(x) = x^{+} = max(0, x)$ has become a very popular choice for most applications, and neural
+networks using these have been shown to learn much faster than with others.
+However, being non-continuous, weights of the neuron should be initialization
+with some care ~[]~. Furthermore, they are also known to lead to overfitting, but
+certain regularization layers have been shown to mitigate such issues ~[]~.
+
+All weights in the proposed network here were initialized using the Glorot
+Uniform distribution ~[]~ based on other recent works ~[]~. /Drop-out layers/
+were used during training for regularization (discussed later).
+All activation layers in the proposed network used the ReLU function for
+activation, except the final layer that produced the likelihoods for the three
+target classes. For this layer, the Soft-max activation function was used, which
+is a generalization of the logistic function above, but promises the
+$C$ -dimensional output vector for a $C$ -dimensional real-valued input vector
+$\textbf{x}$ to be real valued in the range $[0, 1]$ and sum up to $1$,
+simulating a discrete probability mass distribution over the target classes:
+$$f_{softmax}(\textbf{x}) = \frac{e^{x_j}}{\sum_{k=1}^{C} e^{x_k}} \text{ for }
+j=1, 2, \ldots, C$$.
+**** Drop-Out Layer
+Randomly dropping out (setting to zero) the inputs (with some fixed probability)
+before being passed on to the next layer was introduced as an elegant
+architectural "hack" to prevent overfitting in neural networks, and also for
+approximating the ensemble training (with model averaging) of exponentially many
+"thinned" networks within the same neural network architecture ~[]~. It acts as
+a regularization method by preventing complex co-adaptation of the neural units
+to fixed, simple patterns. When applied to the inputs themselves, it can also
+simulate training on an exponential number of augmented datasets, although this
+configuration is rarely used and reserved for situations when the original
+training dataset is small and meets certain criteria ~[]~.
+
+In the proposed architecture, all ReLU activation layers were followed by a
+drop-out layer with $10\%$ of the inputs to such layers being randomly set to
+zero. It is arguable that a higher probability should be used in the /dense
+layers/ (the classifier) to make them more robust, but this has been left for
+future investigations.
+**** Max-Pooling Layer
+Another hallmark of many DCNN's is the use of pooling layers that perform a type
+of non-linear down-sampling on their inputs. They are implemented in a very
+similar fashion to the convolutional layers, except for two key differences: the
+filters are applied to non-overlapping receptive fields instead of overlapping
+ones in case of convolutional layers (i.e. the step size is equal to filter size
+instead of $1$), and the output of the filters are not weighted sums of the
+inputs within the receptive field, but rather the result of a non-linear
+function, popularly the max or the average. Furthemore, the number of such
+filters is kept equal to the number of filters (output feature maps) in the
+earlier convolutional layer. The intuition behind using such a layer is that the
+exact location of a recognized pattern in the inputs is less important than its
+rough location relative to other recognized patterns, leading to a form of
+translation invariance. Furthermore, with such a high striding ratio (or step
+size), the size of the learned representation is significantly reduced, leading
+to fewer computations in subsequent layer while also helping against
+overfitting in the previous layer ~[]~.
+
+When applied globally, the chosen non-linear function is applied to a receptive
+field of size equal to the shape of the input feature maps, effectively
+replacing each feature map by a single value.
+
+In the proposed architecture, all pooling layers applied the max function.
+Except for the final global pooling layer, all other pooling layers use a 2D
+filter of shape $(2, 2)$, applied with a striding ratio $(2, 2)$ (equivalent to
+a step size of $(2, 2)$). The final global max-pooling layer of course used a
+filter size equal to the shape of the input feature maps, making the striding
+ratio irrelevant. The other popular option of using the average function, or a
+different combination/location in the network, is alas left for future works.
+**** Dense Layer
+
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #
+=================================================================
+c1_3_64_1 (Conv2D)           (None, 19, 62, 64)        640
+_________________________________________________________________
+c1_bn (BatchNormalization)   (None, 19, 62, 64)        256
+_________________________________________________________________
+c1_relu (Activation)         (None, 19, 62, 64)        0
+_________________________________________________________________
+c1_d_10 (Dropout)            (None, 19, 62, 64)        0
+_________________________________________________________________
+c1_mxp2_2 (MaxPooling2D)     (None, 9, 31, 64)         0
+_________________________________________________________________
+c2_3_128_1 (Conv2D)          (None, 7, 29, 128)        73856
+_________________________________________________________________
+c2_bn (BatchNormalization)   (None, 7, 29, 128)        512
+_________________________________________________________________
+c2_relu (Activation)         (None, 7, 29, 128)        0
+_________________________________________________________________
+c2_d_10 (Dropout)            (None, 7, 29, 128)        0
+_________________________________________________________________
+c2_mxp2_2 (MaxPooling2D)     (None, 3, 14, 128)        0
+_________________________________________________________________
+c3_3_256_1 (Conv2D)          (None, 1, 12, 256)        295168
+_________________________________________________________________
+c3_bn (BatchNormalization)   (None, 1, 12, 256)        1024
+_________________________________________________________________
+c3_relu (Activation)         (None, 1, 12, 256)        0
+_________________________________________________________________
+c3_d_10 (Dropout)            (None, 1, 12, 256)        0
+_________________________________________________________________
+gmxp (GlobalMaxPooling2D)    (None, 256)               0
+_________________________________________________________________
+f1_512_relu (Dense)          (None, 512)               131584
+_________________________________________________________________
+f1_d_10 (Dropout)            (None, 512)               0
+_________________________________________________________________
+f2_128_relu (Dense)          (None, 128)               65664
+_________________________________________________________________
+f2_d_10 (Dropout)            (None, 128)               0
+_________________________________________________________________
+f3_32_relu (Dense)           (None, 32)                4128
+_________________________________________________________________
+f3_d_10 (Dropout)            (None, 32)                0
+_________________________________________________________________
+sfmx (Dense)                 (None, 3)                 99
+=================================================================
+Total params: 572,931
+Trainable params: 572,035
+Non-trainable params: 896
+_________________________________________________________________
+
+*** Training
+- adam and backpropagation
+- Categorical cross entropy
+  - using cost sensitive objective
+- No early stopping, no learning rate scheduling
+- 20 passes at least, then choose best based on overfitting
+- Keras and Tensorflow, with custom data provider
+  - ~5 days for full, 3 to 4 days for skipping / subsampling
+- monitored for by the class-wise precision and recall using a custom implementation
 ** Implementation - Highlights
 * Evaluations
-
++ Initial experiments were done on simple FFNN, but were not successful
 * Conclusions and Future Work
 - Context helps. Single frame is not enough for DT.
 - Deep learning relies heavily on the optimizer.
