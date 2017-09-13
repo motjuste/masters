@@ -10,22 +10,24 @@
 #+STARTUP: latexpreview
 #+OPTIONS: toc:nil creator:nil todo:nil stat:nil tags:nil inline:nil
 #+OPTIONS: H:6 ':t ^:{} tex:t
+#+MACRO: NL @@latex:\\@@ @@html:<br>@@
+#+MACRO: L @@latex:\LARGE@@ @@html:<br>@@
 
 #+latex_class: scrbook
 #+latex_class_options: [a4paper, oneside, parskip=half]
 #+latex_header: \addtokomafont{sectioning}{\rmfamily}
-#+TITLE: Detecting Double-Talk (Overlapping Speech) in Conversations using Deep Learning
+#+TITLE: {{{L}}}Detecting Double-Talk (Overlapping Speech){{{NL}}}in Conversations{{{NL}}}using Deep Learning{{{NL}}}   {{{NL}}}   {{{NL}}}
 #+AUTHOR: Abdullah
+#+DATE: September, 2017
+#+latex_header: \subject{\large{Master's Thesis}}
+#+latex_header: \publishers{\vspace*{4em} \normalsize\textbf{Rheinisch-Westfälische Technische Hochschule Aachen}\\\small Faculty of Mathematics, Computer Science and Natural Sciences\\Department of Computer Science}
 
 # #+latex_header: \usepackage[citestyle=authoryear-icomp,bibstyle=authoryear, hyperref=true,backref=true,maxcitenames=3,url=true,backend=biber,natbib=true] {biblatex}
 #+latex_header: \usepackage[backend=biber]{biblatex}
 #+latex_header: \addbibresource{thesis.bib}
 #+LATEX_HEADER: \usepackage{amsmath}
 #+latex_header: \usepackage{fancyhdr}
-
-#+LATEX: {\small \begin{abstract}
-Detecting Double-Talk
-#+LATEX: \end{abstract} }
+#+latex_header: \DeclareMathOperator*{\argmax}{arg\,max}
 
 # #+BEGIN_LATEX
 # \beginidedication}
@@ -43,27 +45,28 @@ Detecting Double-Talk
 # Joachim, Alex ... set the bar that every other human has to reach ... and they
 # set a very high one.
 # #+LATEX: \end{acknowledgements}
-Abstract
 
-Detecting Double-Talk ...
+#+latex: \addchap*{Abstract}
+Abstract for Detecting Double-Talk ...
+#+latex: \pagebreak
 
 #+latex: \renewcommand{\headrulewidth}{0.5pt} %obere Trennlinie
 #+latex: \fancyhead[R]{\small \textbf{\thepage}} %Kopfzeile rechts
 #+latex: \fancyhead[L]{\small \textbf{\nouppercase{\rightmark}}} %Kopfzeile rechts
 #+latex: \pagestyle{fancy} %Stilangabe
 #+latex: \fancyfoot{}
-
+# #+latex: \pagenumbering{arabic}
 
 #+TOC: headlines 2
 #+latex: \pagebreak
-* DOIN [3/6] Introduction
+* DOIN [5/6] Introduction
 Conversations are the dominant form of social interaction between two or more
-people. While text based messaging has seen meteoric rise in recent years,
+people. While text-based messaging has seen a meteoric rise in recent years,
 speech is still the primary medium for holding conversations. These
 interactions, especially face-to-face ones, are often enriched by both verbal as
 well as non-verbal acts by the participants in the facilitation of the exchange
 of ideas, information, thoughts, feelings, etc. The enthusiastic adoption of
-emojis in text based messaging by almost all vendors perhaps was to help users
+emojis in text0based messaging by almost all vendors perhaps was to help users
 at least simulate such acts in a concise way under the constraints of the medium
 of text.
 
@@ -110,7 +113,7 @@ ears and eyes.
 
 For the objectives of a yet another group of researchers, double-talk situations
 in conversations can actually prove to be a major source of errors. For systems
-that aim to automatically transcribe and/or annotate speech signals, high
+that aim to automatically transcribe or annotate speech signals, high
 performance on spontaneous conversations represents their flagship task.
 Hesitations, overlaps, and other disfluencies are typical in such unplanned
 settings, and pose significant challenges to these speech technologies. In
@@ -131,7 +134,8 @@ which is followed by putting it in perspective of research in speech
 technologies and existing work on the task of detecting them. Aided by this
 background, the objectives of this thesis are made concrete at the end of this
 chapter.
-** WAIT [0/0] Double-Talk in Conversations
+** DONE [0/0] Double-Talk in Conversations
+CLOSED: [2017-09-12 Tue 03:30]
 Double-talk (also called as overlap or overlapping speech, throughout this
 thesis) can be straightforwardly defined by the physical phenomenon where more
 than one speakers speak at the same time. During conversations, their
@@ -159,7 +163,7 @@ speaking at the same time as others. There are two popular theories that try to
 model how the participants find the appropriate moments to start speaking
 \cite{heldner_pauses_2010}. When one speaker is active at a time, according to
 the first theory, the next speaker /projects/ the possible end-time of the
-current turn based on syntactic, prosodic, pragmatic and/or gestural
+current turn based on syntactic, prosodic, pragmatic or gestural
 information. The other theory suggests the next speaker starts talking as a
 direct /reaction/ to some signal indicating that the current speaker has
 finished, or is about to finish. Overlaps can occur when there is a mismatch
@@ -185,7 +189,7 @@ double-talk can be quite frequent. These can vary in different scenarios,
 cultures, etc. and studying such variations is an active area of research
 \cite{stivers_universals_2009,minna_stolt_many_2008}.
 
-In the Table \ref{tab:actspk-all} the ratios of number of segments of speech and
+In Table \ref{tab:actspk-all} the ratios of number of segments of speech and
 those of number of acoustic frames extracted every 10 ms (the temporal
 resolution of the transciptions) over 5850 telephone based conversations in the
 /Fisher English Corpus (**LDC2004T19**)/ are shown (more details in Section
@@ -194,11 +198,11 @@ at the same time account for a significant portion, they contribute
 proportionally much less to the overall number of individual acoustic frames.
 This indicates, and is further illustrated in Figure \ref{fig:actspk-hist-all}
 that the distribution of segment-lengths with overlapping speech is skewed
-towards smaller durations. Overlaps longer than 4 seconds are less common and
+towards smaller durations. Overlaps longer than $4\,\text{seconds}$ are less common and
 are often characteristic of the scenario of the conversation (e.g. politically
 charged debates) if not otherwise a result of erroneous transcription. For
 various conversational datasets, the reported median value is typically around
-0.5 seconds, and the distribution has a very thin tail in longer durations
+$0.5\,\text{seconds}$, and the distribution has a very thin tail in longer durations
 \cite{heldner_pauses_2010}. Knowing this, a system that aims to classify each
 each frame for the number of active speakers in it will face additional
 challenge due to the heavy imbalance between the classes.
@@ -218,7 +222,7 @@ challenge due to the heavy imbalance between the classes.
 |           Total |   |          100.00 |   |        100.00 |
 |-----------------+---+-----------------+---+---------------|
 |-----------------+---+-----------------+---+---------------|
-#+LATEX: \caption{Overall ratios of the number of segments and acoustic frames with different number of simultaneously active speakersin the Fisher Corpus \emph{LDC2004T19}.}
+#+LATEX: \caption{Overall ratios of the number of segments and acoustic frames with different number of simultaneously active speakers in the Fisher Corpus \emph{LDC2004T19}.}
 #+LATEX: \label{tab:actspk-all}
 #+LATEX: \end{table}
 
@@ -229,25 +233,25 @@ challenge due to the heavy imbalance between the classes.
 #+LATEX: \label{fig:actspk-hist-all}
 #+LATEX: \end{figure}
 
-Literature in the area of linguistics classify overlaps into further categories.
-Some of the most prominent occurrences happen during backchannels (listener
-feedbacks like "hmm", "mhm"), (mis-)anticipated turn takings, complementary
-listener utterences, and laughter (Figure \ref{fig:example-ovl-conv}). Another
-categorization could be based on whether the listener is competing for the turn
-with the active speaker, or is simply providing additional information without
-any intention to take the turn. These, and other categorizations are not
-discussed here further and the reader should refer to
-\cite{minna_stolt_many_2008} for an extensive overview. Almost all approaches
-for detecting overlapping speech, including the one presented in this thesis, do
-not further categorize examples of overlaps, especially when working with
-naturally occuring double-talk, mainly to avoid any further decimation of what
-is already a minority class.
+Literature in the area of linguistics classifies overlaps into further
+categories. Some of the most common occurrences of overlap happen during
+backchannels (listener feedbacks like "hmm", "mhm"), (mis-)anticipated turn
+takings, complementary listener utterences, and laughter (Figure
+\ref{fig:example-ovl-conv}). Another form of categorization is done based on
+whether the listener is competing for the turn with the active speaker, or is
+simply providing additional information without any intention to take the turn.
+These, and other categorizations are not discussed here further and the reader
+should refer to \cite{minna_stolt_many_2008} for an extensive overview. Almost
+all approaches for detecting overlapping speech, including the one presented in
+this thesis, do not further categorize examples of overlaps, especially when
+working with naturally occuring double-talk, mainly to avoid any further
+decimation of what is already a minority class.
 
 # What the analysis above motivates is to use information that can capture
 # differences in the voices of the speakers involved.
 
 A straightforward approach can be to have a system that can identify individual
-speakers, as is done in speaker identification systems. This system can then be
+speakers, as it is done in speaker identification systems. This system can then be
 used to detect overlaps if it identifies multiple speakers with similar
 confidence in a given segment of speech. Unfortunately, in addition to needing
 prior information about all possible speakers (which is often not available in
@@ -271,7 +275,7 @@ proportional contribution of different segment lengths, double talk segments bet
 Applications where the detection and appropriate treatment of overlapping speech
 can significantly improve the overall performance, should therefore be keenly
 interested in working with such small segments. This has proven to be extremely
-challenging so far, and the work for this thesis's objectives is not immune to
+challenging so far, and the work for this thesis' objectives is not immune to
 it either. Existing works on this and related problems are discussed in the next section.
 ** DONE [2/2] Double-Talk and Speech Technologies
 CLOSED: [2017-09-12 Tue 02:54]
@@ -301,7 +305,7 @@ the acoustic model, these are often mitigated for when a strong language model
 is used to find the best possible sequence of words being spoken. Furthermore,
 since such systems are evaluated based on their Word Error Rate (WER), and knowing
 that overlapped segments in speech are typically very short and typically
-contain 1 to 3 words, over a long conversation, such overlaps can contribute
+contain one to three words, over a long conversation, such overlaps can contribute
 much less to the overall error of an ASR system. But they do contribute. In 2006,
 Çetin /et al./ extensively analyzed the errors made by a then state-of-the-art
 ASR system in meetings, especially with respect to locations of overlapping
@@ -317,7 +321,7 @@ recorgnition, the authors pointed out that even though their system's errors
 were /substantially equivalent/ to human errors, there was an exception in cases
 of backchannels (e.g. "uh-huh") and hesitations (e.g. "um"). The authors did not
 mention anything about overlapping speech, but it is well known that at least
-backchannels occur mostly as overlaps. The argument then, that ASR
+most backchannels occur as overlaps. The argument then, that ASR
 systems can perhaps benefit from detection and appropriate handling of such
 overlaps, probably still holds even with recent advances in ASR.
 *** DONE Overlapping Speech Detection
@@ -424,7 +428,7 @@ the recording.
 #+LATEX: \begin{figure}
 # \centering
 #+LATEX: \includegraphics[width=\textwidth]{img/arch-diarization}
-#+LATEX: \caption{General architecture of speaker diarization systems, and popular approach for handling overlapping speech (red)}
+#+LATEX: \caption{General architecture of speaker diarization systems, and popular approach for handling overlapping speech.}
 #+LATEX: \label{fig:arch-diarization}
 #+LATEX: \end{figure}
 #+LATEX: \end{small}
@@ -477,7 +481,7 @@ the /'Achilles heel'/ of speaker diarization for meetings.
 The most common approach to solve for this employs a separate model-based
 overlap detection system whose predictions about the presence of overlapping
 speech can be used in the pre-processing step to /exclude/ such segments from
-clustering and then in the labelling step to signal the need to /attribute/ a
+clustering, and then in the labelling step to signal the need to /attribute/ a
 second contributing speaker
 \cite{otterson_efficient_2007,boakye_overlapped_2008,zelenak_detection_2012,yella_overlapping_2014,charlet_impact_2013}
 (Figure \ref{fig:arch-diarization}). The latter is usually done by choosing more
@@ -539,12 +543,12 @@ Nevertheless, as is common in many classical investigations for developing a
 pattern recorgnition system, various groups have explored the use of different
 acoustic feature combinations in their studies for overlap detection. In
 general, using only Mel-Frequency Cepstral Coefficients (MFCCs; Section [[Acoustic
-Features]]) has not been found to be sufficient \cite{wrigley_speech_2005}, the
-use of which for speaker diarization itself (which requires invariance against
-/what/ is being spoken but not /who/) and also for speech recognition (which requires invariance
-against /who/ is speaking but not /what/) has, at least, lead to a cognitive dissonance
-\cite{anguera_speaker_2012}. Some of the milestone studies on overlap detection
-in diarization systems are discussed below.
+Features]]) has not been found to be sufficient \cite{wrigley_speech_2005}. Their
+use for speaker diarization itself (which requires invariance against /what/ is
+being spoken but not /who/) and also for speech recognition (which requires
+invariance against /who/ is speaking but not /what/) has, at least, lead to a
+/theoretical inconsistency/ \cite{anguera_speaker_2012}. Some of the milestone
+studies on overlap detection in diarization systems are discussed below.
 
 # HMMs are one of the most commonly used probabilistic
 # finite-state machines for modelling sequential data, and are still used in many
@@ -558,7 +562,7 @@ in diarization systems are discussed below.
 # model the state emission probabilties.
 
 Boakye /et al./ \cite{boakye_overlapped_2008,boakye_audio_2008}, in one of the
-first works with mono-aural (single channel) audio recordings, investigated
+earliest works with mono-aural (single channel) audio recordings, investigated
 various acoustic features for training their GMM-HMM based system for detecting
 overlapping speech in conversations. Using only MFCCs did not show better
 performance than when they were combined with other acoustic features like
@@ -671,7 +675,7 @@ perform, and furthermore, these statistics generalized relatively well on other
 meeting corpora when calculated on the AMI Corpus \cite{_ami_2017} alone. They reported
 improved performance over an overlap detection system working purely on acoustic
 features, particularly improving the recall performance.
-** WAIT Deep Learning
+** TODO Deep Learning
 
 - Deep learning technologies have proven to be this strong, and are still being
   investigated. Particularly interesting are end-to-end approaches.
@@ -687,10 +691,8 @@ features, particularly improving the recall performance.
   representation. a major motivation for us.
 - LSTM based approach for detecting overlapping speech ...
 
-- Make the assistants more natural to converse with, especially with back-channels, etc.
-  + [ ] Search for continuous conversation type AI assistant research.
-
-** WAIT [0/0] Objectives and Expected Challenges                      :cite:
+** DONE [0/0] Objectives and Expected Challenges                      :cite:
+CLOSED: [2017-09-13 Wed 02:24]
 The work done during this thesis is part of a larger project which aims to
 improve various workflows for conversation analysis. A diarization system, at
 least an ideal one, is nearly perfect for the task of automating annotation of
@@ -735,8 +737,8 @@ Work is expected to continue beyond this thesis's duration, and it is hoped that
 it can build upon the learnings documented in this thesis.
 
 The rest of this section formalizes the objectives alongside the expected
-challenges that shape them. It is a fair summary of Chapter [[Methodology]] which
-will go into the details of each aspect of the methodology proposed in this thesis.
+challenges that shape them. It is a fair summary of Chapter [[Approach]] which
+will go into the details of each aspect of the approach proposed in this thesis.
 They are then evaluted in Chapter [[Evaluations]]. Finally, conclusions from this
 work and possible directions for future work are discussed in Chapter
 [[Conclusions and Future Prospects]].
@@ -749,11 +751,11 @@ work and possible directions for future work are discussed in Chapter
      where a single stream has speech from all speakers, and no other
      modalities, like spoken content, extra microphones, etc. will be used. This makes the task
      more challenging than a mult-channel/-microphone setup, but also makes the
-     solutions more versatile (Section [[Methodology]]).
+     solutions more versatile (Section [[Approach]]).
 
 - **Dataset Used:** :: All experiments (trainings and evaluations) will be
      carried out on the conversational telephone speech recordings from the
-     **Fisher Corpus** \cite{_fisher_2004,_fisher_2004_1}, as opposed to the
+     **Fisher Corpus** \cite{_fisher_2004,_fisher_2004-1}, as opposed to the
      NIST RT \cite{greenberg_rich_2009} or AMI \cite{_ami_2017} datasets used by
      most other works on this task. The choice is motivated by the fact that the
      Fisher corpus is a much larger dataset (necessary in general for deep
@@ -767,7 +769,7 @@ work and possible directions for future work are discussed in Chapter
      the need for feature engineering done in related works, and based on
      initial experiments, only low-level acoustic feautures will be used for
      training the acoustic model. These, for similar reasons, will be fixed to
-     **64 dimensional $log_{10}$ Mel-Filterbank Coefficients** extracted every
+     **64-dimensional $\text{log}_{10}\text{-Mel-Filterbank Coefficients}$** extracted every
      **10 ms** over a window of **32 ms** (Section [[Acoustic Features]]).
 
 - **Supervised Learning:** :: Similar to other approaches, the overlap
@@ -831,65 +833,66 @@ work and possible directions for future work are discussed in Chapter
      conversation. The impact and possible improvement in performance by using a
      simplified version of the Viterbi algorithm for temporally smoothing the
      raw predictions will also be analyzed (Section [[Temporal Smoothing]]).
-* WAIT [0/12] Methodology
-The essence of the methodolgy used in the work done for this thesis is related
-to designing, implementing and evaluating a model based automatic pattern recognition
-system.
+* WAIT [6/13] Approach
+The essence of the methodolgy used in the work done for this thesis is that of
+designing, implementing and evaluating a model based automatic pattern
+recognition system.
 
-The task of detecting and temporally localizing occurrences of double talk (or
-overlapping speech) in a /mono-aural audio recording/ of a conversation is
-performed by using a /Deep Convolutional Neural Network (DCNN)/ based classifier
-trained on (a subset of) the /Fisher Corpus/ ~[]~ working on /low-level acoustic
-features/ as inputs.
+The task of detecting and temporally localizing occurrences of double-talk in the
+/mono-aural audio recording/ of a conversation is performed by using a /Deep
+Convolutional Neural Network (DCNN)/ based classifier which was trained on (a subset of)
+the /Fisher Corpus/ while working with /low-level acoustic features/ as inputs.
 
 The choice of using only acoustic information for making such predictions comes
-from the fundamental assumption of the work done in this thesis and in other
-related works so far ~[]~. This assumption is that the presence of overlapping
-speakers can be reliably detected from acoustic information alone. Such an
-assumption is obvious to make since human subjects are capable of doing so.
-Nevertheless, it is theoretically possible that other modalities like an
-accompanying video recording, or a corresponding transcription, etc. could help
-by augmenting the available information. But such approaches were not found in
-published works, and are necessarily limited to application in situations where
-these extra modalities are available. Furthermore, a system that can perform
-well by only using the audio of a conversation, which is necessary for any
-conversation analysis task, can definitely be applied to conversations that have
-an accompanying video recording and/or a transcription available.
+from the fundamental assumption of the work done in this and other related works
+so far. This assumption is that the presence of overlapping speakers can be
+reliably detected from acoustic information alone. Such an assumption is obvious
+to make since humans are capable of doing so. Nevertheless, it is possible that
+other modalities like an accompanying video recording, or a corresponding
+transcription, could help the classifier by augmenting the available
+information. But such approaches were not found in published works, and are
+necessarily limited in application to situations where these extra modalities
+are available. Furthermore, a system that can perform well by only using the
+audio of a conversation, which is necessary for any conversation analysis task
+anyway, can definitely be applied to conversations that have an accompanying
+video recording and/or a transcription available.
 
-Similar arguments explain the restriction to /mono-aural/ audio recordings (and
-the sample rate of the audios, discussed in Section [[Dataset]]). Although research
-exists where the availability of multi-channel or multi-microphone (or high
-sample rate) recordings has been shown to improve results for this task ~[]~,
+Similar arguments explain the restriction to /mono-aural/ audio recordings.
+Although research exists where the availability of multi-channel or
+multi-microphone recordings has been shown to improve results for this task,
 extra modalities of such types are not available for many situations where the
-system has to be ultimately deployed to. Merging multiple channels into one
-could be done trivially (although sophisticated approaches exist ~[]~), and a
-system that can work reliably under these lowest common denominator settings,
-although could pose significant challenges during development, will nevertheless
-be ultimately more versatile. However, it must be pointed out that the audio
-recordings available in the Fisher Corpus are technically dual channel (1
-channel per speaker), but these were merged into one channel following a trivial
-and reproducible method before being used for acoustic feature
-extraction. More detail on this is available in Section [[Data Preparation and Analysis]].
+proposed system has to be ultimately deployed to. Merging multiple channels into
+one could be done trivially (although sophisticated approaches do exist
+\cite{zelenak_detection_2012}), and a system that can work reliably under these
+lowest-common-denominator settings, although could face significant challenges
+during development, will nevertheless be ultimately more versatile. (However, it
+must be pointed out that the audio recordings available in the Fisher Corpus are
+technically dual channel (1 channel per speaker), but these were merged into one
+channel following a trivial and reproducible method before being used for
+acoustic feature extraction; more details in Section [[Data Preparation and
+Analysis]].)
 
-The choice of the Fisher Corpus was made necessary to appropriately train the
+The choice of the /Fisher Corpus/ was made necessary to appropriately train the
 DCNN. As discussed earlier (Section [[Double-Talk in Conversations]]), the total
-number of examples (in terms of duration) could be very small in a given
-conversation, whereas deep learning technologies typically generalize well on
-unseen data only after being trained on a large number of samples. Furthermore,
-the choice helps avoid various pitfalls involved in generating artificially
-overlapped data by having a good amount of natural overlap situations.
-Nevertheless, there are not existing works that have used this dataset for this particular
-task, therefore the evaluations of the proposed system presented in Section
-[[Evaluations]] are not directly comparable to any existing works.
+number of examples with overlapping speech (in terms of duration) is very small
+in a given conversation, whereas deep learning technologies typically generalize
+well on unseen data only after being trained on a large number of examples.
+Furthermore, the choice helps avoid various pitfalls involved in generating
+artificially overlapped data by having a good amount of naturally occurring overlap
+situations. Nevertheless, there are no existing works that have used this
+dataset for this particular task, therefore the evaluations of the proposed
+system presented in Section [[Evaluations]] are not directly comparable to any
+existing works.
 
-The choice of using a DCNN based classifier itself is motivated by the ambition
-to circumvent the need for manual feature engineering that has been prevalent
-in previous works. DCNN's have been shown the ability of learning both low- and
-high-level representations from minimally processed inputs and achieve
-record-breaking performance on multiple occasions in recent years ~[]~. Acoustic
-features were still extracted from the audio before being fed into the DCNN
-proposed in this thesis, but they were kept to be fairly low-level ones, and the
-impact of certain simple pre-processing methods have been experimented with.
+The choice of using a /DCNN based classifier/ itself is motivated by the
+ambition to circumvent the need for manual feature engineering that has been
+prevalent in previous works. As discussed earlier (Section [[Deep Learning]]),
+DCNN's have been shown to have the ability to learn both low- and high-level
+representations relevant for a task from minimally processed inputs, and have
+achieve record-breaking performance on multiple occasions in recent years.
+Acoustic features were still extracted from the audio before being fed into the
+DCNN, but they were kept to be fairly low-level ones, and the impact of certain
+simple pre-processing methods have been experimented with.
 
 All of the above aspects and related challenges are discussed in appropriate
 detail in the following sections of this chapter, and some highlights from the
@@ -898,56 +901,79 @@ Highlights]]). The final application of this work in a speaker diarization syste
 (introduced in Section [[Speaker Diarization]]) was however not within the purview
 of this thesis and is therefore not discussed.
 ** WAIT Supervised Machine Learning for Classification
-The ultimate goal of a /classifier/ is to map a new observation to a category
-(or class) given what has been /learned/ from the categorization of perviously
-seen observations, where the set of possible categories is finite and predefined
+The ultimate goal of a classifier is to map a new observation to a category (or
+class) given what has been /learned/ from the categorization of perviously seen
+observations, where the set of possible categories is finite and predefined
 (e.g. whether, or not, more than one speakers are speaking simultaneously at a
-given time in an audio recording). When the categorization of previously seen
-observations (training data) is known, /supervised learning/ methods use this
-information to /train/ the appropriate classifier, whereas /unsupervised
-learning/ methods don't have this categorization available (or do not use them)
-for such training (e.g. speaker clustering in Section [[Speaker Diarization]]).
+given time-stamp). When the categorization of previously seen observations (training
+data) is known, /supervised learning/ methods use this information to /train/
+the appropriate classifier, whereas /unsupervised learning/ methods don't have
+this categorization available (or do not use them) for such training (e.g.
+speaker clustering in Section [[Speaker Diarization]]).
 
-In the formulation that was used in this thesis for double talk detection and
-temporal localization, the proposed DCNN based classifier predicts the
-likelihood of each acoustic feature vector extracted from the audio (at a
-particular frame-rate in Hertz) for having /**(0 speakers, 1 speaker, more than
-1 speakers)**/, after being trained in a supervised fashion on a representative
-dataset with such classes being labelled for. The final decision was then made
-by choosing the class that was assigned with the maximum likelihood.
+In the formulation that was used in this thesis for double-talk detection and
+temporal localization, the proposed DCNN based classifier (with parameters \theta) predicts the
+conditional probability $p(C_j | \textbf{x}_t, \theta)$ of each acoustic feature vector
+$\textbf{x}_t$ extracted from the audio at time $t$ for having speech from the
+$j^{th}$ class of $C =$ /**{0 speakers, 1 speaker, more than 1 speakers}**/. The
+final decision $y_t$ can then be made by choosing the class that was assigned with
+the maximum probability, as
+$$y_t = \argmax_j p(C_j | \textbf{x}_t, \theta)\dot$$
 
 The three classes mentioned above are more or less in line with the ones used by
-other works ~[]~. An immediate possible extension would have been to include a
-class for non-speech related acoustic events (e.g. bird sounds, etc.), however,
-though present in the dataset that was used in this work, such events were not
-annotated for at all in the available transcripts, and hence this extra class
-was not used. Nevertheless, this means that the results from application of the
-learned classifier on recordings with non-speech related events is undefined.
+other works (Section [[Speaker Diarization]]). An immediate possible extension would
+have been to include a class for non-speech yet non-silence related acoustic events (e.g. bird
+sounds, etc.), however, though present in the dataset that was used in this
+thesis, such events were not annotated for at all in the available transcripts,
+and hence this extra class was not used. Nevertheless, this means that the
+results from application of the learned classifier on recordings with such non-speech
+related events is undefined.
 
 Another possible formulation could have directly predicted the number of
 speakers speaking simultaneously at a given instance, instead of lumping all
 cases of more than one speakers being active into one class. Such instances,
 where more than two speakers are active at the same time, are very rare in most
 natural conversations, and, furthermore, were not present in the dataset
-(Section [[Dataset]]) that was used for training. Therefore, in a stricter setting,
+that was used for training (Section [[Dataset]]) . Therefore, in a stricter setting,
 the decision by the proposed classifier of presence more than one speakers being
 active at the same time is only well defined for cases where there are utmost
-two speakers active at the same time.
+two speakers speaking at the same time.
 *** TODO Temporal Smoothing
-Now, the proposed classifier outputs the likelihoods of every acoustic feature
-vector (aka frame) for belonging to one of these three classes. For a particular
-frame however, the classifier does not exploit it's predictions for the
-neighboring frames (the input to the DCNN classifier consists of neighboring
-frames to provide contextual information, but the labels of such contextual
-frames are not provided to the classifier while training; more in Section
-[[Architecture]]). But, in a speech recording these three events occur as contiguous
-segments in time. That is, ~FINISH~
+So far, for the sequence of acoustic frames
+$\textbf{X}=\textbf{x}_1,\textbf{x}_2,\textbf{x}_3,\ldots,\textbf{x}_T$
+extracted from a given speech recording, the corresponding sequence of labels
+$\textbf{y}=y_1,y_2,y_3,\ldots,y_T$ are obtained by choosing the most probable
+class for each acoustic frame $\textbf{x}_t$ as predicted by the classifier.
+This simple /decoding/ of the sequence of labels from the class posteriors can
+give good enough results, but in doing so, one would not be considering the
+temporal relationships that exist within this sequence of labels in reality.
+Individual instances of the three events mentioned earlier can last for multiple
+acoustic frames, and the statistics of these durations can be very
+characteristic of the events in question. And, knowing about how turn-taking
+usually occurs in conversations (Section [[Double-Talk in Conversations]]), that
+speakership changes are frequent and occur with gaps and overlaps, one can
+also calculate the statistics regarding the transitions between these types of
+events during a conversation.
+
+A decoding scheme that can incorporate such statistics can potentially perform
+much better than the naive one being used so far. In fact, it very common for
+realistic frame-wise classifiers to produce relatively noisy predictions, and
+the /raw/ sequence of labels $\textbf{y}^{(raw)}$ obtained using the naive decoding
+method could end up containing such short contiguous durations of these events
+which might be physically impossible (or at least highly unlikely).
+It is therefore common to /smooth/ out such erroneous predictions using more sophisticated
+decoding schemes to obtain a better sequence of labels $\textbf{y}^{(smooth)}$.
+
+The most popular method used for modelling sequential data is with the use Hidden
+Markov Models (HMMs).
+
 - [ ] FINISH
 ***** Scaling Likelihoods
 - http://www.academia.edu/8472416/Tackling_Class_Imbalance_with_Deep_Convolutional_Neural_Networks
 - Scale the likelihoods by priors, effectively shifting the threshold.
 
-*** WAIT [0/2] Removing Silence
+*** DONE [0/0] Removing Silence
+CLOSED: [2017-09-13 Wed 02:08]
 It can be argued that the presence of silence frames in the training input can
 degrade the performance of the classifier with respect to discriminating between
 single speaker frames and overlapping speech frames. Silence, or lack of speech,
@@ -956,45 +982,38 @@ while discriminating between speech produced by a single speaker and that
 produced by multiple speakers simultaneously can, even in isolation, prove
 difficult. This may lead to the iterative gradient descent procedure used for
 training a neural network getting stuck in a rather steep local minima where the
-classifier's objective for detecting silence v/s speech from any number of
-speakers could be so well met that moving on to other minima is too expensive.
+classifier's objective for detecting silence vs. speech (from any number of
+speakers) could be so well met that moving on to other minima is too expensive.
 This becomes even more challenging when the classes are as imbalanced as they
-are in the present case (Section [[Double-Talk in Conversations]], Section [[Dataset]]).
-Even though their are more number of exemplary frames with double talk, these
-are also much less discrimnable from single speech frames, which are by far the
-dominant class.
+are in the present case.
 
-In early experiments with simpler neural network architectures that had only fully
-connected layers, it was indeed observed that the classifier achieved very high
-precision and recall when discriminating between silence and the other two
-classes, while the performance was not at all satisfactory in discriminating
-between the other two classes.
-
-It is possible, however, that a more powerful network, like the DCNN proposed,
-with an order of magnitude more number of learnable parameters, will be able to
-overcome this issue. Nevertheless, detecting silence could be performed by much
-more easier and robust methods than such a complicated network. In fact, it is
-part of the standard procedures for most state of the art speech technologies
-(e.g. ASR, Speaker Diarization, Speaker Identification, etc.) to use a speech
-activity detector in an early pre-processing step to remove segments with
-silence before the audio is passed on to the next steps.
-
-- [ ] Other studies also do this
+In early experiments with simpler neural network architectures, it was indeed
+observed that the classifier achieved very good results with respect to
+discriminating between silence and the other two classes, while the performance
+was not at all satisfactory in discriminating between the other two classes. It
+is possible, however, that a more powerful network, like the proposed DCNN
+(Section [[Deep Convolutional Neural Networks]]), with an order of magnitude more
+number of learnable parameters, will be able to overcome this issue.
+Nevertheless, detecting silence could be performed by much simpler methods than
+such a complicated network. In fact, it is part of the standard procedures for
+most state of the art speech technologies (e.g. ASR, Speaker Diarization,
+Speaker Identification, etc.) to use a speech activity detector in an early
+pre-processing step to remove segments with silence before the audio is passed
+on to the next steps. Most of the previous works discussed in Section [[Speaker
+Diarization]] also removed silence frames before training for speech and
+overlapping-speech classes.
 
 To study the possible impact that presence of silence can have on the
 performance of the classifier, a set of experiments that were performed and have
 been reported in this thesis included a configuration where the silence frames
-had been removed from the input data during the training and evaluation
-procedures. For this, ground-truth annotations were used in order to avoid any
-impact on performance that may get introduced by using an automatic speech
-activity detector. Under such configurations then, the task becomes that of
-binary classification, i.e. /**(1 speaker active, more than 1 speakers
-active)**/.
-
-- [ ] Silence is ~not~ removed during evaluation, and is instead set to GT
-  before calculating prec_rec
-- [ ] Heirarchial impl in final system
-*** WAIT [0/1] Tackling Class Imbalance
+had been removed from the input data during training. For this, ground-truth
+annotations were used in order to avoid any impact on performance that may get
+introduced by using an automatic speech activity detector. During evaluations
+with temporal smoothing, the predictions of the classifier in known regions of
+silence (based on ground-truth labels) were replaced with perfect predictions of
+silence before temporal smoothing was applied.
+*** DONE [0/0] Tackling Class Imbalance
+CLOSED: [2017-09-12 Tue 22:02]
 It was shown in Section [[Double-Talk in Conversations]] that, even though
 individual double talk situations can occur quite frequently in normal
 conversations, their predominently small duration lead them to have a much
@@ -1004,94 +1023,112 @@ detecting the disadvantaged class is the primary goal of the exercise, could
 prove devastating when the total amount of training data available is too small.
 And can be further exacerbated when there can be significant variations within
 the minority class or if the minority class is difficult to distinguish from the
-dominant class.
+dominant one.
 
 This imbalance is arguably one of the most potent source of issues in detecting
-double talk situations in natural conversations, at least when it is to be done in a
-frame-wise manner. There are a few approaches that were considered to solve for
-this problem during this thesis's work. The most important one was to choose the
-Fisher Corpus over other datasets (like AMI, NIST RT, etc.) that have been used
-by other studies on detecting overlaps in conversations. The Fisher Corpus is
-sufficiently large (Section [[Dataset]]) and most of the telephone conversations in
-it have naturally occuring double talk situations. The classes remain
-imbalanced, but there are more number individual frames with overlapping speech
-available in this dataset than there are /total/ number of frames in some other
-datasets of conversations. Quantity has a quality all it's own.
+double-talk situations in natural conversations. In previous works (Section
+[[Speaker Diarization]]), in the approaches that used a GMM-HMM framework for overlap
+detection, such imbalance in availability of examples required them to use GMMs
+with fewer components to model overlapping speech than for modelling other
+classes. One can argue that overlapping speech demonstrates much more
+variability within the class than could be suitably modelled with such few
+components. However, with the small datasets that was used by those works, such
+decisions may not be entirely in one's control.
 
-Furthermore, since the dataset has natural conversations, certain pitfalls of
+There are a few approaches that were considered to solve for the class imbalance
+problem during this thesis's work. The most important one was to choose the
+Fisher Corpus over other datasets (e.g. AMI, NIST RT) that have previously been used by
+other studies on detecting overlaps in conversations. The Fisher Corpus is
+sufficiently large (Section [[Dataset]]) and almost all of the telephone
+conversations in it have naturally occuring double talk situations. The classes
+remain imbalanced, but there are more number individual frames with overlapping
+speech available in this dataset than there are /total/ number of frames in some
+other datasets of conversations. Quantity has a quality all it's own.
+
+Furthermore, since the dataset has natural conversations, the pitfalls of
 using artificially generated overlapping speech are avoided. For example,
 certain vocal events like laughter, or certain utterances like those used as
-backchannels (e.g. hmm, yeah, etc.), which often (if not almost exclusively)
-occur in natural double talk situations, are difficult to account for while
+backchannels (e.g. "hmm", "m-hm",), which often (and almost exclusively)
+occur in natural double-talk situations, are difficult to account for while
 generating artificially overlapped speech from single speaker utterances.
+Speakers use very different intonations, pace, volume, etc. when speaking alone
+vs. when in overlapping situations. A natural conversation can be riddled with
+many disfluencies like hesitations, repetitions, etc. or the recording
+conditions themselves may be not as 'clean' as the more planned and/or read
+speech used for creating artificial overlaps. In Section [[Overlapping Speech
+Detection]], several studies were mentioned where artificially created overlapping
+speech were successively detected, but there have not been any such publications
+so far which have demonstrated successful application of such overlap detection
+systems in real conversational scenarios.
 
-- [ ] ~There have been studies ...~
-- [ ] In previous studies, smaller number of GMM components were used
-
-Nevertheless, since the imbalance between classes still exists, other
-approaches to mitigate the issue because of it were also investigated, and
-are discussed next.
-
+Nevertheless, since the imbalance between classes still exists in the dataset
+that was used in this thesis, other approaches to mitigate the issue because of
+it were also investigated, and are discussed next.
 ***** Rebalancing Training Data
 One of the most widely considered approaches to tackle imbalanced classes is to
 use a biased sampling strategy for choosing examples from the dataset such that the
 classifier sees a balanced representation from each class during training. Such a
-goal can be achieved by either under-sampling the examples from the majority
-class(es), or over-sampling those from the minority class, or by doing both
+goal can be achieved by either under-sampling from the examples for the majority
+class(es), or over-sampling those for the minority class, or by doing both
 simultaneously. Several algorithms exist to carry out such under- or
 over-sampling, and in situations where the total size of the dataset is small
 more complicated methods might be warranted.
 
 Over-sampling from the examples of the minority class is the more popular
-approach taken by many studies where such imbalance in classes exist ~[]~. A
-naive argument in favor of this technique is that doing this does not introduce
-more information versus undersampling where potentially useful information is
-being thrown away. However, an easy counterargument against this technique, at
-least when implemented naively by simply duplicating random sets of examples,
-and made worse in case of significant imbalance, is
-that the variables associated with such an over-sampled class can appear to have
-lower variance than they do, and can lead to overfitting of the classifier to
-the training set which will not generalize well later on. There exist many
-techniques that can solve for this (like SMOTE, etc.) where instead of naively
-duplicating examples, new examples from the minority class are created
-artificially following some procedure which should not impact the ultimate
-classification task. In computer vision tasks, for example, new examples can be
-created by flipping, rotating, etc. existing examples, and have shown to improve
-performance of the classifier ~[]~.
+approach taken by many studies where such imbalance in classes exist
+\cite{wang_training_2016,_learning_2016}. The argument in favor of this
+technique is that doing this does not introduce more information, versus
+under-sampling where potentially useful information is being thrown away.
+However, a possible argument against this technique, at least when implemented
+naively by simply duplicating random sets of examples, and made worse in case of
+significant imbalance, is that the variables associated with such an
+over-sampled class can appear to have lower variance than they do, and can lead
+to overfitting of the classifier to the training set which will not generalize
+well later on. There exist many techniques that can solve for this (like
+Synthetic Minority Oversampling (SMOTE),) where, instead of naively duplicating
+examples, new examples from the minority class are created artificially
+following some procedure which should not impact the ultimate classification
+task. In computer vision tasks, for example, new examples can be created by
+flipping or rotating existing examples, and have shown to improve
+performance of the classifier on imbalanced classes.
 
 Nevertheless, over-sampling from speech samples is usually not trivial. Popular
-transformations include warping of the feature vectors, etc., but for the task of
+transformations involve warping of the feature vectors, but for the task of
 detecting overlapping speech, such transformations can potentially negatively
-impact the speaker-discriminative information available in the example. A
-different approach would have been to simply create artificially overalpped
-speech frames, but the problems associated with this approach have been discussed
-earlier. Furthermore, given the limitations of hardware and time,
-, doing such over-sampling to satisfactorily reduce the disparity between the
+impact the speaker-discriminative information available in an example. A
+different approach would have been to simply create artificially overlapped
+speech frames, but the problems associated with this approach have been
+discussed earlier. Furthermore, given the limitations of hardware and time,
+doing such over-sampling to satisfactorily reduce the disparity between the
 classes involved in this thesis would have increased the size of the already
 large dataset to impractical proportions, especially in terms of the amount of
-training time required. Consequently, taking this approach for
-rebalancing the training examples remains a task to investigate in future works.
+training time required. Consequently, taking this approach for rebalancing the
+training examples remains a task to investigate in future works.
 
 On the other hand, availability of a large dataset can make the decision to
 under-sample from the majority class a more comfortable one. Often times, it is
 recommended that such under-sampling should be done in regions of the feature
 space which can lead to the most confusion between the majority and the minority
-class, as opposed to naive uniform skipping of examples. These will be
-boundaries regions between the two classes, and in case of overlapping
-situations, the frames near the transition between the segments of single
-speaker activity and multi-speaker activity. Unfortunately, due to inaccuracies
-in ground truth annotations in most datasets of conversations, sampling solely
-from such transition regions could have resulted in the under-sampled class
-being represented by bad examples.
+class, as opposed to naive uniform skipping of examples. This way, the
+classifier will be able to learn potentially more useful information for
+discriminating between the classes, rather than trying to model all possible
+occurences of each. These will be the boundary regions between the two classes,
+and in the case of overlapping situations, the frames near the transition between
+the segments of single speaker activity and multi-speaker activity. This
+under-sampling near the boundary was not done during this thesis' work, and a
+relatively more straightforward approach was taken.
+Due to inaccuracies in ground truth annotations in most datasets
+of conversations, sampling solely from such transition regions could have
+resulted in the under-sampled class being represented by bad examples.
 
-Furthermore, a mirrorring argument from earlier can also be put forward against
-naieve strategies for under-sampling from all examples of the majority class,
+A mirrorring argument from earlier can also be put forward against
+naive strategies for under-sampling from all examples of the majority class,
 where the under-sampled class can appear to have higher variance in it's
 variables than the actual distribution. In large conversational speech datasets,
 the biggest source of variance arguably stems from the individual speakers'
-characteristics. Care should therefore be taken where each of the speakers in
+characteristics. Care should therefore be taken so that each of the speakers in
 the dataset are proportionally represented in the results of the under-sampling
-procedure that is used. Unfortunately, there is no way to identify a speaker
+procedure. Unfortunately, there is no way to identify a speaker
 uniquely in the Fisher corpus (Section [[Dataset]]). What is obviously guaranteed,
 however, is that the two speakers within a particular conversation will be
 different.
@@ -1101,40 +1138,42 @@ thesis were performed on a per-single-speaker-segment basis. All segments with a
 only a single speaker speaking were used, and within each, frames were skipped
 with uniform probability. This procedure at least approximates the goal that
 each individual speaker is proportionally represented over the entire dataset.
-Furthermore, the probability of picking a sample was so chosen such that final
-subsampled dataset has a ratio of 2:1 between single-speaker and
+Furthermore, the probability of picking a sample was specifically chosen so that
+the final under-sampled dataset has a ratio of 2:1 between single-speaker and
 overlapping-speaker classes. This decision, as opposed to targetting a 1:1
-ratio, can be intuitively explained as, given that the Fisher Corpus has a
+ratio, can be intuitively explained as an attempt to represent each speaker and
+their combinations (propotionally) equally. Given that the Fisher Corpus has a
 maximum of two speakers in every conversation and that individual speakers can
-be propotionally represented by the above procedure, the final ratios being
-1:1:1 between the first speaker, second speaker, and their overlap,
-respectively. This is, again, an approximation, and future works should
-investigate different parameters to achieve such goals if they worthwhile.
+be propotionally represented by the above procedure, the final ratios will end
+up as 1:1:1 between the first speaker, second speaker, and their overlap,
+respectively, for some choice of the skipping probability. This is, again, an
+approximation, and future works should investigate different parameters, or
+other rebalancing techniques \cite{huang_learning_2016} to achieve such goals if
+they are worthwhile.
 
-The implementation done to this for this thesis's works performed such
+The implementation done to do this for this thesis' works performed such
 under-sampling on the fly while preparing the inputs for each epoch of training
 the DCNN. The uniform probability of keeping a sample from a single speech
 segment was fixed at 0.2 for each epoch. No such under-sampling was performed
 while choosing samples from overlapping speech class in any experiments.
 Furthermore, afforded by the reduced number of total training examples, and
-supported by the desire to avoid any impact on convergence, in experiments where
-such under-sampling was performed, the neural network was trained for at least
-twice as many epochs than experiments where none of the classes were
-under-sampled. Lastly, in all configurations where such undersampling was
-performed, silence frames were skipped, to avoid the impact of such frames as
-has been discussed earlier (Section [[Removing Silence]]).
+supported by the desire to avoid any impact on convergence or of biased variance
+for the under-sampled class, in experiments where such under-sampling was
+performed, the neural network was trained for at least twice as many epochs than
+in experiments where none of the classes were under-sampled. Lastly, in all
+configurations where such undersampling was performed, silence frames were
+skipped, to avoid the impact of such frames (Section [[Removing Silence]]).
 
-It must be noted that such under-sampling was only performed while preparing the
+It should be noted that such under-sampling was only performed while preparing the
 training examples, and were not performed on either the validation or testing
-examples during evaluations. Silence frames, as noted earlier, were nevertheless
-removed during both the training and evaluation phases.
+examples during evaluations.
 ***** Cost Sensitive Objective
 While training a classifier, it's parameters are tuned with the objective of
 minimizing it's misclassification rate, which is based on measures of the
 errors the classifier makes in assigning categories to the inputs.
 
 In cases where misclassifying instances from a particular class can be more
-costly, the error measures can be biased by some fixed or derived cost so that such
+costly, the error measures can be biased for this class by some fixed or derived cost so that such
 misclassifications can have a larger impact on the tuning of the parameters of
 the classifier. This approach can also be employed in tackling class imbalance,
 where the error measures for misclassifying the minority class can be scaled with some
@@ -1143,16 +1182,12 @@ minority class.
 
 In implementation, for the categorical cross-entropy loss function used for
 training the DCNN (Section [[Deep Convolutional Neural Networks]]), experiments were
-performed with a fixed cost for overlapping speech class of $2 \times $ the cost
-for non-overlapping speech, and also costs based on priors derived from the
-training set. In either case, however, the classifier did not converge even
+performed with: a fixed cost for overlapping speech class of twice the cost
+for non-overlapping speech; and also costs based on priors derived from the
+training set. In either case, however, the DCNN training did not converge even
 after many times more the number of epochs for other experiments. It is possible
 that there were some issues with the particular implementation that was used, or
-that both choices of the cost used were inappropriate. One can also argue that
-since overlapping speech necessarily consists of speech anyway, associating such
-high cost to misclassifying overlapping speech could have misdirected the
-classfier's optimizer towards learning simpler patterns and getting stuck in a
-steep local minima, resulting in loss of generalizability. Lastly, it is also
+that both choices of the cost used were inappropriate. It is also
 possible that the adverse impact of inaccuracies in the ground-truth labels
 could have been magnified by using such costs.
 
@@ -1160,83 +1195,83 @@ Nevertheless, more experiments could not be performed within the time
 limitations. The results of many attempts at taking this approach for tackling
 class imbalance were considered inconclusive and have not been reported. It will
 thus be an open avenue for systematic research in future works where other
-objective functions that might be more appropriate ~[]~ should also be
-experimented with.
-*** WAIT [0/1] Evaluation Metrics
+objective functions \cite{wang_training_2016,dalyac_tackling_2014} that might be
+more appropriate should also be experimented with.
+*** DONE [0/0] Evaluation Metrics
+CLOSED: [2017-09-12 Tue 22:21]
 The imbalance between the classes makes using simple summary metrics for
-evaluating an overlap detection system less informative. For example, a
-classifier that always assigns the priors of three classes (typically $(0.20,
-0.72, 0.08)$) as the likelihoods for a given sample will predict every sample to
-belong to single-speaker class and achieve overall $72\%$ accuracy score.
+evaluating an overlap detection system less informative, and, sometimes,
+misguiding. For example, a classifier that predict every sample to belong to the
+single-speaker class will achieve an overall $81.20\%$ accuracy score (on the
+testing set in Section [[Data Preparation and Analysis]]).
 
-The two types of errors that an overlap detection system can make are: the total
-duration of missed overlaps $T_{miss}^{(ov)}$, and total duration of falsely
-detected overlap (aka False Alarms) $T_{false}^{(ov)}$. The summary
-metric used for the reporting these errors, made by a system that assigned a total
-duration of $T_{sys}^{(ov)}$ as overlaps to a given set of inputs known to have a
-total duration of $T_{ref}^{(ov)}$ overlaps, are /precision/ and /recall/.
+The two types of errors that an overlap detection system can make on a speech
+recording are: the total duration of missed overlaps $T_{miss}^{(ov)}$, and the
+total duration of falsely detected overlap (aka False Alarms)
+$T_{false}^{(ov)}$. The summary metric used for the reporting these errors, made
+by a system that assigned a total duration of $T_{sys}^{(ov)}$ as overlaps in
+the recording which is known to have a total duration of $T_{ref}^{(ov)}$ overlaps,
+are /precision/ and /recall/.
 
-/Precision/ ($P^{(ov)}$) is the proportion of times that the overlap detection system
-was correct in it's decision with respect to all of it's decisions of existence
-of overlap, calculated as:
-$$P^{(ov)} = \frac{T_{sys}^{(ov)} -
+/Precision/ ($P^{(ov)}$) is the proportion of times that the overlap detection
+system correctly identified an overlap, with respect to all of its decisions of
+existence of overlap, calculated as: $$P^{(ov)} = \frac{T_{sys}^{(ov)} -
 T_{false}^{(ov)}}{T_{sys}^{(ov)}} = \frac{T_{ref}^{(ov)} -
-T_{miss}^{(ov)}}{T_{sys}^{(ov)}}$$.
+T_{miss}^{(ov)}}{T_{sys}^{(ov)}}\ldot$$
 
-/Recall/ ($R^{(ov)}$) is the proportion of times that the overlap detection system was
-correct in it's decision with respect to known amount of times overlaps actually
-were present in the input, calculated as:
-$$R^{(ov)} = \frac{T_{sys}^{(ov)} -
-T_{false}^{(ov)}}{T_{ref}^{(ov)}} = \frac{T_{ref}^{(ov)} -
-T_{miss}^{(ov)}}{T_{ref}^{(ov)}}$$.
+/Recall/ ($R^{(ov)}$) is the proportion of times that the system was correct in
+its decision for detecting overlaps, with respect to the amount of times
+overlaps actually were known to be present, calculated as: $$R^{(ov)} =
+\frac{T_{sys}^{(ov)} - T_{false}^{(ov)}}{T_{ref}^{(ov)}} =
+\frac{T_{ref}^{(ov)} - T_{miss}^{(ov)}}{T_{ref}^{(ov)}}\ldot$$
 
-Some related works on overlap detection system ~[]~ also report the $F-measure$,
-which is the harmonic mean of precision and recall defined above, but it seemed
-redundant and has not been reported in this thesis.
+Some related works on overlap detection system
+\cite{boakye_overlapped_2008,geiger_detecting_2013,geiger_speech_2012-1}, also
+report the $F-measure$, which is the harmonic mean of precision and recall
+defined above, but it seemed redundant and has not been reported in this thesis.
 
 Precision and recall, being ratios with value between 0 and 1, will be reported
 as percentages ($\%$) in this thesis. A perfect overlap detection system will
-then achieve $100\%$ on both $P^{(ov)}$ and $R^{(ov)}$, while the classifier
+then achieve $100\%$ score on both $P^{(ov)}$ and $R^{(ov)}$, while the classifier
 from the toy example above will achieve a $0\%$ on both the metrics. Real
-classifiers, however, are not this perfect in being good or bad.
+classifiers, however, are not this perfect in being either good or bad.
 
 In most practical scenarios, there will be direct tradeoff between being able to
-detect most overlap situations (recall) versus being precise about these
-detection (high precision). In situations where the classifier can be tuned to
+detect more number of overlap situations (high recall) versus being precise about these
+detections (high precision). In situations where the classifier can be tuned to
 prefer one over the other (e.g. by moving the decision threshold), almost all
-studies ~[]~ that use an overlap detection system in a speaker diarization
+studies that use an overlap detection system in a speaker diarization
 system prefer higher precision (with possibly low recall) over higher recall
 (with possibly low precision). False alarms (low precision) directly impact the
 diarization performance of the system since the extra speakers that will be
 predicted in such situations (Section [[Speaker Diarization]]) will certainly be
-errorneous decisions. Missed overlaps (low recall) will result in missing chance
+errorneous decisions. Missed overlaps (low recall) will result in missing the chance
 to predict extra speakers in a segment of speech, but then the system
-performance in such a situation will be atleast equivalent to one that does not
+performance in such a situation will be at least equivalent to one that does not
 use overlap detection at all.
 
 Furthemore, for conversation analysis, a high precision detection of overlapping
 situations can at least detect the time points that a linguist can later
-concentrate on to annotate manually. Too many false alarms may prove frustrating
-in this situation. Therefore, where necessary and possible, a system (operating
-point) with high precision will be preferred.
+concentrate on to annotate manually. Too many false alarms may prove
+frustrating in this situation.
 
-Similar precision and recall metrics were also used for the silence class
-(as $P^{(no)}$ and $R^{(no)}$) and the single speaker speech class (as
-$P^{(sp)}$ and $R^{(sp)}$) when all three classes were being classified for, and
-will be reported appropriately (Section [[Removing Silence]]).
-
-- [ ] Confusion matrix for granular understanding of errors
-** WAIT [0/1] Dataset
+Similar precision and recall metrics were also used for the silence (non-speech)
+class (as $P^{(no)}$ and $R^{(no)}$) and the single-speaker speech class (as
+$P^{(sp)}$ and $R^{(sp)}$), and will be appropriately reported during evaluations.
+** DONE [2/2] Dataset
+CLOSED: [2017-09-13 Wed 02:08]
 The dataset that should be used in training (and evaluating) a classifier should
 be representative of goals the of the task. As has been mentioned earlier, for
-the task of building an overlapping speech detection system, datasets like AMI,
-NIST RT, ~[]~ ~and others~ have been used by most of the previous works ~[]~.
-These corpora are made up of annotated audio (and sometimes also video)
-recordings from different meeting scenarios where the number of participants in
-a particular recording can be between 4 (most common) to 11 (maximum). The
-audios are usualy recorded from multiple microphones, placed near each speaker
-and/or on a table shared by the participants. These corpora represent the
-flagship scenarios in which state of the art diarization systems are evaluated.
+the task of building an overlapping speech detection system, datasets like AMI
+\cite{_ami_2017}, NIST RT \cite{greenberg_rich_2009}, ICSI
+\cite{morgan_meeting_2001}, etc. \cite{cetin_speaker_2006} have been used by
+most of the previous works. These corpora are made up of annotated audio (and
+sometimes also video) recordings from different meeting scenarios where the
+number of participants in a particular recording can be between 4 (most common)
+to 11 (maximum). The audios are usualy recorded from multiple microphones,
+placed near each speaker or on a table shared by the participants. These corpora
+are primarily used in evaluating state of the art speaker diarization systems
+\cite{anguera_speaker_2012}.
 
 Pertinent to the task of detecting overlapping speech, there are a fair number
 of examples of the relevant situations available in most such recordings (in
@@ -1245,228 +1280,263 @@ These corpora are thus suitable for training an overlapping speech detection
 system. However, it was observed that all previous works used only a subset
 of these datasets for developing and evaluating their systems. In some cases,
 limitations were imposed by the proposed approach, e.g. the requirement of data
-from multiple microphones ~[]~, while in others, it seems this was done to keep
-the results comparable to other works.
+from multiple microphones \cite{zelenak_detection_2012}, while in others, it seems this was done to keep
+the results comparable to other works
+\cite{geiger_speech_2012-1,geiger_detecting_2013,yella_overlapping_2014}.
+
+#+LATEX: \begin{table}
+|--------------------------------------------+--------------|
+|--------------------------------------------+--------------|
+| /Dataset [ref.]/                           | /Rough Size/ |
+|                                            |    /(hours)/ |
+|--------------------------------------------+--------------|
+|--------------------------------------------+--------------|
+| AMI \cite{_ami_2017}                       |          100 |
+| NIST RT \cite{greenberg_rich_2009}         |           11 |
+| ICSI \cite{morgan_meeting_2001}            |           40 |
+|--------------------------------------------+--------------|
+| Fisher Corpus - Part 1 \cite{_fisher_2004} |          961 |
+|--------------------------------------------+--------------|
+|--------------------------------------------+--------------|
+#+LATEX: \caption{
+Rough sizes of different conversational datasets used in
+overlapping speech detection, and that of the Fisher Corpus - Part 1
+#+latex:\emph{
+(size of NIST RT is the one reported in \cite{zelenak_detection_2012}).
+#+LATEX: }}
+#+LATEX: \label{tab:data-sizes}
+#+LATEX: \end{table}
 
 Nevertheless, due to time limitations, during this thesis's work, comparing with
 existing works was given a lower priority than comprehensively investigating the
 use of deep learning technologies for the task. For appropriately training deep
 neural networks, it is almost necessary to have a large training set available.
 The Fisher Corpus is many times larger than all other standard datasets
-/combined/ (Table ~[]~), and furthermore, also has naturally occurring double talk
-situations. The choice was thus made to limit the work done to this particular
+/combined/ (Table \ref{tab:data-sizes}), and furthermore, also has naturally occurring double talk
+situations. Other reasons for choosing this large a dataset have previously been
+explained in appropriate context. The choice was thus made to limit the work done to this particular
 corpus, while any adaptations and evaluations on the other datasets, which are
 nevertheless warranted for making any worthwhile claims, are scheduled to be
 carried out in future beyond this thesis's submission.
-
-*** WAIT [0/1] Overview
-The Fisher English training corpus ~[]~ was made available by ~LDC~ in two parts
-in 2004 and 2005, catalogued as **LDC2004S13** and **LDC2005S13** containing
-speech data and **LDC2004T19** and **LDC2005T19** containing the corresponding
-transcripts. Taken as a whole, the corpus is made up of $11,699 (= 5850 + 5849)$
-recorded telephone conversations, each given a unique 5-digit ~CALLID~, starting
-from ~00001~. The corpus is predominently used in conversational speech
-recorgnition systems in literature ~[]~. For this thesis, only data from the
-first part (**LDC2004S13** and **LDC2004T19**) were used.
+*** DONE [0/0] Overview
+CLOSED: [2017-09-13 Wed 00:01]
+The Fisher English training corpus
+\cite{cieri_switchboard_2003,_fisher_2004,_fisher_2004-1} was made available by
+the Linguistic Data Consortium (LDC; \cite{_language_2017}) in two parts, one
+each in 2004 and 2005, catalogued as */LDC2004S13/* and */LDC2005S13/*
+containing speech data and */LDC2004T19/* and */LDC2005T19/* containing the
+corresponding transcripts. Taken as a whole, the corpus is made up of 11,699 (=
+5,850 + 5,849) recorded telephone conversations, each given a unique 5-digit
+~CALLID~, starting from ~00001~. The corpus is predominently used in
+conversational and large-vocabulary speech recorgnition systems in literature
+\cite{xiong_achieving_2016,chen_advances_2006}. For this thesis, only data from the
+first part (*/LDC2004S13/* \cite{_fisher_2004} and */LDC2004T19/*
+\cite{_fisher_2004-1}) were used.
 
 Each conversation is upto 10 minutes long, and is carried out between two
 participants in English on a provided topic. Over 12,000 participants were
 initially recruited, including both native and non-native speakers of English,
 and each were assigned a unique ~PIN~. However, due to the procedures used while
 collecting these recordings, it is not guaranteed that the same PIN in different
-conversations represent the same speaker. Therefore, it is also not possible to
+calls represent the same speaker. Therefore, it is also not possible to
 determine exactly how many unique speakers are present in the entire dataset.
 Nevertheless, it is obviously guaranteed that the two speakers within a
-conversation are not the same.
+call are not the same.
 
 The audios are available in NIST SPHERE format containing two channels (one
 channel dedicated to each speaker's side in the telephone conversations) sampled
 at 8,000 Hertz. The corresponding transcripts are available as plain text files
-(example in Figure ~[]~) alongside a separate database with information about
-the recording situation and the speakers for each conversation.
+(example in Figure \ref{fig:data-eg-transcript}) alongside a separate database
+with information about the recording situation and the speakers for each call.
 
-The transcripts were created by first performing automatic speech detection on each
-channel (independently) of the audio data to identify start- and end-points (in
-seconds) of utterances in that channel, and then the spoken content of these
-utterances were transcribed manually. The final transcript file then has one
-line per utterance, with start- and end-time stamps and the corresponding
-channel/speaker as "A:" for channel 1, "B:" for channel 2 (Figure ~[]~). The
-maximum resolution (theoritically minimum utterance length) of these time stamps
-is 10 milli-seconds, which govern the frame-rate of the acoustic feature
-extraction process (Section [[Acoustic Features]]) and how various statistics are
-duration related statistics are reported in this thesis.
+#+LATEX: \begin{figure}
+  #+LATEX: \includegraphics[width=0.75\textwidth]{img/data-eg-transcript}
+  #+LATEX: \caption{First few lines of a transcript file in \emph{LDC2004T19}.}
+  #+LATEX: \label{fig:data-eg-transcript}
+#+LATEX: \end{figure}
+
+The transcripts were created by first performing automatic speech detection on
+each channel of the audio data to identify start- and end-points (in seconds) of
+utterances in that channel, and then the spoken content of these utterances were
+transcribed manually. The final transcript file then has one line per utterance,
+with start- and end-time stamps and the corresponding channel/speaker as "A:"
+for channel 1, "B:" for channel 2 (Figure \ref{fig:data-eg-transcript}). The
+maximum resolution (theoritically minimum segment length) of these time-stamps
+is $10\,\text{milli-seconds}$, which govern the frame-rate of the acoustic
+feature extraction process (Section [[Acoustic Features]]) and how various duration
+related statistics are reported in this thesis.
 
 It has been explicitly pointed out in the documentation that no manual attempts
 were made to modify the automatically derived utterance boundaries, leaving the
 possibility that the start- and end-points may not be as precise as would have
-been possible if done manually, or even by a more recent speech detection approaches.
+been possible if done manually, or by a more precise speech detection system.
 The characteristics of the automatic speech detector that was used in the
-transcription process have unfortunately not been discussed in the
+transcription process have, unfortunately, not been discussed in the
 documentation. Such lack of precision does not impact speech-to-text systems,
-the primary intended user of this dataset, since the outputs of such systems do
+the primary intended users of this dataset, since the outputs of such systems do
 not need to be localized in time. But for systems that do want to localize
 different events in the audio, these imprecisions could adversely impact the
 final evaluation results. It was indeed observed for the systems proposed in
 this thesis that the predicted segment boundaries for overlapping speech were
-sometimes more accurate than the boundaries derived from ground-truth,
-especially in cases where the derived ground-truth labels were longer than 4
-seconds (Section [[Evaluations]]). It would have been impractical to perform speech
-detection properly again on the entire dataset to get more precise boundaries due to time
-and resource limitations, and thus such a process was not performed during this thesis.
+sometimes more accurate than the boundaries derived from ground-truth. These
+inaccuracies may also explain certain prominent peaks in the segment duration
+histograms (Figure \ref{fig:actspk-hist-tst}) It would have been impractical to
+perform speech detection properly again on the entire dataset to get more
+precise boundaries due to time and resource limitations, and thus such a process
+was not performed during this thesis.
+*** DONE Data Preparation and Analysis
+CLOSED: [2017-09-13 Wed 01:55]
+Each NIST SPHERE format audio file was first converted to two-channel WAV format
+using the ~sph2pipe_v2.5~ utility provided by LDC \cite{_sphere_2017}. These two
+channels contain speech from one speaker's side in the conversation, and were
+merged into a final single-channel WAV file using ~FFMPEG~ \cite{_ffmpeg_2017} by giving both
+channels equal weights. The sample rate of the audio files during all these
+steps were kept to the original value of 8000 Hz.
 
-- [ ] This can explain certain peaks in the distribution of overlap durations
-*** Data Preparation and Analysis
-Each NIST SPHERE format audio file was first converted to two-channel WAV
-format using the ~sph2pipe_v2.5~ utility provided by LDC ~[]~. These two channels
-contain speech from one speaker's side in the conversation, and were merged
-into a final single-channel WAV file using ~FFMPEG~ by giving both channels
-equal weights. The sample rate of the audio files during all these steps were
-kept to the original value of /8000 Hz/.
+#+LATEX: \begin{table}
+|------------+-------------------------+-----------+------------+---------|
+|------------+-------------------------+-----------+------------+---------|
+| /Set/      | ~CALLIDs~               | /# Calls/ | /Duration/ | /Ratio/ |
+|            |                         |           |  /(hours)/ |   /(%)/ |
+|------------+-------------------------+-----------+------------+---------|
+|------------+-------------------------+-----------+------------+---------|
+| Validation | ~{00007, 00013, 00028,~ |        99 |       1.34 |    0.48 |
+|            | ~00062, 00065, 00069,~  |           |            |         |
+|            | ~00086}~                |           |            |         |
+|------------+-------------------------+-----------+------------+---------|
+| Training   | ~{00100, 00101, ...~    |      1200 |     188.22 |   66.97 |
+|            | ~..., 01298, 01299}~    |           |            |         |
+|------------+-------------------------+-----------+------------+---------|
+| Testing    | ~{05300, 05301, ...~    |       551 |      91.48 |   32.55 |
+|            | ~..., 05849, 05850}~    |           |            |         |
+|------------+-------------------------+-----------+------------+---------|
+|------------+-------------------------+-----------+------------+---------|
+| Total      |                         |      1850 |     281.04 |  100.00 |
+|------------+-------------------------+-----------+------------+---------|
+|------------+-------------------------+-----------+------------+---------|
+#+LATEX: \caption{Final list of calls used to form different sets, their total durations and ratios.}
+#+LATEX: \label{tab:splits}
+#+LATEX: \end{table}
+#+LATEX: \begin{table}
+|--------------------+---+-----------------+---+---------------|
+|--------------------+---+-----------------+---+---------------|
+|    /# of Speakers/ |   | /# of Segments/ |   | /# of Frames/ |
+|           /Active/ |   |           /(%)/ |   |         /(%)/ |
+|--------------------+---+-----------------+---+---------------|
+|--------------------+---+-----------------+---+---------------|
+| */Validation Set/* |   |                 |   |               |
+|--------------------+---+-----------------+---+---------------|
+|                  0 |   |           15.41 |   |          6.25 |
+|                  1 |   |           50.59 |   |         77.77 |
+|                  2 |   |           34.00 |   |         15.98 |
+|--------------------+---+-----------------+---+---------------|
+|--------------------+---+-----------------+---+---------------|
+|   */Training Set/* |   |                 |   |               |
+|--------------------+---+-----------------+---+---------------|
+|                  0 |   |           29.18 |   |         14.26 |
+|                  1 |   |           50.44 |   |         76.04 |
+|                  2 |   |           20.37 |   |          9.70 |
+|--------------------+---+-----------------+---+---------------|
+|--------------------+---+-----------------+---+---------------|
+|    */Testing Set/* |   |                 |   |               |
+|--------------------+---+-----------------+---+---------------|
+|                  0 |   |           17.48 |   |          4.81 |
+|                  1 |   |           51.58 |   |         81.20 |
+|                  2 |   |           30.93 |   |         13.99 |
+|--------------------+---+-----------------+---+---------------|
+|--------------------+---+-----------------+---+---------------|
+#+LATEX: \caption{Overall ratios of the number of segments and acoustic frames with different number of simultaneously active speakers in different sets.}
+#+LATEX: \label{tab:actspk-sets}
+#+LATEX: \end{table}
 
 The class label for speech from 0 speakers, 1 speaker, or more than 1 speakers
 for a given time stamp in the audio was derived based on if utterance from none
 of the channels, only 1 of the channels, or both the channels were,
-respectively, present at the particular time stamp in the corresponding
-transcript.
+respectively, present at the particular time-stamp in the corresponding
+transcript file.
 
-The entire dataset of 5850 calls (~960.3 hours) was then split to make training,
+The entire dataset of 5850 calls (\sim960.3 hours) was then split to make training,
 validation and testing sets. The validation set was only used during the
 training phase for monitoring or experimentation, but were not used for training
 or evaluation. Final evaluations that have been presented in this thesis were
-done on the testing set. Since there were no obvious correlations between the
-~CALLID~'s (which order the conversations in the dataset) and any properties
-pertinent to the task of overlap detection, for simplicity, these sets were made
-in a sequential order as follows: the first 99 calls (~16.71 hours, 1.74%) were
-assigned to the validation set, next 4,000 calls (~652.85 hours, ~68.00%) to the
-training set, and the last 1,751 calls (~290.74 hours, ~30.26%) to the testing
+done on the testing set. For simplicity, these sets were made
+in a sequential order as follows: the first 99 calls (\sim16.71 hours, 1.74%) were
+assigned to the validation set, next 4,000 calls (\sim652.85 hours, 68.00%) to the
+training set, and the last 1,751 calls (\sim290.74 hours, 30.26%) to the testing
 set.
 
-#+LATEX: \begin{small}
-#+LATEX: \begin{table}
-|------------+-------------------------+----------+------------+---------|
-| /Set/      | ~CALLIDs~               | /#Calls/ | /Duration/ | /Ratio/ |
-|            |                         |          |  /(hours)/ |   /(%)/ |
-|------------+-------------------------+----------+------------+---------|
-|------------+-------------------------+----------+------------+---------|
-| Validation | ~{00007, 00013, 00028,~ |       99 |       1.34 |    0.48 |
-|            | ~00062, 00065, 00069,~  |          |            |         |
-|            | ~00086}~                |          |            |         |
-|------------+-------------------------+----------+------------+---------|
-| Training   | ~{00100, 00101, ...~    |     1200 |     188.22 |   66.97 |
-|            | ~..., 01298, 01299}~    |          |            |         |
-|------------+-------------------------+----------+------------+---------|
-| Testing    | ~{05300, 05301, ...~    |      551 |      91.48 |   32.55 |
-|            | ~..., 05849, 05850}~    |          |            |         |
-|------------+-------------------------+----------+------------+---------|
-|------------+-------------------------+----------+------------+---------|
-| Total      |                         |     1850 |     281.04 |  100.00 |
-|------------+-------------------------+----------+------------+---------|
-#+LATEX: \caption{Final list of calls used to form different sets, their total durations and ratios.}
-#+LATEX: \label{tab:splits}
-#+LATEX: \end{table}
-#+LATEX: \end{small}
-
-#+LATEX: \begin{small}
-  #+LATEX: \begin{table}
-    |-------------+-----------------+---------------------|
-    | /#Speakers/ | /#Segments (%)/ | /#10 ms Frames (%)/ |
-    |-------------+-----------------+---------------------|
-    |-------------+-----------------+---------------------|
-    |           0 |           15.41 |                6.25 |
-    |           1 |           50.59 |               77.77 |
-    |           2 |           34.00 |               15.98 |
-    |-------------+-----------------+---------------------|
-    |-------------+-----------------+---------------------|
-    |       Total |          100.00 |              100.00 |
-    |-------------+-----------------+---------------------|
-    #+LATEX: \caption{Overall ratio of active number of speakers at a time in terms of segments and frames in the final \textbf{validation set}.}
-    #+LATEX: \label{tab:actspk-val}
-  #+LATEX: \end{table}
-
-  #+LATEX: \begin{figure}
-    #+LATEX: \includegraphics[width=\textwidth]{img/actspk-whist-val}
-    #+LATEX: \caption{Histogram of durations of segments (truncated to < 4 second long) with different number of active speakers in the final \textbf{validation set}.}
-    #+LATEX: \label{fig:actspk-hist-val}
-  #+LATEX: \end{figure}
-#+LATEX: \end{small}
-
-
-#+LATEX: \begin{small}
-#+LATEX: \begin{table}
-|-------------+-----------------+---------------------|
-| /#Speakers/ | /#Segments (%)/ | /#10 ms Frames (%)/ |
-|-------------+-----------------+---------------------|
-|-------------+-----------------+---------------------|
-|           0 |           29.18 |               14.26 |
-|           1 |           50.44 |               76.04 |
-|           2 |           20.37 |                9.70 |
-|-------------+-----------------+---------------------|
-|-------------+-----------------+---------------------|
-|       Total |          100.00 |              100.00 |
-|-------------+-----------------+---------------------|
-#+LATEX: \caption{Overall ratio of active number of speakers at a time in terms of segments and frames in the final \textbf{training set}.}
-#+LATEX: \label{tab:actspk-trn}
-#+LATEX: \end{table}
-# #+LATEX: \end{small}
-
-# #+LATEX: \begin{small}
-#+LATEX: \begin{figure}
-# \centering
-#+LATEX: \includegraphics[width=\textwidth]{img/actspk-whist-trn}
-#+LATEX: \caption{Histogram of durations of segments (truncated to < 4 second long) with different number of active speakers in the final \textbf{training set}.}
-#+LATEX: \label{fig:actspk-hist-trn}
-#+LATEX: \end{figure}
-#+LATEX: \end{small}
-
-#+LATEX: \begin{small}
-#+LATEX: \begin{table}
-|-------------+-----------------+---------------------|
-| /#Speakers/ | /#Segments (%)/ | /#10 ms Frames (%)/ |
-|-------------+-----------------+---------------------|
-|-------------+-----------------+---------------------|
-|           0 |           17.48 |                4.81 |
-|           1 |           51.58 |               81.20 |
-|           2 |           30.93 |               13.99 |
-|-------------+-----------------+---------------------|
-|-------------+-----------------+---------------------|
-|       Total |          100.00 |              100.00 |
-|-------------+-----------------+---------------------|
-#+LATEX: \caption{Overall ratio of active number of speakers at a time in terms of segments and frames in the final \textbf{testing set}.}
-#+LATEX: \label{tab:actspk-tst}
-#+LATEX: \end{table}
-# #+LATEX: \end{small}
-
-# #+LATEX: \begin{small}
-#+LATEX: \begin{figure}
-# \centering
-#+LATEX: \includegraphics[width=\textwidth]{img/actspk-whist-tst}
-#+LATEX: \caption{Histogram of durations of segments (truncated to < 4 second long) with different number of active speakers in the final \textbf{testing set}.}
-#+LATEX: \label{fig:actspk-hist-tst}
-#+LATEX: \end{figure}
-#+LATEX: \end{small}
 However, due to hardware and time limitations, the final sets that were actually
 used during the works in this thesis were only subsets from the initial
 assignment above. The final calls that were used in each set are shown in Table
 \ref{tab:splits}. The particular choice of validation calls was made to control
 for gender ratios and certain other properties, while the first 1,200 calls from
 the originally assigned training set, and the last 551 calls from the originally
-assigned testing set were chosen for the respective final sets. It is noteworthy
-that the even this subset of training and testing data used is almost $20
-\times$ larger than such sets used in other studies ~[]~, affording a good
-amount of training examples and, hopefully, more thorough evaluation.
+assigned testing set were chosen for the respective final sets.
 
-Table \ref{tab:actspk-val} shows the ratios of the segments and the total
-durations with different number of active speakers for the final validation set.
-Figure \ref{fig:actspk-hist-val} shows the histogram of propotional (weighted by
+#+LATEX: \begin{figure}
+#+LATEX: \includegraphics[width=\textwidth]{img/actspk-whist-trn}
+#+LATEX: \caption{Weighted histogram of durations of segments (truncated to $<4$ sec. long) with different number of active speakers in the final \textbf{training set}.}
+#+LATEX: \label{fig:actspk-hist-trn}
+#+LATEX: \end{figure}
+
+#+LATEX: \begin{figure}
+#+LATEX: \includegraphics[width=\textwidth]{img/actspk-whist-tst}
+#+LATEX: \caption{Weighted histogram of durations of segments (truncated to $<4$ sec. long) with different number of active speakers in the final \textbf{testing set}.}
+#+LATEX: \label{fig:actspk-hist-tst}
+#+LATEX: \end{figure}
+
+Table \ref{tab:actspk-sets} shows the ratios of the segments and the total
+durations with different number of active speakers for the final sets.
+Figure \ref{fig:actspk-hist-trn} shows the histogram of propotional (weighted by
 duration) contributions of segments of different lengths to the total set of
-segments with respective number of speakers active in the validation set. Table
-\ref{tab:actspk-trn} and Figure \ref{fig:actspk-hist-trn} do the same for the
-final training set, and Table \ref{tab:actspk-trn} and Figure
-\ref{fig:actspk-hist-trn} do it for the final testing set. It can be seen that,
+segments with respective number of speakers active in the training set. Table
+\ref{tab:actspk-tst} and Figure \ref{fig:actspk-hist-tst} do the same for the
+final testing set. It can be seen that,
 as discussed in Section [[Double-Talk in Conversations]], 0.5 seconds to 1.5 seconds
 long segments contribute the most the overlapping speech situations. Particular
 peaks could depend on the nature of the dataset, but overall characteristics of
-the data matche what has been reported for other conversational datsets ~[]~.
+the data matche what has been reported for other conversational datsets used in
+other overlapping speech detection systems.
+# #+LATEX: \begin{table}
+#   |-----------------+---+-----------------+---+---------------|
+#   |-----------------+---+-----------------+---+---------------|
+#   | /# of Speakers/ |   | /# of Segments/ |   | /# of Frames/ |
+#   |        /Active/ |   |           /(%)/ |   |         /(%)/ |
+#   |-----------------+---+-----------------+---+---------------|
+#   |-----------------+---+-----------------+---+---------------|
+#   |               0 |   |           15.41 |   |          6.25 |
+#   |               1 |   |           50.59 |   |         77.77 |
+#   |               2 |   |           34.00 |   |         15.98 |
+#   |-----------------+---+-----------------+---+---------------|
+#   |-----------------+---+-----------------+---+---------------|
+#   |           Total |   |          100.00 |   |        100.00 |
+#   |-----------------+---+-----------------+---+---------------|
+#   #+LATEX: \caption{Overall ratio of active number of speakers at a time in terms of segments and frames in the final \textbf{validation set}.}
+#   #+LATEX: \label{tab:actspk-val}
+# #+LATEX: \end{table}
+# #+LATEX: \begin{figure}
+#   #+LATEX: \includegraphics[width=\textwidth]{img/actspk-whist-val}
+#   #+LATEX: \caption{Histogram of durations of segments (truncated to < 4 second long) with different number of active speakers in the final \textbf{validation set}.}
+#   #+LATEX: \label{fig:actspk-hist-val}
+# #+LATEX: \end{figure}
+#
+# #+LATEX: \begin{table}
+# |-----------------+---+-----------------+---+---------------|
+# |-----------------+---+-----------------+---+---------------|
+# | /# of Speakers/ |   | /# of Segments/ |   | /# of Frames/ |
+# |        /Active/ |   |           /(%)/ |   |         /(%)/ |
+# |-----------------+---+-----------------+---+---------------|
+# |-----------------+---+-----------------+---+---------------|
+# |               0 |   |           29.18 |   |         14.26 |
+# |               1 |   |           50.44 |   |         76.04 |
+# |               2 |   |           20.37 |   |          9.70 |
+# |-----------------+---+-----------------+---+---------------|
+# |-----------------+---+-----------------+---+---------------|
+# |           Total |   |          100.00 |   |        100.00 |
+# |-----------------+---+-----------------+---+---------------|
+# #+LATEX: \caption{Overall ratio of active number of speakers at a time in terms of segments and frames in the final \textbf{training set}.}
+# #+LATEX: \label{tab:actspk-trn}
+# #+LATEX: \end{table}
 ** WAIT [0/2] Acoustic Features
 While working with raw measurements for pattern recognition is possible, it is
 not ideal. Real world signals can be computationally impractical to work with at
@@ -1495,17 +1565,18 @@ before an appropriate deep neural network can, effectively, simultaneously learn
 the appropriate features and the classifier.
 
 In speech technologies that use deep learning, there have been some attempts to
-work on the raw audio signal itself ~[]~, but the computational burden is often
-too high owing to the high sample rates of such signals, and the efficacy of
-this approach in most larger applications are yet to be studied. Nevertheless,
-using acoustic features extracted at lower levels of the pipelines for
-extracting traditional ones have been shown to lead to significantly better
-performance when using deep learning technologies ~[]~. In fact, the previously
+work on the raw audio signal itself (e.g. \cite{oord_wavenet:_2016}), but the
+computational burden is often too high owing to the high sample rates of such
+signals, and the efficacy of this approach in most larger applications are yet
+to be studied. Nevertheless, using acoustic features extracted at lower levels
+of the pipelines for extracting traditional ones have been shown to lead to
+significantly better performance when using deep learning technologies
+\cite{hinton_deep_2012,deng_recent_2013,deng_new_2013}. In fact, the previously
 de facto acoustic feature called Mel-Frequency Cepstral Coefficients (MFCCs)
 have largely been replaced in recent state of the art speech recognition
-systems. The one to take their place are $log_10$-Mel-Filterbank Coefficients
-that are extracted in a step earlier in the MFCC extraction pipeline (Figure
-~[]~).
+systems. The one to take their place are $\text{log}_{10} \text{-Mel-Filterbank
+Coefficients}$ that are extracted in a step earlier in the MFCC extraction
+pipeline.
 
 The process involved in MFCC extraction includes the following steps:
 1. Audio signal is normalized to be in the range of [-1, 1].
@@ -1514,75 +1585,76 @@ The process involved in MFCC extraction includes the following steps:
    that the audio signal can be assumed to be /quasi-stationary/ within this
    interval to support validity of performing short-term spectral analysis in
    the next steps.
-2. Each such window of samples is multiplied by a windowing function
-   in the time domain (usually a Hamming, or Hanning function, Figure ~[]~) to
-   avoid spectral leakage in the Fourier transform of this window.
-3. A Fourier transform is applied to all such windows to get vector of size
+2. Each such window of samples is multiplied by a windowing function in the time
+   domain (usually a Hamming, or Hanning function, to minimize /spectral
+   leakage/ in the Fourier transform of this window.
+3. A Fourier transform is applied to all such windows to get a vector of size
    $b_{ft}$ at every $s$ step, with $b_f$ defining the frequency axis and $s$ the
    temporal axis of the resulting **spectrogram**. The square of this gives the
    /power spectrogram/ which is used in the next step.
-4. The frequency axis is then warped according to the /Mel-scale/ ~[]~, which
-   reduces the spectral resolution in the higher dimensions of the axis, similar
-   to the frequency response of the human ear. This is done by applying
-   $b_{mel}$ (often much smaller than $b_{ft}$, typically 14 to 40) overlapping
-   triangular filterbanks that are equidisitant in the mel-scale (Figure ~[]~)
-   to get the **mel-filterbank coefficients** (aka mel-spectrogram).
+4. The frequency axis is then warped according to the /Mel-scale/
+   \cite{_mel_2017}, which reduces the spectral resolution in the higher
+   dimensions of the axis, similar to the frequency response of the human ear.
+   This is done by applying $b_{mel}$ (smaller than $b_{ft}$, typically 14
+   to 40) overlapping triangular filterbanks that are equidisitant in the
+   mel-scale to get the **mel-filterbank coefficients** (aka mel-spectrogram).
 5. The dynamic range of individual filterbank channels is reduced by taking the
    logarithm, so as to mimic the human perception of loudness, and as well to
    avail certain normalization steps done later. The output at this stage is the
    **log-mel-filterbank**, or often simply called the log-mel-spectrogram.
-6. The discrete cosine transform is applied the log-mel-spectrogram to
+6. The discrete cosine transform is applied to the log-mel-spectrogram to
    decorrelate the filterbank channels, to get the standard **MFCC** (aka
    cepstrum).
 
-As seen, many of the steps involved are inspired by the human auditory system,
+As seen, many of the steps above are inspired by the human auditory system,
 which is perhaps the best acoustic feature extractor available for one to model
-on. The last decorrelation is necessary when using classic speech technologies
-like GMM-HMM, etc. in order to meet the criterion for the feature vectors to be
-statistically independent. Nevertheless, as mentioned earlier, numerous studies
-have shown this step to be unnecessary for approaches using deep learning, and
-the log-mel-spectrogram have become the new de facto acoustic features used in
-many studies. ~[]~ showed, however, that working with spectrograms directly did
-not improve the results over using mel-spectrograms. It was hypothesized that
-perhaps the network could not learn the specific transforms applied to achieve a
-similar impact that mel-scale warping can.
+on. The final decorrelation step was necessitated in classic speech technologies
+to allow for using diagonal covariance matrices in the involved modelling (e.g.
+GMM-HMMs), this step has been found to be unnecessary when using deep learning
+methods. Furthermore, the highly correlated filterbank coefficients, owing to
+the use of overlapping filterbanks, can prove to be useful for DCNN based
+architectures since such /smoothness/ between neighboring frequency channels can
+be exploited better by the convolution and pooling operations involved in such
+architectures (Section [[Layers]]). Nevertheless, while using log-mel-spectrograms
+had shown improved performance in speech recognition, Deng /et al./
+\cite{deng_recent_2013} reported that working with spectrograms directly, which
+are extracted even earlier in steps, did not improve the results. They
+hypothesized that perhaps the network could not learn the specific transforms
+applied to achieve a similar impact that the mel-scale warping can.
 
-Furthermore, the highly correlated filterbank coefficients, owing to the use of
-overlapping filterbanks, can prove to be useful for DCNN based architectures
-since such /smoothness/ between neighboring frequency channels can be exploited
-better by the convolution and pooling operations involved in such architectures
-(Section [[Layers]]).
+The acoustic features that were used for works in this thesis were chosen to be
+these $\text{log}_10\text{-Mel-Filterbank Coefficients}\ldot$ These were
+calculated based on spectrograms extracted every $10\,\text{ms}$ (the temporal
+resolution of the annotations; Section [[Overview]]) over windows of size
+$32\,\text{ms}$. The particular choice of window size was made to, firstly, end
+up with a number of samples per-window that is a power of 2 ($32\,\text{ms }
+\times 8000\,\text{Hz } = 256\,\text{samples}$) for efficient Fast Fourier
+Transform (FFT), and, secondly, to place the $10\,\text{ms}$ samples which decide the
+label for the acoustic vector near the center of the windowing function, where
+they contribute the most. Hanning function was used for windowing.
 
-Hence, the acoustic features to be used for works in this thesis were chosen to
-be these $log_10$-Mel-Filterbank Coefficients. These were calculated based on
-spectrograms extracted every 10 ms (the temporal resolution of the annotations;
-Section [[Overview]]) over windows of size 32 ms. The particular choice of window size
-was made to, firstly, end up with a number of samples per-window that is a power
-of 2 ($32\,\text{ms } \times 8000\,\text{Hz } = 256\,\text{samples}$) for
-efficient Fast Fourier Transform (FFT), and, secondly, to place the 10 ms
-samples which decide the label for the acoustic vector near the center of the
-windowing function, where they contribute the most (Figure ~[]~). Similar
-reasons also lead to the use of the Hanning windowing function.
-
-- [ ] Using higher samplerate audio would lead to better frequency resolution
-
-The number of filterbanks used was 64, which is contrary to the popular choice
+The number of filterbanks used was 64, which is different from the popular choice
 of 40 in other deep learning based approaches. The decision was made with the
 hope that the resulting features may keep more speaker-discriminative
 information which may prove useful in overlap detection, and was supported by
 some initial empirical evaluations.
 
-To improve these features further, and as is common in many other works ~[]~,
-each feature vector, before being input to the DCNN, were attached with
-neighboring frames so as to provide contextual acoustic information. This was
-further motivated by the improved performance of other overlap detection systems
-~[]~ that combined longer-term acoustic features like prosody, iVectors, etc. It
-was further hoped that the DCNN will be able to use the contextual information
-to extract the relevant longer-term features automatically. The number of
-contextual frames added were ±10 (from before and after the center frame), and
-the decision was based on initial empirical evaluations and practical concerns.
-
-- [ ] Denoising
+To improve these features further, and as is common in many other works, each
+feature vector, before being input to the proposed DCNN, were attached with neighboring
+frames so as to provide contextual acoustic information. This was
+motivated by the understanding that contextual information could help predict
+occurrences of double-talk situations, as was discussed in Section [[Double-Talk in
+Conversations]]. Furthermore, it had been reported in previous works that certain
+long-term acoustic features like prosody estimates \cite{zelenak_speaker_2012},
+or even statistics of silences and speaker changes \cite{yella_overlapping_2014}
+helped improve the results over using acoustic features alone. Knowing that DCNNs
+are capable of learning low- and high-level representations of data for an
+appropriate task, it was hoped that the proposed classifier could learn such
+longer-term patterns from the contextual acoustic information automatically. The
+number of contextual frames added were ±10 (from before and after the center
+frame) resulting in the total acoustic information available to the classifier
+being $210\,\text{ms}$. The particular decision was based on initial empirical
+evaluations and some practical concerns (Section [[Architecture]]).
 *** WAIT Normalization
 There are two sources of motivation behind normalizing the extracted features before
 being input to a classifier: to compensate for mimatch in the training and
@@ -2553,9 +2625,10 @@ examples. It is not known whether this change would have helped in detecting \ov
 better and further experiments should probably test for this.
 * TODO [0/0] Conclusions and Future Prospects
 - Limited by time ... still a lot got done.
-- Context helps. Single frame is not enough for DT.
-- Deep learning relies heavily on the optimizer.
-- Summary statistics can definitely be misleading.
+
+- The network is able to learn appropriate features for DT from low-level ones
+  + but ... of course not all
+- under-sampling + normalization gave best result ... as one could have expected
 
 - Future Work
   + Evaluate on different dataset
@@ -2563,15 +2636,19 @@ better and further experiments should probably test for this.
     * Hardware limitations.
   + More/better features.
     * If Fbanks do in fact work better, then, more hand-tuned ones as well.
+  + Better class imbalance handling
+    + Cost sensitive objective
   + More complicated neural networks.
     * Bigger size ones.
     * Heirarchial model.
     * LSTM.
   + Use language model.
-* Bibliography
+#+latex: \pagebreak
+
+# * Bibliography
 # \bibliographystyle{plain}
-# \bibliography{thesis}
-\printbibliography
+# \bibliography{thesis.bbl}
+\printbibliography[heading=bibintoc]
 * Workflows                                                        :noexport:
 [[https://bitbucket.org/motjuste/masters][This repository on BitBucket]]
 ** org-mode setup
