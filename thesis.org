@@ -198,14 +198,14 @@ at the same time account for a significant portion, they contribute
 proportionally much less to the overall number of individual acoustic frames.
 This indicates, and is further illustrated in Figure \ref{fig:actspk-hist-all}
 that the distribution of segment-lengths with overlapping speech is skewed
-towards smaller durations. Overlaps longer than $4\,\text{seconds}$ are less common and
-are often characteristic of the scenario of the conversation (e.g. politically
-charged debates) if not otherwise a result of erroneous transcription. For
-various conversational datasets, the reported median value is typically around
-$0.5\,\text{seconds}$, and the distribution has a very thin tail in longer durations
-\cite{heldner_pauses_2010}. Knowing this, a system that aims to classify each
-each frame for the number of active speakers in it will face additional
-challenge due to the heavy imbalance between the classes.
+towards smaller durations. Overlaps longer than $4\,\text{seconds}$ are less
+common and are often characteristic of the scenario of the conversation (e.g.
+politically charged debates) if not otherwise a result of erroneous
+transcription. For various conversational datasets, the reported median value is
+typically around $0.5\,\text{seconds}$, and the distribution has a very thin
+tail in longer durations \cite{heldner_pauses_2010}. Knowing this, a system that
+aims to classify each frame for the number of active speakers in it will face
+additional challenge due to the heavy imbalance between the classes.
 
 #+LATEX: \begin{table}
 |-----------------+---+-----------------+---+---------------|
@@ -271,7 +271,7 @@ High temporal resolution in double talk detection is, nevertheless, necessary.
 When the histograms in Figure \ref{fig:actspk-hist-all} are weighted by their
 respective durations (Figure \ref{fig:actspk-whist-all}) to indicate the overall
 proportional contribution of different segment lengths, double talk segments between 0.5 and
-1.5 seconds long are seen to be largest the contributors to overlapping speech.
+1.5 seconds long are seen to be the largest contributors to overlapping speech.
 Applications where the detection and appropriate treatment of overlapping speech
 can significantly improve the overall performance, should therefore be keenly
 interested in working with such small segments. This has proven to be extremely
@@ -830,9 +830,9 @@ work and possible directions for future work are discussed in Chapter
 
 - **Temporal Smoothing:** :: The raw predictions from the frame-wise classifier
      do not exploit the longer-term temporal patterns that are present in a
-     conversation. The impact and possible improvement in performance by using a
-     simplified version of the Viterbi algorithm for temporally smoothing the
-     raw predictions will also be analyzed (Section [[Temporal Smoothing]]).
+     conversation. The impact and possible improvement in performance by using
+     the Viterbi algorithm for temporally smoothing the raw predictions will
+     also be analyzed (Section [[Temporal Smoothing]]).
 * WAIT [6/13] Approach
 The essence of the methodolgy used in the work done for this thesis is that of
 designing, implementing and evaluating a model based automatic pattern
@@ -889,7 +889,7 @@ ambition to circumvent the need for manual feature engineering that has been
 prevalent in previous works. As discussed earlier (Section [[Deep Learning]]),
 DCNN's have been shown to have the ability to learn both low- and high-level
 representations relevant for a task from minimally processed inputs, and have
-achieve record-breaking performance on multiple occasions in recent years.
+achieved record-breaking performance on multiple occasions in recent years.
 Acoustic features were still extracted from the audio before being fed into the
 DCNN, but they were kept to be fairly low-level ones, and the impact of certain
 simple pre-processing methods have been experimented with.
@@ -918,7 +918,7 @@ $\textbf{x}_t$ extracted from the audio at time $t$ for having speech from the
 $j^{th}$ class of $C =$ /**{0 speakers, 1 speaker, more than 1 speakers}**/. The
 final decision $y_t$ can then be made by choosing the class that was assigned with
 the maximum probability, as
-$$y_t = \argmax_j p(C_j | \textbf{x}_t, \theta)\dot$$
+$$y_t = \argmax_j p(y_t = C_j | \textbf{x}_t, \theta) \text{.}$$
 
 The three classes mentioned above are more or less in line with the ones used by
 other works (Section [[Speaker Diarization]]). An immediate possible extension would
@@ -964,14 +964,114 @@ which might be physically impossible (or at least highly unlikely).
 It is therefore common to /smooth/ out such erroneous predictions using more sophisticated
 decoding schemes to obtain a better sequence of labels $\textbf{y}^{(smooth)}$.
 
-The most popular method used for modelling sequential data is with the use Hidden
-Markov Models (HMMs).
+The most popular approach for modelling sequential data is done with the use
+Markov models. A discrete sequence of observations is understood to have been
+produced by a system that switches states (between a discrete set of possible
+states) at discrete time intervals, possibly even looping back to the same state
+at the next time-stamp. When such a system is modelled to have the Markov
+property, it is assumed that the state of the system at a point in time only
+depends on its state at the immediately previous one. Furthermore, it is assumed
+that this relationship between states, of /transitioning/ from the predecessor
+to the current state, does not change over the time-intervals that the
+observations are made. Lastly, when the observations are not direct measurements
+of the states of the system but are instead modelled to have a probabilistic
+relationship with them, leading to the actual sequence of state transitions
+being effectively /hidden/, the model then becomes the Hidden Markov Model
+(HMM) which is prevelant in speech technologies.
 
-- [ ] FINISH
-***** Scaling Likelihoods
-- http://www.academia.edu/8472416/Tackling_Class_Imbalance_with_Deep_Convolutional_Neural_Networks
-- Scale the likelihoods by priors, effectively shifting the threshold.
+#+LATEX: \begin{figure}
+\centering
+#+LATEX: \includegraphics[width=0.8\textwidth]{img/smoothing-hmm}
+#+LATEX: \caption{Topology of states used in Viterbi decoding for temporal smoothing, where
+$a_{ij}$ are probabilities of transitioning from state $C_i$ to $C_j$.
+#+latex: }
+#+LATEX: \label{fig:smoothing-hmm}
+#+LATEX: \end{figure}
 
+The Markov model has two parameters: the /initial state/ probabilty distribution
+for a sequence to begin with the system in a particular state, and, the /state
+transition/ probabilty distribution for the system to move from one state to
+another over the time-stamps in a sequence. In case of HMMs, there is an
+additional /state emission/ probability distribution for the likelihood of an
+observation being produced by the system while it is in a (hidden) state. Once
+an appropriate number of states the system has and the above parameters for them
+are determined, this model can then be used for analyzing sequential data in a
+variety of application domains (more
+details on the involved methods and algorithms can be found in the excellent
+tutorial by Rabiner in \cite{rabiner_tutorial_1989}). Various speech
+technologies like those for ASR, speaker diarization, and even overlap detection
+systems discussed in Section [[Double-Talk and Speech Technologies]] have been using
+HMMs for modeling the sequential nature of relevant events that occur in speech
+signals. One of the most relevant use case for these models, especially with respect to the
+problems being discussed in this section, is in decoding the appropriate
+sequence of words (in ASR), or speaker activity (in speaker diarization), etc.
+
+For the current task, then, a conversation can be modelled to be in one of three
+states at a given time-stamp, depending on how many speakers are speaking
+simultaneously at that time. The outputs of the classifier are then posterior
+probabilities of being in one of these states for a given input. A decoding
+method can then be used to find the best sequence of states
+$\textbf{y}^{(smooth)}$ that maximizes being in a particular state at a
+particular time-stamp over the entire sequence these state posteriors over a
+given audio recording. The most popular algorithm to determine this
+sequence in a maximum-likelihood setting is the Viterbi decoding algorithm
+\cite{rabiner_tutorial_1989}. The various statistics of durations and
+transitions mentioned in the first paragraph of this section will be made
+available to this decoding algorithm in the initial and the state transition
+probabilities after being calculated on the training dataset.
+
+The state transition topology that was used for Viterbi algorithm based decoding
+is shown in Figure \ref{fig:smoothing-hmm}, and is similar to the topologies
+used for this purpose by other studies mentioned in Section [[Speaker Diarization]].
+Many of those studies also applied an Overlap Insertion Penalty (OIP) on the
+transition from single-speaker state to overlapping speech state, and completely
+forbid some other transitions entirely (like ones between non-speech and
+overlapping speech). This was explained to have been done to reduce false alarms
+of overlaps (for reasons discussed in Section [[Evaluation Metrics]]). Nevertheless,
+in implementation for thesis' work, no such penalization was used, and the
+various parameters of the Markov model were calculated based on the state transitions
+observed in the training set.
+
+#+latex: \newcommand*\rfrac[2]{{}^{#1}\!/_{#2}}
+#+LATEX: \begin{figure}
+\centering
+#+LATEX: \includegraphics[width=\textwidth]{img/eval/mn-skipzero21-preds}
+#+LATEX: \caption{True labels, raw and smoothed predictions for a 1.5 min. long conversation.}
+#+LATEX: \label{fig:smoothing-preds}
+#+LATEX: \end{figure}
+
+In Figure \ref{fig:smoothing-preds}, the top third of the rectangle shows the
+sequence of ground-truth labels for a sample audio recording, the middle third
+shows the sequence of predicted labels as decoded using the naive method
+($\textbf{y}^{(raw)}$), and the bottom third shows the sequence of predicted
+labels as decoded by using the Viterbi Algorithm ($\textbf{y}^{(smooth)}$). In
+each rectangle, grey (darkest) color signifies non-speech, green (lightest)
+color signifies single-speaker speech, and red (medium intensity) color
+signifies overlapping speech, at the respective instances in time. It can be
+seen that $\textbf{y}^{(raw)}$ consists of a lot of very short predictions for
+overlaps, mostly predicted at wrong time-stamps with respect to the ground truth
+(false alarms). However, the application of temporal smoothing in obtaining
+$\textbf{y}^{(smooth)}$ removes almost all such short erroneous predictions,
+while often also filling in any missed in the middle of some long segments.
+However, it can be seen that such temporal smoothing cannot compensate for all
+types of errors. Certain erroneously detected overlaps, particularly those
+detected close to each other are 'filled in' to make even longer duration false
+detections of overlaps in the final predictions (e.g. around
+$26\,\text{seconds}$ mark). Also, some overlap situations that were successfully
+decoded by the naive decoding are erroneously removed in the temporally smoothed
+predictions (e.g. around $12\,\text{seconds}$ mark).
+
+Nevertheless, on average, this promises to obtain much better results than if
+only the raw predictions would have been used directly. It is expected that by
+/smoothing over/ the predictions, the decoding with Viterbi algorithm will
+improve the precision of the predictions when compared to the raw ones, but most
+likely at the expense of recall due to removal of some short yet correctly
+detected overlaps (precision and recall are discussed in Section [[Evaluation
+Metrics]]). Therefore, for all experiments performed during this thesis' work,
+both the predictions, one obtained by the naive decoding method
+($\textbf{y}^{(raw)}$), and the ones obtained after applying temporal smoothing
+with the Viterbi algorithm based decoder ($\textbf{y}^{(smooth)}$), will be
+reported.
 *** DONE [0/0] Removing Silence
 CLOSED: [2017-09-13 Wed 02:08]
 It can be argued that the presence of silence frames in the training input can
@@ -1027,12 +1127,12 @@ dominant one.
 
 This imbalance is arguably one of the most potent source of issues in detecting
 double-talk situations in natural conversations. In previous works (Section
-[[Speaker Diarization]]), in the approaches that used a GMM-HMM framework for overlap
+[[Speaker Diarization]]), since almost all of them used a GMM-HMM framework for overlap
 detection, such imbalance in availability of examples required them to use GMMs
 with fewer components to model overlapping speech than for modelling other
 classes. One can argue that overlapping speech demonstrates much more
 variability within the class than could be suitably modelled with such few
-components. However, with the small datasets that was used by those works, such
+components. However, with the small datasets that were used by those works, such
 decisions may not be entirely in one's control.
 
 There are a few approaches that were considered to solve for the class imbalance
@@ -1134,35 +1234,30 @@ however, is that the two speakers within a particular conversation will be
 different.
 
 Therefore, the under-sampling that was performed in the experiments in this
-thesis were performed on a per-single-speaker-segment basis. All segments with a
-only a single speaker speaking were used, and within each, frames were skipped
-with uniform probability. This procedure at least approximates the goal that
-each individual speaker is proportionally represented over the entire dataset.
-Furthermore, the probability of picking a sample was specifically chosen so that
-the final under-sampled dataset has a ratio of 2:1 between single-speaker and
+thesis was done on a per-single-speaker-segment basis. All segments with a only
+a single speaker speaking were collected, and within each, frames were skipped
+with uniform probability based on the total duration the speaker in that segment
+was active during the conversation. This procedure at least approximates the
+goal that each individual speaker is equally represented over the entire
+dataset. Furthermore, the probability of picking a sample was tuned so that the
+final under-sampled dataset has a ratio of 2:1 between single-speaker and
 overlapping-speaker classes. This decision, as opposed to targetting a 1:1
 ratio, can be intuitively explained as an attempt to represent each speaker and
-their combinations (propotionally) equally. Given that the Fisher Corpus has a
-maximum of two speakers in every conversation and that individual speakers can
-be propotionally represented by the above procedure, the final ratios will end
-up as 1:1:1 between the first speaker, second speaker, and their overlap,
-respectively, for some choice of the skipping probability. This is, again, an
-approximation, and future works should investigate different parameters, or
-other rebalancing techniques \cite{huang_learning_2016} to achieve such goals if
-they are worthwhile.
+their combinations equally. This is, again, an approximation, and future works
+should investigate different parameters or other rebalancing techniques
+\cite{huang_learning_2016} to achieve such goals if they are deemed worthwhile.
 
 The implementation done to do this for this thesis' works performed such
 under-sampling on the fly while preparing the inputs for each epoch of training
-the DCNN. The uniform probability of keeping a sample from a single speech
-segment was fixed at 0.2 for each epoch. No such under-sampling was performed
-while choosing samples from overlapping speech class in any experiments.
-Furthermore, afforded by the reduced number of total training examples, and
-supported by the desire to avoid any impact on convergence or of biased variance
-for the under-sampled class, in experiments where such under-sampling was
-performed, the neural network was trained for at least twice as many epochs than
-in experiments where none of the classes were under-sampled. Lastly, in all
-configurations where such undersampling was performed, silence frames were
-skipped, to avoid the impact of such frames (Section [[Removing Silence]]).
+the DCNN. No such under-sampling was performed while choosing samples from
+overlapping speech class in any experiments. Furthermore, afforded by the
+reduced number of total training examples, and supported by the desire to avoid
+any impact on convergence or of biased variance for the under-sampled class, in
+experiments where such under-sampling was performed, the neural network was
+trained for at least twice as many epochs than in experiments where none of the
+classes were under-sampled. Lastly, in all configurations where such
+undersampling was performed, silence frames were skipped, to avoid the impact of
+such frames on training (Section [[Removing Silence]]).
 
 It should be noted that such under-sampling was only performed while preparing the
 training examples, and were not performed on either the validation or testing
@@ -1201,29 +1296,28 @@ more appropriate should also be experimented with.
 CLOSED: [2017-09-12 Tue 22:21]
 The imbalance between the classes makes using simple summary metrics for
 evaluating an overlap detection system less informative, and, sometimes,
-misguiding. For example, a classifier that predict every sample to belong to the
+misguiding. For example, a classifier that predicts every sample to belong to the
 single-speaker class will achieve an overall $81.20\%$ accuracy score (on the
 testing set in Section [[Data Preparation and Analysis]]).
 
 The two types of errors that an overlap detection system can make on a speech
 recording are: the total duration of missed overlaps $T_{miss}^{(ov)}$, and the
-total duration of falsely detected overlap (aka False Alarms)
-$T_{false}^{(ov)}$. The summary metric used for the reporting these errors, made
-by a system that assigned a total duration of $T_{sys}^{(ov)}$ as overlaps in
-the recording which is known to have a total duration of $T_{ref}^{(ov)}$ overlaps,
-are /precision/ and /recall/.
+total duration of falsely detected overlaps (aka False Alarms)
+$T_{false}^{(ov)}$. /Precision/ and /Recall/ are used for the reporting these errors, made
+by a system that assigns a total duration of $T_{sys}^{(ov)}$ as overlaps in
+the recording which is known to have a total duration of $T_{ref}^{(ov)}$ overlaps.
 
 /Precision/ ($P^{(ov)}$) is the proportion of times that the overlap detection
 system correctly identified an overlap, with respect to all of its decisions of
 existence of overlap, calculated as: $$P^{(ov)} = \frac{T_{sys}^{(ov)} -
 T_{false}^{(ov)}}{T_{sys}^{(ov)}} = \frac{T_{ref}^{(ov)} -
-T_{miss}^{(ov)}}{T_{sys}^{(ov)}}\ldot$$
+T_{miss}^{(ov)}}{T_{sys}^{(ov)}} \text{.}$$
 
 /Recall/ ($R^{(ov)}$) is the proportion of times that the system was correct in
 its decision for detecting overlaps, with respect to the amount of times
 overlaps actually were known to be present, calculated as: $$R^{(ov)} =
 \frac{T_{sys}^{(ov)} - T_{false}^{(ov)}}{T_{ref}^{(ov)}} =
-\frac{T_{ref}^{(ov)} - T_{miss}^{(ov)}}{T_{ref}^{(ov)}}\ldot$$
+\frac{T_{ref}^{(ov)} - T_{miss}^{(ov)}}{T_{ref}^{(ov)}} \text{.}$$
 
 Some related works on overlap detection system
 \cite{boakye_overlapped_2008,geiger_detecting_2013,geiger_speech_2012-1}, also
@@ -2116,6 +2210,7 @@ implementation highlights.
                  implementation of Viterbi algorithm for temporal smoothing was
                  used where relevant.
 * TODO [0/0] Evaluations
+- [ ] Rewrite this intro ...
 Since there have not been works yet which have used Deep Convolutional Neural
 Networks (DCNNs) for the task of detecting overlapping speech in conversations,
 many of the rather fundamental decisions that go into building such a system had
@@ -2166,6 +2261,9 @@ in single-speaker frames rather than non-speech (silence) frames (when they were
 present while training). An immediate indicator of this situation was a bad
 recall value for the single-speaker class ($R^{(sp)}$), where even a value of
 75% for it meant that 25% of the samples from the /majority/ class were being misclassified.
+
+- [ ] degenerate case where good non-speech vs. any speech, but 50%
+  recall/precision for 1T and 2T ... ugly random decision
 
 In the rest of this chapter, impact of various variables are evaluated with
 respect to overlapping speech detection. In all experiments, the same DCNN from
