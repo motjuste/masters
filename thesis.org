@@ -2456,7 +2456,8 @@ context of the relevant implementation highlights.
                  using ~Matplotlib~. A custom and numerically stable ~NumPy~
                  based implementation of Viterbi algorithm for temporal
                  smoothing was used where relevant.
-* DOIN [0/0] Evaluations
+* DONE [3/3] Evaluations
+CLOSED: [2017-09-17 Sun 03:51]
 #+latex: \newcommand*\rfrac[2]{{}^{#1}\!/_{#2}}
 #+latex: \newcommand{\ov}{$(ov)\ $}
 #+latex: \newcommand{\ssp}{$(sp)\ $}
@@ -2549,7 +2550,8 @@ with different cost sensitive objective functions did not give reliable results,
 and have thus been excluded. Lastly, as has been pointed out earlier a few
 times, the reported results are not directly comparable to ones from other works
 in Section [[Speaker Diarization]] since the dataset used for evaluation is different.
-** Training with Silence
+** DONE Training with Silence
+CLOSED: [2017-09-17 Sun 02:15]
 The flagship task for the proposed DCNN would be to differentiate between the
 three possible classes with the single set of learned parameters. Furthermore,
 it will achieve the task perfectly if it can do so without the need of
@@ -2794,8 +2796,9 @@ Therefore, in the experiments reported in the rest of the chapter, training was
 carried out without silence frames. They were added during the application of
 temporal smoothing using ground-truth labelling, but, since the \pnos and \rno in
 these cases will always be $\sim 100\%$, they are not reported in the tables.
-** Training without Silence
-#+LATEX: \begin{table}
+** DONE Training without Silence
+CLOSED: [2017-09-17 Sun 03:51]
+  #+LATEX: \begin{table}
 |-------------------------+---+------------+------------+---+------------+------------|
 |-------------------------+---+------------+------------+---+------------+------------|
 |                         |   | $P^{(sp)}$ | $R^{(sp)}$ |   | $P^{(ov)}$ | $R^{(ov)}$ |
@@ -2820,14 +2823,30 @@ these cases will always be $\sim 100\%$, they are not reported in the tables.
 | Smoothed                |   |      86.74 |      99.61 |   |      82.97 |      11.01 |
 |-------------------------+---+------------+------------+---+------------+------------|
 |-------------------------+---+------------+------------+---+------------+------------|
-#+LATEX: \caption{Evaluation results for un-mn-mvn-skipzero}
-#+LATEX: \label{tab:eval-mvn-skipzero}
-#+LATEX: \end{table}
-
+    #+LATEX: \caption{Class-wise precision ($P$) and recall ($R$) on testing set
+      after training on
+      *inputs with or without different normalizations, and without silence*.
+    #+latex: }
+  #+LATEX: \label{tab:eval-mvn-skipzero}
+  #+LATEX: \end{table}
+#
+#+latex: \afterpage{
+#
+  \centering
+  #+LATEX: \begin{figure}
+    #+LATEX: \includegraphics[width=\textwidth]{img/eval/mn-skipzero-preds}
+    #+LATEX: \caption{True labels, raw predictions, and smoothed predictions for part of a conversation,
+      after training on
+      *inputs with Mean-Subtraction, but without silence*.
+      Results for Mean-Variance-Normalization were similar.
+    #+latex: }
+    #+LATEX: \label{fig:eval-mn-skipzero-preds}
+  #+LATEX: \end{figure}
+#+latex: }
 Table \ref{tab:eval-mvn-skipzero} shows the precision and recall results for the
 next three experiments without \no where different normalizations were performed on the
 inputs. In all three cases, no procedures were applied for tackling class
-imbalance still present in the training set.
+imbalance still present between \ssp and $(ov)$.
 
 It was immediately apparent that the impact of bad \pnos in earlier experiments,
 where a majority of the false \no were actually \ssp, has been rectified, leading
@@ -2835,13 +2854,6 @@ to \rsp being nearly 100%. Furthermore, this was accompanied by an
 improvement in \psp as well, irrespective of the normalization procedure
 applied, which indicates that the degenerate case where all frames were
 predicted as \ssp was been avoided.
-
-#+LATEX: \begin{figure}
-# \centering
-#+LATEX: \includegraphics[width=\textwidth]{img/eval/mn-skipzero-preds}
-#+LATEX: \caption{Predictions on a validation call, and temporally smoothed version, for mn with skipzero. mvn had very similar results}
-#+LATEX: \label{fig:eval-mn-skipzero-preds}
-#+LATEX: \end{figure}
 
 \rov was seen to be almost twice as much compared to when training was carried
 out with silence, irrespective of the normalization procedure applied. However,
@@ -2855,38 +2867,50 @@ in raw \pov as expected.
 
 It was observed that, even though more \ov were detected across more segments
 with overlaps, as was characteristic of training with un-normalized inputs
-earlier these frames usually did not form longer contiguous segments in time.
+earlier, these frames usually did not form longer contiguous segments in time.
 This is further illustrated in Table \ref{tab:eval-mvn-skipzero} by the
 similarly sharp decrease in \rov when temporal smoothing is applied.
 
-#+LATEX: \begin{figure}
-# \centering
-#+LATEX: \includegraphics[width=\textwidth]{img/eval/un-skipzero-precrec}
-#+LATEX: \caption{Precision v/s recall over 551 test calls, raw and smoothed, for un-norm}
-#+LATEX: \label{fig:eval-un-skipzero-precrec}
-#+LATEX: \end{figure}
-
-#+LATEX: \begin{figure}
-# \centering
-#+LATEX: \includegraphics[width=\textwidth]{img/eval/mn-skipzero-precrec}
-#+LATEX: \caption{Precision v/s recall over 551 test calls, raw and smoothed, for mn. mvn had very similar results}
-#+LATEX: \label{fig:eval-mn-skipzero-precrec}
-#+LATEX: \end{figure}
-
-Application of temporal smoothing on the raw outputs of the classifier working
+#+latex: \afterpage{
+#
+  \centering
+  #+LATEX: \begin{figure}
+    #+LATEX: \includegraphics[width=\textwidth]{img/eval/un-skipzero-precrec}
+    #+LATEX: \caption{Precision vs. recall for all calls in the testing set,
+      after training on
+      *non-normalized inputs, and without silence*.
+    #+latex: }
+    #+LATEX: \label{fig:eval-un-skipzero-precrec}
+  #+LATEX: \end{figure}
+#
+  #+LATEX: \begin{figure}
+    #+LATEX: \includegraphics[width=\textwidth]{img/eval/mn-skipzero-precrec}
+    #+LATEX: \caption{Precision vs. recall for all calls in the testing set,
+      after training on
+      *inputs with Mean-Subtraction, but without silence*.
+      Results for Mean-Variance-Normalization were similar.
+    #+latex: }
+    #+LATEX: \label{fig:eval-mn-skipzero-precrec}
+  #+LATEX: \end{figure}
+#
+  \clearpage
+#
+#+latex: }
+Application of temporal smoothing on the raw outputs of the classifier while working
 with normalized inputs showed much more improvement in \pov for relatively
-smaller sacrifice in recall. This indicated, and it was observed, (Figure
+smaller sacrifice in recall. This indicated, and it was observed (Figure
 \ref{fig:eval-mn-skipzero-preds}), that in these cases the raw predcitions had
 more \ov that were contiguous in time making longer segments, which were not
 removed while smoothing. Whereas, the falsely detected \ov were more isolated
-and made shorter segments, which were removed on smoothing. These observations
-hence motivates even more the importance of appropriate post-processing of the
+and made shorter segments, and were removed on smoothing. These observations
+hence motivate even more the importance of appropriate post-processing of the
 raw predictions of a classifier that does not exploit long-term temporal
-patterns.
+patterns. And, the relatively smaller sacrifice in \rov even on raw predictions
+keeps the hopes high for the relevance of normalization to overlap detection.
 
 In the precision vs. recall plots for both non-normalized (Figure
 \ref{fig:eval-un-skipzero-precrec}) and normalized (Figure
-\ref{fig:eval-mn-skipzero-precrec}) settings, temporal smoothing is seen to have a
+\ref{fig:eval-mn-skipzero-precrec}) settings, temporal smoothing was seen to have a
 similar impact as in previous experiments of moving the \pov to higher values
 for the different calls. Similarly, the application of normalization leads to
 movement of the performance to higher \rov even after temporal smoothing,
@@ -2896,23 +2920,16 @@ successfully able to reduce the mismatch between the training and testing
 conditions. And, perhaps due to lack of /competition/ from \no here, the
 classifier is able to learn more patterns for \ov than before. Skipping \no has
 then proven to be beneficial and, as discussed earlier, a much simpler speech
-activity detection method can be used in later applications to only pass speech
+activity detection method can be used in final applications to only pass speech
 segments to the overlap detection system.
 
 Nevertheless, the more important and far more severe competition from the
 majority class of \ssp still exists. Experiments in the next section present
-results when the classes were re-balanced while training to tackle this problem.
-** Training with Rebalanced Classes
-For tackling the class imbalance issue, the data from \ssp were under-sampled
-such that the ratio between the examples from each speaker and their
-combinations were propotionally equal (Section [[Rebalancing Training Data]]). As a
-result, the classifier sees twice as many \ssp than \ov. Table
-\ref{tab:eval-mvn-skipzero21} summarizes the results for this under when
-different normalization procedures were applied. The raw results for \ov looked
-humbling. While \rov had increased by many folds, the reduction in \pov was
-jarring, even though this was expected to happen.
-
+results when the classes were rebalanced during training to tackle this problem.
+** DONE Training with Rebalanced Classes
+CLOSED: [2017-09-17 Sun 03:51]
 #+LATEX: \begin{table}
+|-------------------------+---+------------+------------+---+------------+------------|
 |-------------------------+---+------------+------------+---+------------+------------|
 |                         |   | $P^{(sp)}$ | $R^{(sp)}$ |   | $P^{(ov)}$ | $R^{(ov)}$ |
 |                         |   |        (%) |        (%) |   |        (%) |        (%) |
@@ -2936,40 +2953,54 @@ jarring, even though this was expected to happen.
 | Smoothed                |   |      88.68 |      96.43 |   |      57.37 |      28.04 |
 |-------------------------+---+------------+------------+---+------------+------------|
 |-------------------------+---+------------+------------+---+------------+------------|
-#+LATEX: \caption{Evaluation results for un-mn-mvn-skipzero21}
+    #+LATEX: \caption{Class-wise precision ($P$) and recall ($R$) on testing set
+      after training on
+      *rebalanced classes, with or without different normalizations, and no silence*.
+    #+latex: }
 #+LATEX: \label{tab:eval-mvn-skipzero21}
 #+LATEX: \end{table}
-
-#+LATEX: \begin{figure}
-# \centering
-#+LATEX: \includegraphics[width=\textwidth]{img/eval/un-skipzero21-preds}
-#+LATEX: \caption{Predictions on a validation call, and temporally smoothed version, for un with skipzero21}
-#+LATEX: \label{fig:eval-un-skipzero21-preds}
-#+LATEX: \end{figure}
-
-#+LATEX: \begin{figure}
-# \centering
-#+LATEX: \includegraphics[width=\textwidth]{img/eval/un-skipzero21-precrec}
-#+LATEX: \caption{Precision v/s recall over 551 test calls, raw and smoothed, for un-norm}
-#+LATEX: \label{fig:eval-un-skipzero21-precrec}
-#+LATEX: \end{figure}
-
-#+LATEX: \begin{figure}
-# \centering
-#+LATEX: \includegraphics[width=\textwidth]{img/eval/mn-skipzero21-precrec}
-#+LATEX: \caption{Precision v/s recall over 551 test calls, raw and smoothed, for mn. mvn had very similar results}
-#+LATEX: \label{fig:eval-mn-skipzero21-precrec}
-#+LATEX: \end{figure}
+#
+#+latex: \afterpage{
+#
+  \centering
+  #+LATEX: \begin{figure}
+    #+LATEX: \includegraphics[width=\textwidth]{img/eval/un-skipzero21-preds}
+    #+LATEX: \caption{True labels, raw predictions, and smoothed predictions for part of a conversation,
+      after training on
+      *rebalanced yet non-normalized, and without silence*.
+    #+latex: }
+    #+LATEX: \label{fig:eval-un-skipzero21-preds}
+  #+LATEX: \end{figure}
+#
+  #+LATEX: \begin{figure}
+    #+LATEX: \includegraphics[width=\textwidth]{img/eval/un-skipzero21-precrec}
+    #+LATEX: \caption{Precision vs. recall for all calls in the testing set,
+      after training on
+      *rebalanced inputs with Mean-Subtraction, and without silence*.
+      Results for Mean-Variance-Normalization were similar.
+    #+latex: }
+    #+LATEX: \label{fig:eval-un-skipzero21-precrec}
+  #+LATEX: \end{figure}
+#
+  \clearpage
+#+latex: }
+For tackling the class imbalance issue, the data from \ssp were under-sampled
+such that the ratio between the examples from each speaker and their
+combinations were equal in the training phase (Section [[Rebalancing Training
+Data]]). Table \ref{tab:eval-mvn-skipzero21} summarizes the results for this when
+different normalization procedures were applied. The raw results for \ov looked
+humbling. While \rov had increased by many folds, the reduction in \pov was
+jarring, even though such a trade-off was expected to happen.
 
 What was more shocking was the result for the non-normalized scenario even after
-application of temporal smoothing. In earlier experiments without normalization,
-the classifier was relatively very precise in detecting \ov in the inputs, but
-these detections did not form many longer contiguous segments in time. On the
-application of temporal smoothing most temporally isolated detections of \ov
-were removed, including many false detections. This still happens here, but far
-more contiguous frames are detected to have overlapping speech than before,
-even for false alarms (Figure \ref{fig:eval-un-skipzero21-preds}), which
-temporal smoothing is not able to remove satisfactorily.
+the application of temporal smoothing. In earlier experiments without
+normalization, the classifier was relatively very precise in detecting \ov in
+the inputs, but these detections did not form many longer contiguous segments in
+time. On the application of temporal smoothing most temporally isolated
+detections of \ov were removed, including most false detections. This still
+happens here, but far more contiguous frames are detected to have overlapping
+speech than before, even for false alarms, which temporal smoothing is not able
+to remove satisfactorily (Figure \ref{fig:eval-un-skipzero21-preds}).
 
 The precision vs. recall plot (Figure \ref{fig:eval-un-skipzero21-precrec}) can
 shed some light on the situation at hand. One is reminded of the big spread for
@@ -2981,6 +3012,30 @@ Furthermore, it can be seen that \rsp for certain calls is dangerously low,
 similar to the second observed degenerate case discussed at the beginning of
 this chapter.
 
+#+latex: \afterpage{
+#
+  #+LATEX: \begin{figure}
+    #+LATEX: \includegraphics[width=\textwidth]{img/eval/mn-skipzero21-preds}
+    #+LATEX: \caption{True labels, raw predictions, and smoothed predictions for part of a conversation,
+      after training on
+      *rebalanced inputs with Mean-Subtraction, and without silence*.
+      Results for Mean-Variance-Normalization were similar.
+    #+latex: }
+    #+LATEX: \label{fig:eval-mn-skipzero21-preds}
+  #+LATEX: \end{figure}
+#
+  #+LATEX: \begin{figure}
+    #+LATEX: \includegraphics[width=\textwidth]{img/eval/mn-skipzero21-precrec}
+    #+LATEX: \caption{Precision vs. recall for all calls in the testing set,
+      after training on
+      *rebalanced yet non-normalized inputs, and without silence*.
+    #+latex: }
+    #+LATEX: \label{fig:eval-mn-skipzero21-precrec}
+  #+LATEX: \end{figure}
+#
+  \clearpage
+#
+#+latex: }
 This mismatch problem was rectified earlier by normalizing the inputs, and it is
 indeed observed in Figure \ref{fig:eval-mn-skipzero21-precrec} that this spread
 across the recall axis is reduced significantly. For the first time,
@@ -2990,24 +3045,37 @@ false alarms occurred as temporally isolated frames, which were then
 successfully compensated for by the application of temporal smoothing (Figure
 \ref{fig:eval-mn-skipzero21-preds}).
 
-#+LATEX: \begin{figure}
-# \centering
-#+LATEX: \includegraphics[width=\textwidth]{img/eval/mn-skipzero21-preds}
-#+LATEX: \caption{Predictions on a validation call, and temporally smoothed version, for mn with skipzero. mvn had very similar results}
-#+LATEX: \label{fig:eval-mn-skipzero21-preds}
-#+LATEX: \end{figure}
-
 The goal of under-sampling the majority class was to reduce it's impact on each
 parameter update during gradient descent. Without it, \ov made only a fractional
 contribution to the calculated gradients. In order to isolate the impact of
 under-sampling, the normalization was performed /before/ the random
 under-sampling was performed to create the batches for the classifier in the
-experiments presented here. This meant that the same statistics for mean and
+experiments presented in this section. This meant that the same statistics for mean and
 variance were used for normalization as in the experiments in previous section.
 If the normalization was performed /after/ the random under-sampling, these
 statistics could have been very different in different passes over the same \ov
 examples. It is not known whether this change would have helped in detecting \ov
 better and further experiments should probably test for this.
+
+Nevertheless, one could have predicted that the classifier will perform the best
+when it has been assisted the most. The performance observed when
+the training data was rebalanced and the inputs were mean-normalized is arguably
+the best that was achieved during this thesis' works. It is not as perfect as
+one would have hoped from the promises of deep learning, but given how
+challenging overlapping speech detection in conversations has proven to be so
+far, the prospects look promising. Additional variance normalization was seen to
+slightly degrade the results, but this could be due to the procedure that was
+followed for normalization in these experiments (explained above).
+
+Finally, many individual occurrences of overlaps are still being missed, and the
+increase in recall has come with a steep decline in precision. Attempts
+to work with a cost-sensitive objective function did not give
+reliable results, especially across the different configurations of the
+variables. It was further observed that in most such scenarios, the training
+itself had not converged to a stable loss value. These results were thus omitted
+from this thesis, and this avenue remains to be explored after this thesis'
+submission. The last Chapter of this thesis summarises even more directions that
+future works should explore, while also summarizing what was achieved in this work.
 * TODO [0/0] Conclusions and Future Prospects
 - Limited by time ... still a lot got done.
 
