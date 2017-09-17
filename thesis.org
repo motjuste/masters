@@ -13,6 +13,7 @@
 #+MACRO: NL @@latex:\\@@ @@html:<br>@@
 #+MACRO: L @@latex:\LARGE@@ @@html:<br>@@
 
+
 #+latex_class: scrbook
 #+latex_class_options: [a4paper, oneside, parskip=half]
 #+latex_header: \addtokomafont{sectioning}{\rmfamily}
@@ -69,7 +70,8 @@ Abstract for Detecting Double-Talk ...
 
 #+TOC: headlines 2
 #+latex: \pagebreak
-* DOIN [6/6] Introduction
+* DONE [6/6] Introduction
+CLOSED: [2017-09-17 Sun 00:23]
 Conversations are the dominant form of social interaction between two or more
 people. While text-based messaging has seen a meteoric rise in recent years,
 speech is still the primary medium for holding conversations. These
@@ -974,7 +976,8 @@ work and possible directions for future work are discussed in Chapter
      conversation. The impact and possible improvement in performance by using
      the Viterbi algorithm for temporally smoothing the raw predictions will
      also be analyzed (Section [[Temporal Smoothing]]).
-* WAIT [9/13] Approach
+* DONE [13/13] Approach
+CLOSED: [2017-09-17 Sun 00:22]
 The essence of the methodolgy used in the work done for this thesis is that of
 designing, implementing and evaluating a model based automatic pattern
 recognition system.
@@ -1037,11 +1040,12 @@ simple pre-processing methods have been experimented with.
 
 All of the above aspects and related challenges are discussed in appropriate
 detail in the following sections of this chapter, and some highlights from the
-implementation perspective are provided at the end (Section [[Implementation -
+implementation perspective are provided at the end (Section [[Implementation --
 Highlights]]). The final application of this work in a speaker diarization system
 (introduced in Section [[Speaker Diarization]]) was however not within the purview
 of this thesis and is therefore not discussed.
-** WAIT Supervised Machine Learning for Classification
+** DONE Supervised Machine Learning for Classification
+CLOSED: [2017-09-16 Sat 21:52]
 The ultimate goal of a classifier is to map a new observation to a category (or
 class) given what has been /learned/ from the categorization of perviously seen
 observations, where the set of possible categories is finite and predefined
@@ -1965,121 +1969,188 @@ literature, especially for ASR, however these were not studied in this thesis.
 One factor was that many such methods are used to actively compensate for
 speaker variations, something that an overlap detection system might, in
 contrast, actually benefit from.
-** WAIT [0/1] Deep Convolutional Neural Networks
+** DONE [1/1] Deep Convolutional Neural Networks
+CLOSED: [2017-09-16 Sat 22:12]
 The use of a deep learning based classifier was motivated in Section [[Deep
 Learning]]. Ground breaking results have been achieved using these methods in
 almost all areas of maching learning. For detecting overlapping speech in
-conversations, Geiger /et al/ ~[]~ used Long Short-Term Memory based Recurrent
-Neural Networks to achieve comparable performance to the traditional method
-using GMM-HMMs, and improved the results further when they were used in a tandem
-setting (Section [[Speaker Diarization]]).
+conversations, Geiger /et al./ \cite{geiger_detecting_2013} used Long Short-Term
+Memory (LSTM) based Recurrent Neural Networks (RNNs) to achieve comparable
+performance to the traditional method using GMM-HMMs, and improved the results
+further when they were used in a tandem setting (Section [[Speaker Diarization]]).
 
 As discussed earlier, almost all previous works on overlap detection, including
-the work by Geiger /et al/ ~[]~ mentioned above, have concentrated on finding
-the right set of acoustic features that give the best performance. Deep learning
+the work by Geiger /et al/ mentioned above, have concentrated on finding the
+right set of acoustic features that give the best performance. Deep learning
 technologies, especially Deep Convolutional Neural Networks (DCNN), promise the
-capability to /automatically learn/ robust representations from low-level features
-that are most appropriate for a given task. And recent results ~[]~ have
+capability to /automatically learn/ robust representations from low-level
+features that are most appropriate for a given task. And recent results have
 demonstrated that these promises are being satisfactorily fulfilled.
 Particularly interesting are the studies where neural network architectures
 originally designed for one problem domain (e.g. computer vision) have shown to
 perform surprisingly well in other domains as well (e.g. speech recognition)
-~[]~.
+(Section [[Deep Learning]]).
 
 It was for these reasons that a Deep Convolutional Neural Network (DCNN) was
-used in this thesis to build the classifier. No works that have used DCNN for
-overlap detection in conversations have been published, so it was made necessary
-that the investigation be a comprehensive one. The basic approaches that need to
-be evaluated in building an overlap detection system are already numerous
-(Section [[Supervised Machine Learning for Classification]]), and the long training
-times that any sufficiently deep neural network requires would prove taxing to
-the limited time allotted for this thesis. It would have been impractical to
-then also investigate different DCNN architectures, or even the impact of
-different hyper-parameters or the ordering of individual layers in even a single
-one. The DCNN architecture that was used then, therefore, was fixed for
-evaluations performed in this thesis, while fine-tuning and experimentation with
-other variations would continue in the works beyond this thesis' submission.
+used in this thesis. No works that have used DCNN for overlap detection in
+conversations have been published, so it was made necessary that the
+investigation be a comprehensive one. The basic approaches that need to be
+evaluated in building an overlap detection system are already numerous (Section
+[[Supervised Machine Learning for Classification]]), and the long training times
+that any sufficiently deep architecture requires would prove taxing to the
+limited time allotted for this thesis. It would have been impractical to then
+also comprehensively investigate multiple DCNN architectures, or even the impact of different
+hyper-parameters or the ordering of individual layers in even a single one. The
+DCNN architecture that was used then, therefore, was fixed for evaluations
+performed in this thesis, while fine-tuning and experimentation with other
+variations would continue in the works beyond this thesis' submission.
 
-This DCNN architecture is presented in the next section where each of it's
-components are also briefly discussed. Most of these components are fairly
-standard in any DCNN, and since almost each of them can warrant a scholarly
-article, their discussion in this thesis has been kept brief. The reader is
-encouraged to follow many freely available resources for deeper discussions ~[]~.
+This DCNN architecture is presented in the next section and each of its
+components are later also briefly discussed. Most of these components are fairly
+standard in any DCNN, and even though almost each of them can warrant a
+scholarly article, their discussion in this thesis has been kept brief. The
+reader is encouraged to follow the resources referred in respective sections for
+deeper discussions.
 *** Architecture
-Figure ~[]~ shows the final DCNN architecture that was used in this thesis. It
-was decided upon after some initial experiments, and was limited by what seemed
-reasonable for the given task and by available hardware and time. There are a
-total number of 572,035 trainable parameters, which were trained using the
-/adamax/ optimizer (a popular variant of batched stochastic gradient descent) on
-the /categorical cross entropy/ (objective function) between the output
-likelihoods and the categorical ground-truth labels.
+#+latex: \afterpage{
+#
+  #+LATEX: \begin{table}
+|-----------------+---+------------+---+---------------------+---+--------------|
+|-----------------+---+------------+---+---------------------+---+--------------|
+| Block           |   | Layers     |   | Config.             |   | Output's     |
+|                 |   |            |   |                     |   | Shape        |
+|-----------------+---+------------+---+---------------------+---+--------------|
+|-----------------+---+------------+---+---------------------+---+--------------|
+| Inputs Block    |   | Inputs     |   | -                   |   | (21, 64, 1)  |
+|-----------------+---+------------+---+---------------------+---+--------------|
+|-----------------+---+------------+---+---------------------+---+--------------|
+| Conv. Block *1* |   | Conv2D     |   | filter: (3, 3), 64  |   | (19, 62, 64) |
+|                 |   |            |   | stride: (1, 1)      |   |              |
+|                 |   | BatchNorm  |   | -                   |   |              |
+|                 |   | Activation |   | func: ReLU          |   |              |
+|                 |   | Dropout    |   | prob.: 0.1          |   |              |
+|                 |   | MaxPool2D  |   | stride: (2, 2)      |   | (9, 31, 64)  |
+|-----------------+---+------------+---+---------------------+---+--------------|
+| Conv. Block *2* |   | Conv2D     |   | filter: (3, 3), 128 |   | (7, 29, 128) |
+|                 |   |            |   | stride: (1, 1)      |   |              |
+|                 |   | BatchNorm  |   | -                   |   |              |
+|                 |   | Activation |   | func: ReLU          |   |              |
+|                 |   | Dropout    |   | prob.: 0.1          |   |              |
+|                 |   | MaxPool2D  |   | stride: (2, 2)      |   | (3, 14, 128) |
+|-----------------+---+------------+---+---------------------+---+--------------|
+| Conv. Block *2* |   | Conv2D     |   | filter: (3, 3), 256 |   | (1, 12, 256) |
+|                 |   |            |   | stride: (1, 1)      |   |              |
+|                 |   | BatchNorm  |   | -                   |   |              |
+|                 |   | Activation |   | func: ReLU          |   |              |
+|                 |   | Dropout    |   | prob.: 0.1          |   |              |
+|                 |   | MaxPool2D  |   | stride: global      |   | 256          |
+|-----------------+---+------------+---+---------------------+---+--------------|
+|-----------------+---+------------+---+---------------------+---+--------------|
+| Dense Block *1* |   | Dense      |   | units: 512          |   | 512          |
+|                 |   | Activation |   | func: ReLU          |   |              |
+|                 |   | Dropout    |   | prob.: 0.1          |   |              |
+|-----------------+---+------------+---+---------------------+---+--------------|
+| Dense Block *2* |   | Dense      |   | units: 128          |   | 128          |
+|                 |   | Activation |   | func: ReLU          |   |              |
+|                 |   | Dropout    |   | prob.: 0.1          |   |              |
+|-----------------+---+------------+---+---------------------+---+--------------|
+| Dense Block *3* |   | Dense      |   | units: 32           |   | 32           |
+|                 |   | Activation |   | func: ReLU          |   |              |
+|                 |   | Dropout    |   | prob.: 0.1          |   |              |
+|-----------------+---+------------+---+---------------------+---+--------------|
+|-----------------+---+------------+---+---------------------+---+--------------|
+| Outputs Block   |   | Dense      |   | units: 3            |   | 3            |
+|                 |   | Activation |   | func: Soft-max      |   |              |
+|-----------------+---+------------+---+---------------------+---+--------------|
+|-----------------+---+------------+---+---------------------+---+--------------|
+    #+LATEX: \caption{Architecture of the Deep Convolutional Neural Network
+      used in the trainings and evaluations presented in this thesis
+      (missing output's shape entry indicates no change from previous output's shape).
+    #+latex: }
+    #+LATEX: \label{tab:dcnn-arch}
+  #+LATEX: \end{table}
+#
+  \clearpage
+#
+#+latex: }
+Table \ref{tab:dcnn-arch} shows the final DCNN architecture that was used in
+this thesis. It was decided upon after initial experiments, and was limited
+by what seemed reasonable for the given task and by available hardware and time.
+There are a total number of 572,035 trainable parameters, which were trained
+using the /adamax/ optimizer (a popular variant of batched stochastic gradient
+descent) on the /categorical cross entropy/ (objective function) between the
+output class posteriors and the categorical ground-truth labels.
 
-This architecture is a heavily simplified version of VGG-net ~[]~ ~which won the
-...~ and a recent investigation of using VGG-net for speech recorgnition by Deng
-/et al/ ~[]~. The network was simplified to have fewer layers and hence much
-fewer number of learnable parameters than the original ~85 million. This
-decision was made since, in addition to other practical reasons, the network was
-to be trained for only 3 classes (Section [[Supervised Machine Learning for
-Classification]]) as opposed to in the order of 1,000's in the case of the
-original purposes of VGG-net. Early experiments with even smaller architectures,
-or even those without any convolutional layers, had not shown satisfactory
-results.
+This architecture is a heavily simplified version of VGG-net
+\cite{simonyan_very_2014}, originally designed for large scale image
+recognition, but was also recently investigated by Xiong /et al./
+\cite{xiong_achieving_2016} and Sercu /et al./
+\cite{sercu_very_2015,sercu_advances_2016} for acoustic modelling in ASR with
+great results. The original network was simplified here to have fewer layers,
+especially fewer convolutional layers before every pooling layer, and hence much
+fewer number of learnable parameters than the original $\sim 85\,\text{million}$. This
+decision was made since, in addition to practical reasons, the network was to be
+trained for only three classes as opposed to in the order of thousands in the case of the
+original purposes of original investigations. More powerful architectures in
+the present case would have been prone to /overfitting/. Initial experiments for this thesis with
+smaller architectures, or even those without any convolutional layers, had not
+shown satisfactory results.
 
-The DCNN consists of three /convolutional blocks/ at the input, followed by 3
+The DCNN consists of three /convolutional blocks/ near the input layer, followed by 3
 /dense blocks/ before the final /softmax/ output layer for the three
-classes /**(0 speakers, 1 speaker, more than 1 speakers)**/. No padding was
+classes: /**(0 speakers, 1 speaker, more than 1 speakers)**/. No padding was
 performed on inputs or outputs of any layers, so the depth of the network (i.e. the
 number of blocks and layers) is also partly constrained by the shape of the /input/.
 
 The **inputs** are formed for a given frame by attaching 10 frames immediately
 before and 10 frames immediately after as contextual information. This leads to
-a 2D input of the shape $(21, 64)$ where the two dimensions are /(time,
-mel-frequency)/, and, since these frames were calculated every 10 ms, represent
-a total contextual information of 210 ms available to the DCNN for each
-classification. The **class label** for each such input is decided by the frame
-at the center, and is provided to the network in categorical form (3 dimensional
-vector with value 1 for true class and 0 otherwise). Other works with DCNN in
-speech recognition prepare their inputs in a similar manner to capture a typical
-phoneme length, with the amount of context added between 5 to 9 from both sides
-being popular ~[]~. The decision to choose 10 contextual frames was made after
-determining that lower number of such frames lead to relatively worse results in
-initial exploratory experiments, while larger numbers would have imposed severe
-penalty on training times as well as, given the typically small duration of
-segments with overlapping speech, would have made the decision to choose label
-from only the center frame questionable. Within a context size of 210 ms, it is
-hoped that enough information can be captured also about acoustic events which
-could last longer than a typical phoneme (like laughter, backchannels, etc.) but
-nevertheless occur in overlap situations, and also to somewhat mitigate for any
-inaccuracies the ground-truth annotations.
+an input of the shape $(21, 64, 1)$ where the dimensions are /(time,
+mel-frequency, channel)/, and, since these frames were calculated every 10 ms,
+represent a total contextual information of $210\,\text{ms}$ available to the
+DCNN for each frame's classification. The **class label** for each such input is
+decided by the frame at the center, and is provided to the network in
+categorical form (3 dimensional vector with value 1 for true class and 0
+otherwise). Other works with DCNN in speech recognition prepare their inputs in
+a similar manner to capture a typical phoneme length, with the amount of context
+added between 5 to 9 from both sides being popular
+\cite{sercu_very_2015,sercu_advances_2016,xiong_achieving_2016}. The decision to
+choose 10 contextual frames was made after determining that lower number of such
+frames lead to relatively worse results in initial exploratory experiments,
+while larger numbers would have imposed severe penalty on training times as well
+as, given the typically small duration of segments with overlapping speech,
+would have made the decision to choose label from only the center frame
+questionable. The choice was made also to somewhat mitigate for any inaccuracies the
+ground-truth annotations.
 
 Each **convolutional block** consists of a /2D convolutional layer/,
 /batch-normalization layer/, non-linear /activation layer/, /drop-out layer/,
 and finally a /2D max-pooling layer/, in that order. The max-pooling in the
-final convolutional block is performed globally so that the inputs to the
-following /dense block/ are vectors of the same size as the number of filters
-learned in the final convolutional block. Each of the **dense block** then has a
-/densely layer/, followed by an /activation layer/ and then a
-/drop-out layer/. The final outputs in the form of per-class likelihoods are
+final convolutional block is performed globally so that the input to the
+following /dense block/ is a vector of the same size as the number of filters
+learned in the final convolutional layer. Each of the **dense block** then has a
+/dense layer/, followed by an /activation layer/ and then a
+/drop-out layer/. The final outputs in the form of class posteriors are
 obtained from the appropriately sized /dense layer/ with /softmax/ as the
 activation function. In total, then, there are 7 layers (excluding
-batch-normalization layers) with learnable weights. These layers are discussed next.
+batch-normalization layers) with learnable parameters. These layers are discussed next.
 *** Layers
 **** Convolutional Layer
 The use of /convolutional/ layers gives a Deep /Convlutional/ Neural network
-it's name. Within this layer, a set of filters (of size smaller than the inputs)
-are /convolved/ over the inputs ~[]~. Each filter of a given size (called it's
-receptive field) is moved over the entire input with some striding ratio (aka
-step-size), and the output at a position is the weighted sum of the overlapped
-region of the input at the corresponding position. These multiplicative weight
-and additive bias parameters are learned during training after having been
+it's name. Within this layer, a set of filters (of size smaller than the inputs
+in respective dimensions) are /convolved/ over the inputs. Each filter of a
+given size (called it's receptive field) is moved over the entire input with
+some striding ratio, and the output at a position is the weighted sum of the
+overlapped region of the input at the corresponding position
+\cite{_cs231n_2016}. The multiplicative weight and additive bias parameters for
+performing the weighted sum are learned during training after having been
 initialized with some appropriate values. In this way, each filter produces a
 feature map from a given input, which, in crude terms, represents the presence
 of the /local patterns/ that the filter has learned to distinguish from others.
 The number of such filters learned in a layer are increased as the position of
-the convolutional layers goes deeper (Figure ~[]~), with the intuition of
-learning fewer lower level features (e.g. utterance specific) at the beginning
-which are combined to form more number of higher-level features (e.g. speaker
-specific) as the network goes deeper.
+the convolutional layers goes deeper (Table \ref{tab:dcnn-arch}), with the
+intuition of learning fewer lower level features (e.g. utterance specific) at
+the beginning, which are then combined to form more number of higher-level
+features (e.g. speaker specific) as the network goes deeper.
 
 All convolutional layers in the proposed architecture used filters with
 receptive field of shape $(3, 3)$, i.e. 2-dimensional convolution, and also used
@@ -2088,78 +2159,82 @@ learn the temporal and spectral patterns that occur during the three situations
 where different number of speakers are active, while also being invariant to the
 particular characteristics of what is being spoken, by whom, and when.
 Furthermore, since none of the layers performed any padding to their inputs
-before convolution, the final size of each feature map will be reduced by an
+before convolution, the final size of each feature map is reduced by an
 absolute value of $2 \times \lfloor{\frac{3}{2}}\rfloor = 2$ in each dimension.
-No weight or bias regularization (often done to improve stability) were done.
 **** Batch-Normalization Layer
-In recent works using DCNN's ~[]~, the output of a convolutional layer is often
+In recent works using DCNN's, the output of a convolutional layer is often
 normalized to have zero-mean and unit-variance. During batch-wise training, this
-/batch-normalization layer/ performs this in an online manner, learning the
-mean and variance of the entire dataset at the particular position of the layer
-for each component of it's input. During evaluation, the learned mean and
-variance are used to normalize the inputs to the next layer. The goal is to
-standardize the internal representations inside the network (similar to how the
-inputs were normalized in Section [[Normalization]]), and have been
-shown to help the network converge faster and generalize better ~[]~. To enable
-such a layer to learn the mean and variance statistics more robustly in a
-batch-wise online manner, care should be taken when the batches are constructed.
-For this, the batch-size was kept relatively large and it was made /sure/ (upto
-a random decision function) that consecutive batches did not come from the same
-recording (while being shuffled within themselves anyway).
+/batch-normalization layer/ performs this in an online manner, learning the mean
+and variance of the entire dataset at the particular position of the layer for
+each component of it's input. During evaluation, the learned mean and variance
+are used to normalize the inputs to the next layer. The goal is to standardize
+the internal representations inside the network (similar to how the inputs were
+normalized in Section [[Normalization]]), and have been shown to help the network
+converge faster and generalize better \cite{ioffe_batch_2015}. To enable such a
+layer to learn the mean and variance statistics more robustly in a batch-wise
+online manner, care should be taken when the batches are constructed. For this,
+the batch-size was kept relatively large and it was made /sure/ (upto a random
+decision function) that consecutive batches did not come from the same recording
+(while being shuffled within themselves anyway).
 
 It is a subject of many informal debates within the deep learning community on
 whether such a normalization should be performed on the outputs of the
 convolutional layer, or the /activation layer/. Unfortunately, there have not
 been any thorough investigations into the impact of the two decisions. It is the
 personal view of the author of this thesis that using batch-normalization before
-activation may lead to loss of potentially useful information especially when
+activation may lead to /loss/ of potentially useful information especially when
 using Rectified Linear Unit (ReLU) as the activation function. This is because
-ReLU is inactive for values $<= 0$, and batch-normalization will necessarily
-center all it's inputs around zero. Nevertheless, the decision was made to honour
-the original architecture that inspired this work's DCNN, and
-batch-normalization was always performed before activation. Further works are
-planned to investigate the other options, including ones skipping this layer altogether.
+ReLU is inactive for values $\leq 0$, and batch-normalization will necessarily
+center all it's inputs around zero. However, one can argue that such /loss/ of
+information could prove useful in forcing the DCNN to search for better
+patterns, essentially acting as an additional form of regularization procedure.
+Nevertheless, the decision was made to honour the original architecture that
+inspired this work's DCNN, and batch-normalization was always performed before
+activation. Further works are planned to investigate the other options,
+including ones skipping this layer altogether.
 **** Activation Layer
-The /activation layer/, essentially, applies a non-linear function to it's
-inputs while sometimes promising certain properties for it's outputs as well.
-The application of a non-linear activation function in the neural units
-(neurons) to the weighted sum of it's in coming values is what lies at the heart
-of what makes a neural network capable of learning universal functions, both
-theoretically ~[]~ and, with recent ground-breaking results, probably also in
-practice. Such an activation function should be non-linear, bounded, and
-monotonically increasing, preferably continuous functions. Traditionally,
-functions like the logistic (sigmoid) function $f_{sigmoid}(x) = \frac{1}{1 + e^{-x}}$, or the
-hyperbolic tangent function $f_{tanh}(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$, etc.
+The /activation layer/ applies a non-linear function to it's inputs while
+sometimes promising certain properties for it's outputs as well. The application
+of a non-linear activation function in the neural units (neurons) to the
+weighted sum of it's in coming values is what lies at the heart of what makes a
+neural network capable of learning universal functions (Section [[Deep Learning]]).
+Such an activation function should be non-linear, bounded, and a monotonically
+increasing, preferably continuous functions. Traditionally, functions like the
+logistic (sigmoid) function $f_{sig}(x) = \frac{1}{1 + e^{-x}}$, or the
+hyperbolic tangent function $f_{tanh}(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$
 have been used. Recently however, the Rectified Linear Unit (ReLU) function
-$f_{relu}(x) = x^{+} = max(0, x)$ has become a very popular choice for most applications, and neural
-networks using these have been shown to learn much faster than with others.
-However, being non-continuous, weights of the neuron should be initialization
-with some care ~[]~. Furthermore, they are also known to lead to overfitting, but
-certain regularization layers have been shown to mitigate such issues ~[]~.
+$f_{relu}(x) = x^{+} = max(0, x)$ has become the most popular choice for most
+applications, and neural networks using these have been shown to learn much
+faster than with others
+\cite{glorot_understanding_2010,glorot_understanding_2010,deng_new_2013,he_delving_2015}.
+However, being non-continuous, weights of the neural units should be
+initialization with some care. Furthermore, they are also known to lead to
+overfitting, but certain regularization layers have been shown to mitigate such
+issues \cite{dahl_improving_2013}.
 
 All weights in the proposed network here were initialized using the Glorot
-Uniform distribution ~[]~ based on other recent works ~[]~. /Drop-out layers/
+Uniform distribution \cite{glorot_understanding_2010}. /Drop-out layers/
 were used during training for regularization (discussed later).
-All activation layers in the proposed network used the ReLU function for
-activation, except the final layer that produced the likelihoods for the three
+All activation layers in the proposed network used the ReLU function, except the
+final layer that produced was tasked to produce the posterior probabilities for the three
 target classes. For this layer, the Soft-max activation function was used, which
 is a generalization of the logistic function above, but promises the
-$C$ -dimensional output vector for a $C$ -dimensional real-valued input vector
-$\textbf{x}$ to be real valued in the range $[0, 1]$ and sum up to $1$,
+$C\text{-dimensional}$ output vector for a $C\text{-dimensional}$ real-valued input vector
+$\textbf{x}$ to be real valued in the range $[0, 1]$, and sum up to $1$,
 simulating a discrete probability mass distribution over the target classes:
 $$f_{softmax}(\textbf{x}) = \frac{e^{x_j}}{\sum_{k=1}^{C} e^{x_k}} \text{ for }
-j=1, 2, \ldots, C$$.
+j=1, 2, \ldots, C\text{.}$$
 **** Drop-Out Layer
 Randomly dropping out (setting to zero) the inputs (with some fixed probability)
-before being passed on to the next layer was introduced as an elegant
+before being passed on to the next layer was recently introduced as an elegant
 architectural "hack" to prevent overfitting in neural networks, and also for
 approximating the ensemble training (with model averaging) of exponentially many
-"thinned" networks within the same neural network architecture ~[]~. It acts as
+/thinned/ networks within the same neural network architecture \cite{srivastava_dropout:_2014}. It acts as
 a regularization method by preventing complex co-adaptation of the neural units
 to fixed, simple patterns. When applied to the inputs themselves, it can also
 simulate training on an exponential number of augmented datasets, although this
 configuration is rarely used and reserved for situations when the original
-training dataset is small and meets certain criteria ~[]~.
+training dataset is small and meets certain criteria.
 
 In the proposed architecture, all ReLU activation layers were followed by a
 drop-out layer with $10\%$ of the inputs to such layers being randomly set to
@@ -2167,11 +2242,11 @@ zero. It is arguable that a higher probability should be used in the /dense
 layers/ (the classifier) to make them more robust, but this has been left for
 future investigations.
 **** Max-Pooling Layer
-Another hallmark of many DCNN's is the use of pooling layers that perform a type
+Another hallmark of DCNNs is the use of pooling layers that perform a type
 of non-linear down-sampling on their inputs. They are implemented in a very
 similar fashion to the convolutional layers, except for two key differences: the
 filters are applied to non-overlapping receptive fields instead of overlapping
-ones in case of convolutional layers (i.e. the step size is equal to filter size
+ones in case of convolutional layers (i.e. the striding length is equal to filter size
 instead of $1$), and the output of the filters are not weighted sums of the
 inputs within the receptive field, but rather the result of a non-linear
 function, popularly the max or the average. Furthemore, the number of such
@@ -2179,62 +2254,62 @@ filters is kept equal to the number of filters (output feature maps) in the
 earlier convolutional layer. The intuition behind using such a layer is that the
 exact location of a recognized pattern in the inputs is less important than its
 rough location relative to other recognized patterns, leading to a form of
-translation invariance. Furthermore, with such a high striding ratio (or step
-size), the size of the learned representation is significantly reduced, leading
-to fewer computations in subsequent layer while also helping against
-overfitting in the previous layer ~[]~.
+translation invariance. Furthermore, with such a high striding ratio (or
+striding length), the size of the learned representation is significantly reduced, leading
+to fewer computations in subsequent layers while also helping against
+overfitting in the previous layer \cite{_cs231n_2016}.
 
-When applied globally, the chosen non-linear function is applied to a receptive
+When applied /globally/, the chosen non-linear function is applied to a receptive
 field of size equal to the shape of the input feature maps, effectively
 replacing each feature map by a single value.
 
 In the proposed architecture, all pooling layers applied the max function.
 Except for the final global pooling layer, all other pooling layers use a 2D
-filter of shape $(2, 2)$, applied with a striding ratio $(2, 2)$ (equivalent to
-a step size of $(2, 2)$). The final global max-pooling layer of course used a
-filter size equal to the shape of the input feature maps, making the striding
-ratio irrelevant. The other popular option of using the average function, or a
-different combination/location in the network, is alas left for future works.
+filter of shape $(2, 2)$, applied with a striding ratio $(2, 2)$. The final
+global max-pooling layer used a filter size equal to the shape of the input
+feature maps, making the striding ratio irrelevant. The other popular option of
+using the average function, or a different combination/location in the network,
+is alas left for future works.
 **** Dense Layer
 Similar to a typical DCNN based classifier's architecture, the convolutional
 blocks near the input's end are designed to learn and extract the features that
 will prove to be the most relevant to the task at hand. The actual
 classification task is then learned and performed by multiple layers of fully
-connected dense layers at the end. In the network then, these dense layers
-(learn to) perform high-level /reasoning/ with the features that have been
-learned by the feature extractor.
+connected dense layers towards the output's end. In the network then, these
+dense layers (learn to) perform high-level /reasoning/ with the features that
+have been learned by the feature extractor.
 
-From the perspective of topology, each unit (neuron) in a dense layer is
-performs a weighted sum of all the inputs, which are then passed through a
-non-linear activation function. The multiplicative weight and
-the additive bias are not shared between the individual neurons. Hence, the
-output size of such a layer will be of the size of the number of neural units in
-that layer.
+From the perspective of topology, each unit (neuron) in a dense layer performs a
+weighted sum of all the inputs, which are then passed through a non-linear
+activation function. The multiplicative weights and the additive biases are not
+shared between the individual neurons. Hence, the output size of such a layer
+will be of the size of the number of neural units in that layer.
 
 In the proposed DCNN, max-pooling is performed globally in the final
 convolutional block so as to end up with a vector of the size of the number of
-feature maps. These then behave as the extracted feature vector for
-/dense blocks/ to be used for classification. Each such dense block consists of
-a dense layer such as one explained above, with the number of neural units
-decreasing as the position of the block (and hence the layer) goes deeper. After
-each dense block, however, a dropout layer was used for regularization during
-training, as has been explained previously.
+feature maps produced in the final convolution. These then behave as the
+extracted feature vector for /dense blocks/ to be used for classification. Each
+such dense block consists of a dense layer such as one explained above, with the
+number of neural units decreasing as the position of the block (and hence the
+layer) goes deeper. After each dense block, however, a dropout layer was used
+for regularization during training, as has been explained previously.
 
-The activation function used all such dense blocks was the ReLU function, except
-in case of the final output layer, which used the Soft-max function.
+The activation function used in all such dense blocks was the ReLU function,
+except in the case of the final output layer, which used the Soft-max function
+as previously discussed.
 *** Training
 **** Loss Function
 The basic idea behind supervised training of any classifier is to optimize its
 parameters based on a measure of mismatch between its decisions for a given
 input and the known correct decision. This measure of mismatch, called the
-objective function or conversely the loss function, should encapsulate what errors the classifier is
-making and direct an /optimizer/ to update the parameters accordingly. Since the
-outputs of the DCNN classifier and it's targets are discrete probability
-distributions, the loss function that was chosen for this task was the
-Categorical Cross Entropy between the known probability distribution
-$\textbf{y}$ and the predicted probability distribution $\hat{\textbf{y}}$ as,
-$$L(\textbf{y}, \hat{\textbf{y}}) = - \frac{1}{C} \sum_{j=1}^{C} y_i \,
-log(\hat{y_i})$$.
+objective function or conversely the loss function, should encapsulate what
+errors the classifier is making and direct an /optimizer/ to update the
+parameters accordingly. Since the outputs of the proposed DCNN and its
+targets are discrete probability distributions, the loss function that was
+chosen for this task was the Categorical Cross Entropy between the known
+probability distribution $\textbf{y}$ and the predicted probability distribution
+$\hat{\textbf{y}}$ as, $$L(\textbf{y}, \hat{\textbf{y}}) = - \frac{1}{C}
+\sum_{j=1}^{C} y_i \, log(\hat{y_i})\text{.}$$
 
 Although this loss function does encapsulate the /divergence/ between the two
 distributions, it weighs it equally for all $C$ classes. This would result in
@@ -2246,19 +2321,22 @@ minority class. This weight could either be fixed, or based on probability of
 seeing such a class in a batch, etc.
 
 Unfortunately, as discussed in [[Tackling Class Imbalance]], doing this did not give
-reliable or even stable results, at least while working on this thesis, and thus
-there results have been ommitted. A yet another loss function along similar
-lines of weighting the loss values in favor of the minority class can be the
-Bayesian Categorical Cross Entropy function ~[]~, while other such functions
-have also been proposed in literature ~[]~. These should also be considered in
-future works on this problem.
-**** WAIT [0/1] Optimization
+reliable or even stable results while working on this thesis, and thus their
+results have been ommitted. A yet another loss function along similar lines of
+weighting the loss values in favor of the minority class can be the Bayesian
+Categorical Cross Entropy function \cite{dalyac_tackling_2014}~[]~, while other
+such functions have also been proposed in literature \cite{wang_training_2016}.
+These should also be considered in future works on this problem. For the purpose
+of rectifying the above mentioned issue, then, only the impact rebalancing the
+training data will be reported.
+**** DONE [0/0] Optimization
+CLOSED: [2017-09-16 Sat 22:02]
 The value of the loss function, averaged over the training examples, for
 different parameter values, can be seen as a hilly landscape in the
 (high-dimensional) parameter space. The job of an optimizer then is to navigate
-through this landscape to reach a region where values of the parameters result in
-minimum average loss. In practice, the essential algorithms for doing this for
-deep neural networks are /stochastic gradient descent (SGD)/ and the
+through this landscape to reach a region where the values of the parameters
+result in minimum average loss. In practice, the essential algorithms for doing
+this for deep neural networks are /stochastic gradient descent (SGD)/ and the
 /backpropagation/ of such gradients.
 
 An SGD based optimizer follows the average gradient of errors produced by small
@@ -2267,71 +2345,72 @@ this gradient from the output units of the network to the input units. The
 process is repeated over multiple mini-batches taken from the training set, and
 often over multiple passes over the entire training set as well. The
 optimization procedure is said to have converged when further iterations do not
-reduce the loss function any further. The optimizer used to train the
-proposed DCNN was /adamax/ (with parameters as set in the proposing paper
-~[]~). It is a variant of the popular /adam/ optimizer, but is based on the
-infinity norm (mathematical details of these algorithms have been avoided from
-this discussion, and the reader is urged to refer to many and much better
-resources, like ~[]~). The decision was based on early experiments showing
-fast training times while demonstrating better results than /vanilla/ SGD.
-- [ ] add learning rates and momentums, etc.
+reduce the loss function any more. The optimizer used to train the proposed DCNN
+was /adamax/ (with parameters as set in the proposing paper
+\cite{kingma_adam:_2014}). It is a variant of the popular /adam/ optimizer
+(proposed in the same paper), but is based on the infinity norm. The
+decision was based on early experiments showing fast training times while
+demonstrating better results than /vanilla/ SGD.
 
 However, given the power of deep neural networks, it is possible that the
 network could have converged to a /bad/ minima, where it only performs better on
 the (seen) training data but not very well on (unseen) test data. Such an
 occurence is called overfitting, and should be avoided since the ultimate goal
 of a classifier is to perform it's task on as yet unseen data. For this reason,
+various regularization procedures (discussed earlier) are used, and
 the training of a neural network is often monitored by calculating it's
 performance on a small (yet representative) validation set that the neural
-network never sees for training, and when the performance on this set starts to
+network never sees for training. When the performance on this set starts to
 degrade, certain measures can be taken to counteract overfitting.
 
-For neural networks, popular among such measures include modifying the learning
-rate ~[]~, early stopping of training ~[]~, using regularization layers like
-drop-out, etc. Learning rate modification and early stopping were not used in
-the works in this thesis. It was observed that, perhaps due to class imbalance,
-the loss on the validation set was considerably noisier than in situations where
-such methods have been proven to improve results. Nevertheless, the performance
-of the neural network was monitored using a validation set over a specified
-number of passes over the dataset (aka epochs) and the value for the weights
+For neural networks, popular measures also include modifying the learning rate
+of the optimizer and early stopping of the training when the performance on the
+validation set starts to degrade. These measures were not used in the works for
+this thesis. It was observed that, perhaps due to class imbalance, the loss on
+the validation set was considerably noisier than in situations where such
+methods have been proven to improve results. Nevertheless, the performance of
+the neural network was monitored using a validation set over a specified number
+of passes over the dataset (also known as epochs) and the value for the weights
 were saved at regular intervals. In cases where overfitting was observed,
-weights from an appropriate epoch were used for evaluations on the training set.
+weights from an appropriate epoch were used for subsequent evaluations on the
+testing set.
 
 All trainings were performed for 20 passes over the entire dataset, except in
 the case where the single-speaker class was under-sampled when 40 passes over
 the dataset was made (Section [[Tackling Class Imbalance]]).
-** WAIT [0/0] Implementation - Highlights
+** DONE [0/0] Implementation -- Highlights
+CLOSED: [2017-09-17 Sun 00:22]
 All implementations in this thesis were done using the Python programming
-language ~[]~, and it was hence also the medium of choice for working with the
+language, and it was hence also the medium of choice for working with the
 APIs of the libraries that were used. Where possible, reputed open source
 libraries were used, and where necessary, the custom implementations were done
-with a test-driven-development (TDD) methodology. The versions of some of the
-key libraries used are listed below:
+with a test-driven-development (TDD) methodology \cite{beck_test_2002}. The
+versions of some of the key libraries used are listed below:
 
-- ~Python 3.5.3~ ~[]~
-- ~NumPy 1.12.1~ ~[]~
-- ~FFMPEG 3.2~ ~[]~
-- ~LibROSA 0.5.0~ ~[]~
-- ~Dask 0.14.3~ ~[]~
-- ~h5py 2.7.0~ ~[]~
-- ~Keras 2.0.2~ ~[]~
-- ~TensorFlow 1.0.0~ ~[]~
-- ~matplotlib 2.0.2~ ~[]~
-- ~Jupyter 5.0.0~ ~[]~
-- ~pytest 3.0.7~ ~[]~
+- ~Python 3.5.3~ \cite{_python_2017}
+- ~NumPy 1.12.1~ \cite{walt_numpy_2011}
+- ~FFMPEG 3.2.x~ \cite{_ffmpeg_2017}
+- ~LibROSA 0.5.0~ \cite{mcfee_librosa_2017}
+- ~Dask 0.14.3~ \cite{dask_development_team_dask:_2017,rocklin_dask:_2015}
+- ~h5py 2.7.0~ \cite{_hdf5_2017}
+- ~Keras 2.0.2~ \cite{chollet_keras:_2017}
+- ~TensorFlow 1.0.0~ \cite{abadi_tensorflow:_2016}
+- ~matplotlib 2.0.2~ \cite{michael_droettboom_matplotlib/matplotlib_2017}
+- ~Jupyter 5.0.0~ \cite{_project_2017}
+- ~pytest 3.0.7~ \cite{_pytest:_2017}
 
-Figure ~[]~ shows the simplified flow-diagram of the process used in works done
-during this thesis. It is designed to be modular and each step is configurable
-and reproducible, which should be helpful for works that are to continue beyond
-this thesis. They are briefly explained next with context of the relevant
-implementation highlights.
+The process that was followed was designed to be modular, where each step is
+configurable and reproducible, with in order to be helpful for works that are to
+continue beyond this thesis' submission. It is briefly explained next with the
+context of the relevant implementation highlights.
 
 - Preparation :: The original NIST SPHERE audio files were converted to WAV
-     using the ~sph2pipe_v2~ tool ~[]~, whose individual speaker channels were
-     merged using ~FFMPEG~. The labels were parsed from the corresponding
-     transcripts using a custom implementation that heavily exploited ~NumPy~
-     . This also the stage where the dataset was split into training,
-     validation and testing dataset.
+                 using the ~sph2pipe_v2~ tool \cite{_sphere_2017}, whose
+                 individual speaker channels were merged using ~FFMPEG~. The
+                 labels were parsed from the corresponding transcripts using a
+                 custom implementation that heavily exploited ~NumPy~. This was
+                 also the stage where the dataset was split into training,
+                 validation and testing dataset.
 - Feature Extraction :: The audios were loaded and the feature extraction
      procedure was performed using slightly modified versions of the relevant
      functions available in ~LibROSA~. The process was parallelized across
@@ -2342,140 +2421,153 @@ implementation highlights.
                     computation backend was provided by (GPU enabled)
                     ~Tensorflow~. Any parameters that have not been mentioned in
                     earlier descriptions were kept to the default values set in
-                    ~Keras~. All networks were trained for 20 to 40 passes over
-                    the entire dataset, and each took between 5 to 7 days on a
-                    Nvidia GeForce GTX TITAN X Black GPU (~cuda 8.0~) when a
-                    custom /data provider/ was used.
+                    the respective versions of ~Keras~ and ~Tensorflow~. All
+                    networks were trained for 20 to 40 passes over the entire
+                    dataset, and each took between 5 to 7 days on an Nvidia
+                    GeForce GTX TITAN X Black GPU (~cuda 8.0~) when a custom
+                    /data provider/ was used.
 - Batch Preparation :: A custom /data provider/ was implemented using ~NumPy~
      and ~h5py~ for preparing batches for the neural network on the fly and in
-     parallel to the training loop running on a GPU. This performed
-     context-adding, normalization, under-sampling of classes, seeded shuffling, etc.
-     on the data read from the saved ~HDF5~ files, and, since it was done in
-     parallel to the training loop, improved training times by an order of
-     magnitude when compared to a more straightforward approach. Furthermore, a
-     striding trick ~[]~ was used to keep the operations memory efficient as
-     well. The efficiency came at the cost that all samples in a batch, even
-     though shuffled, came from a single conversation. It would have been
-     impractically inefficient otherwise, and, at least, consecutive batches
-     were made sure (upto a random shuffle) to come from different
-     conversations.
+     parallel to the training loop running on a GPU. It performed
+     context-adding, normalization, under-sampling of classes, seeded shuffling,
+     etc. on the data read from the saved ~HDF5~ files. Since it was done in
+     parallel to the training loop, the training times were improved by an order
+     of magnitude when compared to a more straightforward approach. Furthermore,
+     a ~NumPy~ specific striding trick \cite{pauli_virtanen_2.2._2016} was used
+     to keep the operations memory efficient as well. The efficiency came at the
+     cost that all samples in a batch, even though shuffled, came from a single
+     conversation. It would have been impractically inefficient otherwise, and,
+     at least, consecutive batches were made sure (upto a random shuffle) to
+     come from different conversations.
 - Monitoring :: The validation set was used to monitor the performance of the
-                DCNN over each epoch by using callbacks provided in ~Keras~ to build a
-                ~Tensorboard~ ~[]~, and the learned weights were saved after each
-                epoch using another in-built callback. A custom callback was
-                implemented using ~NumPy~ and ~Keras~ to also monitor the class
-                confusion matrix to indicate the classwise precision and recall
-                metrics on the validation set.
-- Evaluations :: A slightly modified version of the above data provider (one
-                 with no shuffling, subsampling, or skipping) was also used to
-                 generate raw predictions from the neural network set with
-                 learned weights obtained after training. These predictions were
-                 then analyzed by functions implemented using ~NumPy~, and
-                 almost all of the graphical analysis was done using
-                 ~Matplotlib~. A custom and numerically stable ~NumPy~ based
-                 implementation of Viterbi algorithm for temporal smoothing was
-                 used where relevant.
-* TODO [0/0] Evaluations
+                DCNN over each epoch by using callbacks provided in ~Keras~ to
+                build a ~Tensorboard~ \cite{abadi_tensorflow:_2016}, and the
+                learned weights were saved after each epoch using another
+                in-built callback. A custom callback was implemented using
+                ~NumPy~ and ~Keras~ to also monitor the class confusion matrix
+                to indicate the classwise precision and recall metrics on the
+                validation set.
+- Evaluations :: For evaluations, a slightly modified version of the above data
+                 provider (one with no shuffling, subsampling, or skipping) was
+                 also used to generate raw predictions from the neural network
+                 set with learned weights obtained after training. These
+                 predictions were then analyzed by functions implemented using
+                 ~NumPy~, and almost all of the graphical analysis was done
+                 using ~Matplotlib~. A custom and numerically stable ~NumPy~
+                 based implementation of Viterbi algorithm for temporal
+                 smoothing was used where relevant.
+* DOIN [0/0] Evaluations
 #+latex: \newcommand*\rfrac[2]{{}^{#1}\!/_{#2}}
-#+latex: \newcommand{\ov}{$(ov)\,$}
-#+latex: \newcommand{\ssp}{$(sp)\,$}
-#+latex: \newcommand{\no}{$(no)\,$}
+#+latex: \newcommand{\ov}{$(ov)\ $}
+#+latex: \newcommand{\ssp}{$(sp)\ $}
+#+latex: \newcommand{\no}{$(no)\ $}
 #
-#+latex: \newcommand{\pnos}{$P^{(no)}\,$}
-#+latex: \newcommand{\psp}{$P^{(sp)}\,$}
-#+latex: \newcommand{\pov}{$P^{(ov)}\,$}
+#+latex: \newcommand{\pnos}{$P^{(no)}\ $}
+#+latex: \newcommand{\psp}{$P^{(sp)}\ $}
+#+latex: \newcommand{\pov}{$P^{(ov)}\ $}
 #
-#+latex: \newcommand{\rno}{$R^{(no)}\,$}
-#+latex: \newcommand{\rsp}{$R^{(sp)}\,$}
-#+latex: \newcommand{\rov}{$R^{(ov)}\,$}
+#+latex: \newcommand{\rno}{$R^{(no)}\ $}
+#+latex: \newcommand{\rsp}{$R^{(sp)}\ $}
+#+latex: \newcommand{\rov}{$R^{(ov)}\ $}
 #
-- [ ] Rewrite this intro ...
 Since there have not been works yet which have used Deep Convolutional Neural
 Networks (DCNNs) for the task of detecting overlapping speech in conversations,
-many of the rather fundamental decisions that go into building such a system had
-to be made before settling on a configuration to different experiments on.
-For this thesis, these decisions were made by performing a lot of exploratory
-experiments in the initial phases of the work. For this, a simple neural network
-only dense layers and no convolutional layers was used, although later a DCNN
-with much fewer learnable parameters was also used. These were evaluated on the
-verification set instead of the testing set from Section [[Preparation and
-Analysis]].
+many of the fundamental decisions involved in building such a system had to be
+settled on before settling on a configuration for different experiments. For
+this thesis, these decisions were made by performing a lot of exploratory
+experiments in the initial phases of the work. For saving time, a simple neural
+network with only dense layers and no convolutional layers was used, although
+later a DCNN with fewer learnable parameters than the one proposed was also
+used. These were evaluated on the verification set instead of the testing set
+(Section [[Preparation and Analysis]]).
 
 The exact results from these exploratory experiments are not reported
 in this thesis, but the decisions they inspired are summarized below:
 
-- Using log-mel-filterbanks gave better results over using power-spectrograms or MFCCs.
+- Using log-mel-filterbanks gave better results over spectrograms or MFCCs.
 - Adding more contextual frames (±1, ±5, ±10) while preparing inputs to the
   classifier helped improve the results for overlapping detection. Adding too
   many contextual frames did however lead to increased training effort,
-  sometimes even resource-exhaustion errors on the single GPU, and also made the
-  labelling of a frame only based on the center frame questionable.
-- Non-speech v/s speech (from any number of speakers) classification performed
+  sometimes even resource-exhaustion errors on the single GPU that was used.
+- Non-speech vs. speech (from any number of speakers) classification was achieved
   well enough even in the absence of any contextual frames, especially on
   deep neural networks without any convolutional layers.
-- Larger networks with more parameters performed better, but also costed in
+- Larger networks with more parameters performed better, but also cost more in
   terms of training and evalution times.
 - Deeper networks (with more number of layers) performed better than wider
   networks (with more number of neural-units in each layer).
+- Larger filter sizes (receptive fields) in the convolutional layers cost more
+  in terms of time, but did not seem to improve results over the size proposed,
+  at least in early epochs.
+- Pooling with max function gave better results than with the averaging
+  function.
+- The /adam/ family of optimizers lead to faster training times, and often
+  better results than other options.
 
-Furthermore, two particular degenerate cases when a classifier failed at
-detecting overlapping speech were commonly observed.
+Furthermore, three degenerate cases, when a classifier failed at satisfactorily
+detecting overlapping speech, were commonly observed.
 
-Firstly, when smaller networks were trained without any procedure to rectify for
-class imbalance, all frames were classified by the network to be from the single
-speaker. This will lead to nearly 100% recall for single speaker class
-($R^{(sp)}$) but 0% precision and recall for the overlapping speech class
-($P^{(ov)}$ and $R^{(ov)}$). Essentially, no overlaps would be detected.
-Particularly small neural networks produced posterior probability for single
-speaker class closer to 1. In such a situation, even post-processing the
-predictions with temporal smoothing cannot help.
-
-Second type of failure occurred even in many larger neural networks, and often
-when a cost-sensitive objective function was used to tackle the class imbalance
-issue. On the verification set, almost all overlaps may get recalled, but with
-an abysmal precision. Sometimes, most of the frames would be predicted as having
-overlapping speakers. Essentially, there would be a lot of false positive detections of
-overlapping speech. However, these false positives were predominantly detected
-in single-speaker frames rather than non-speech (silence) frames (when they were
-present while training). An immediate indicator of this situation was a bad
-recall value for the single-speaker class ($R^{(sp)}$), where even a value of
-75% for it meant that 25% of the samples from the /majority/ class were being misclassified.
-
-- [ ] degenerate case where good non-speech vs. any speech, but 50%
-  recall/precision for 1T and 2T ... ugly random decision
+1. All frames in the evaluation set were classified as single-speaker speech
+   $(sp)$. This would be seen as 100% recall for \ssp but the recall and
+   precision for other classes will be 0%. This was particularly the case when
+   the DNN architectures had the fewest number of learnable parameters, and
+   sometimes the classifier always produced the posterior probability for \ssp to
+   be 1 while it was always 0 for other classes. In such a situation, even
+   temporal smoothing cannot help improve the results in any way.
+2. All non-speech frames \no will be detected with high precision and recall,
+   while the rest will be detected as single-speaker speech. No frames will be
+   detected for having overlapping speech on the evaluation set indicated by 0%
+   recall for the class, rendering the classifier useless for the current task.
+   This was the case for many moderately sized DNN configurations, especially
+   when fewer contextual frames were added and no attempts were made to rectify
+   the class imbalance issue.
+3. All non-speech frames \no will be detected with good precision and
+   recall, but the classifier will appear to make random decisions between
+   single-speaker speech and overlapping speech for other frames. This case
+   would be indicated by having below 70% recall and precision for $(sp)$. Given
+   \ssp is by far the most dominant class, such low recall scores would be a
+   result of a substantially high false alarm rates for overlapping speech,
+   rendering the system unsuitable for overlap detection (Section [[Evaluation
+   Metrics]]). This case was seen in moderately large DNN configurations,
+   especially when the training data was not rebalanced to rectify class
+   imbalance. In a closely related case, the classifier will detect more number
+   of frames to have overlapping speech than single-speaker speech, and was
+   particularly observed when training was done with a cost-sensitive objective
+   function. Although in this case, it would often also be observed that the
+   classifier had not converged to a stable loss value even on the training set,
+   even when larger DNN or DCNN configurations were used.
 
 In the rest of this chapter, impact of various variables are evaluated with
 respect to overlapping speech detection. In all experiments, the same DCNN from
 Section [[Architecture]] was trained, and then evaluated on the testing set from
 Section [[Preparation and Analysis]]. Furthermore, in addition to /raw/
 classification results from the classifier (obtained by applying $argmax$ to the
-frame-wise class posteriors), results after applying /temporal smoothing/
+frame-wise class posteriors), results after applying /temporal smoothing/ as
 discussed in Section [[Temporal Smoothing]] are also reported for each experiment.
-Lastly, as pointed out in Section [[Cost Sensitive Objective]], many experiments
+As mentioned above and in Section [[Cost Sensitive Objective]], many experiments
 with different cost sensitive objective functions did not give reliable results,
-and have thus been excluded. Lastly, as has been pointed earlier a few times,
-the reported results are not directly comparable to ones from other works since
-the dataset used is different.
-** Training With Silence
+and have thus been excluded. Lastly, as has been pointed out earlier a few
+times, the reported results are not directly comparable to ones from other works
+in Section [[Speaker Diarization]] since the dataset used for evaluation is different.
+** Training with Silence
 The flagship task for the proposed DCNN would be to differentiate between the
 three possible classes with the single set of learned parameters. Furthermore,
-if it can do so without the need of normalizing the inputs and in the presence
-of imbalance between the classes, while exhibiting high precision and recall
-scores for all classes, then the task would have been achieved perfectly.
-However, this scenario is expected to be the most challenging one for a
-real-world classifier, since no steps have been taken to assist it. The
-performance under these conditions could therefore serve as the baseline for
-comparing the success of any assistance provided to the classifier in later
-experiments.
+it will achieve the task perfectly if it can do so without the need of
+normalizing the inputs and in the presence of imbalance between the classes
+while exhibiting high precision and recall scores for all classes. However, this
+scenario is expected to be the most challenging one for a real-world classifier,
+since no steps have been taken to assist it. The performance under these
+conditions could therefore serve as the baseline for comparing the success of
+any assistance provided to the classifier in later experiments.
 
-In this section, evalution results are presented for the DCNN after it was
-trained to detect all three classes : \no (non-speech, no speakers active), \ssp
+In this section, evaluation results are presented for the DCNN after it was
+trained to detect all three classes: \no (non-speech, no speakers active), \ssp
 (speech, single speaker active), and \ov (overlapping speech, more than one
 speakers active). These are grouped into two scenarios. In the first scenario,
-results when the inputs to the DCNN were not normalization are presented. In the
+results when the inputs to the DCNN were not normalized are presented. In the
 second scenario, impact of applying Mean Subtraction and
-Mean-Variance-Normalization is presented. In both the scenarios presented in this
-section, no methods for rectifying the class imbalance were applied.
+Mean-Variance-Normalization is evaluated. In both the scenarios, however, no
+methods were applied for rectifying the imbalance between the three classes.
 **** Without Normalization
 #+latex: \afterpage{
 #
@@ -2500,9 +2592,10 @@ section, no methods for rectifying the class imbalance were applied.
   #+LATEX: \begin{figure}
     \centering
       #+LATEX: \includegraphics[width=\textwidth]{img/eval/un-nosub-preds}
-      #+LATEX: \caption{True labels, raw predictions, and smoothed predictions for a small conversation,
+      #+LATEX: \caption{True labels, raw predictions, and smoothed predictions for part of a conversation,
         after training on
         *non-normalized inputs, with silence*.
+        /Time axis is in *minutes:seconds*./
       #+latex: }
       #+LATEX: \label{fig:eval-un-nosub-preds}
   #+LATEX: \end{figure}
@@ -2520,64 +2613,65 @@ section, no methods for rectifying the class imbalance were applied.
   \clearpage
 #
 #+latex: }
-The classwise precision and recall scores calculated at the frame level for DCNN
-trained with this configuration are presented in Table \ref{tab:eval-un-nosub}.
-It was quickly seen that the classifier did not detect most of the \ov
-frames (frames with overlapping speech). However, the degenerate case is avoided
-since, even though the recall (\rov) is very low, the classifier is
-very precise whenever it does detect \ov (\pov). Furthermore, it was
-observed that almost all of the misclassified \ov frames were detected as
-single-speaker frames \ssp, but
+The classwise precision and recall scores calculated at the frame level for the
+DCNN trained with this configuration are presented in Table
+\ref{tab:eval-un-nosub}. It was quickly seen that the classifier did not detect
+most of the \ov frames (frames with overlapping speech). However, the degenerate
+case is avoided since, even though the recall ($R^{(ov)}$) is very low, the
+classifier is very precise whenever it does detect \ov ($P^{(ov)}$).
+Furthermore, it was observed that almost all of the misclassified \ov frames
+were detected as single-speaker frames $(sp)$.
 
-A more important observation was that, even though very few $(ov)$ were
-detected, these were nevertheless detected across different segments (Figure
-\ref{fig:eval-un-nosub-preds}). There was no discernible relationship between
-the length of the overlapping speech segment within which $(ov)$ frames were
-detected, but, for the task of simply estimating the count of double-talk
+A more important observation was that, even though very few \ov were detected,
+these were nevertheless detected across different segments (raw predictions in
+Figure \ref{fig:eval-un-nosub-preds}). There was no discernible relationship
+between the length of the overlapping speech segment within which $(ov)$ frames
+were detected, but, for the task of simply estimating the count of double-talk
 situations in a conversation, this could probably be useful as it is.
 Nevertheless, since only a few $(ov)$ frames are detected, and they rarely are
 detected over contiguous time indices, application of /temporal smoothing/ using
 Viterbi algorithm discarded a large portion of these, as seen in Table
-\ref{tab:eval-un-nosub} and Figure \ref{fig:eval-un-nosub-preds}. The classifier
-learned in this setting, then, does not satisfactorily detect overlapping
-speech.
+\ref{tab:eval-un-nosub} and the smoothed predictions in Figure
+\ref{fig:eval-un-nosub-preds}.
 
 There could be various contributing factors to what made most of the patterns of
-$(ov)$ more difficult to /learn/. First of all, the inputs were not normalized,
-so the data might have statistics that make it unsuitable to learn from.
-Furthermore, the network is also not benefitting from any removal of noise, which
-could have been a by-product of normalization. Secondly, since no attempts were
-made to rectify the class imbalance, the gradients calculated during training
-may be getting dominated by classification performance on the majority class. A
-more subtle hypothesis is that, even within the minority classes, the gradients
-produced by the non-speech examples may be /stronger/ than those produced by
-overlapping-speech examples. /Stronger/ in this context could be understood as
-the relatively little amount of parameter-tuning required to be done by the
-optimizer to better detect non-speech examples rather than overlapping-speech examples.
+\ov more difficult to /learn/. First of all, the inputs were not normalized, so
+the data might have statistics that make it unsuitable to learn from.
+Furthermore, the network is also not benefitting from any removal of noise,
+which could have been a by-product of normalization. Secondly, since no attempts
+were made to rectify the class imbalance, the gradients during training are
+perhaps getting dominated by the majority class. A more subtle hypothesis is
+that, even within the minority classes, the gradients produced by the non-speech
+examples are /stronger/ than those produced by overlapping-speech examples.
+/Stronger/ in this context means that a relatively little amount of
+parameter-tuning is required to be done by the optimizer to better detect
+non-speech examples correctly rather than overlapping-speech examples.
 
 It can be seen in Table \ref{tab:eval-un-nosub} that the classifier did recall
-($R^{(no)}$) nearly 60% of the non-speech (silence) frames $(no)$ in the test
+($R^{(no)}$) nearly 60% of the non-speech frames \no in the test
 set, which indicates that the classifier has learned patterns for detecting
 $(no)$. But, due to lack of normalization (and possibly accompanied de-noising),
 the classifier was pushed towards perhaps even trying to learn the different
 background and channel characteristics in the training set as well, leading to a
-precision ($P^{(no)}$) of only near 30% on the test set (where these
+precision ($P^{(no)}$) of only near 30% on the testing set (where such
 characteristics could be very different). This is further illustrated in Figure
-\ref{fig:eval-un-nosub-precrec}.a, which shows the precision v/s recall values
-for the 551 calls used in the test set to be all over the board for $(no)$, as
+\ref{fig:eval-un-nosub-precrec}, which shows the precision vs. recall scores
+for the 551 calls used in the testing set to be all over the board for $(no)$, as
 compared to $\text{high-}P^{(ov)}\text{-low-}R^{(ov)}$ and
 $\text{high-}P^{(sp)}\text{-high-}R^{(sp)}$ being the norm across these same
-calls. The behavior more or less stays the same for $(no)$ with respect to
+calls. The behavior more or less stays the same for \no with respect to
 recall even after temporal smoothing is applied, although the precision values
-for both $(no)$ and $(ov)$ improves by the removal of impossibly short segments
+for both \no and \ov improves by the removal of impossibly short segments
 (Figure \ref{fig:eval-un-nosub-preds}).
 
-These observations with respect to \no indicate that the classifier is probably
-suffering from mis-matches in the training and testing conditions, which is
-further distracting it from the task of detecting \ov. The two normalization
-procedures discussed in Section [[Normalization]] were explored in order to mitigate
-these issues, and the results are discussed next.
+These observations, at least with respect to $(no)$, indicate that the
+classifier is probably suffering from mismatches in the training and testing
+conditions, which is further distracting it from the task of detecting $(ov)$. The
+two normalization procedures discussed in Section [[Normalization]] were explored in
+order to mitigate these issues, and the results are discussed next.
 **** With Normalization
+#+latex: \afterpage{
+#
 #+LATEX: \begin{table}
 |-------------------------+---+------------+------------+---+------------+------------+---+------------+------------|
 |-------------------------+---+------------+------------+---+------------+------------+---+------------+------------|
@@ -2603,19 +2697,6 @@ these issues, and the results are discussed next.
   #+latex: }
   #+LATEX: \label{tab:eval-mvn-nosub}
 #+LATEX: \end{table}
-#+latex: \afterpage{
-#
-#
-  #+LATEX: \begin{figure}
-    \centering
-      #+LATEX: \includegraphics[width=\textwidth]{img/eval/mn-nosub-preds}
-      #+LATEX: \caption{True labels, raw predictions, and smoothed predictions for a small conversation,
-        after training on
-        *inputs with Mean-Subtraction, with silence*.
-        Results for Mean-Variance-Normalization were similar.
-      #+latex: }
-      #+LATEX: \label{fig:eval-mn-nosub-preds}
-  #+LATEX: \end{figure}
 #
   #+LATEX: \begin{figure}
     \centering
@@ -2630,45 +2711,57 @@ these issues, and the results are discussed next.
 #
   \clearpage
 #
+#+LATEX: \begin{figure}
+  \centering
+    #+LATEX: \includegraphics[width=\textwidth]{img/eval/mn-nosub-preds}
+    #+LATEX: \caption{True labels, raw predictions, and smoothed predictions for part of a conversation,
+      after training on
+      *inputs with Mean-Subtraction, with silence*.
+      Results for Mean-Variance-Normalization were similar.
+    #+latex: }
+    #+LATEX: \label{fig:eval-mn-nosub-preds}
+#+LATEX: \end{figure}
+#
 #+latex: }
-The two normalization procedures that were explored were Mean-Subtraction, and
-Mean-Variance-Normalization, both applied at a level of relatively long segments of a
-conversation (Section [[Normalization]]). The precision and recall performance for
-the three classes with each of these settings are presented in Table
-\ref{tab:eval-mvn-nosub}.
+The two explored normalization procedures, Mean-Subtraction and
+Mean-Variance-Normalization, were both applied at a level of relatively long
+segments of a conversation (Section [[Normalization]]). The precision and recall
+performance for the three classes with each of these settings are presented in
+Table \ref{tab:eval-mvn-nosub}.
 
-As can be seen, the expectation of high recall and precision for \no are not
-exactly met with either of the normalization procedures applied. While \rno has
-increased dramatically, but it has come at significant cost to the already low
-\pnos observed earlier. This was observed as very high levels of false alarms for
-\no (Figure \ref{fig:eval-mn-nosub-preds}), especially taxing recall for $(sp)$
-and moving in the direction of a degenerate case.
-It was also observed that misclassification rate of \ov as \no was 2 to 3
-times higher with either of the normalization procedures, even though more
-number of \ov were detected by the classifier when compared to non-normalized
-case earlier.
+The mismatch issue seems to have been somewhat rectified (Figure
+\ref{fig:eval-mn-nosub-precrec}) but it can be seen in Table
+\ref{tab:eval-mvn-nosub} that the expectation of high recall and high precision
+for \no are not exactly met with either of the normalization procedures applied.
+While \rno has increased dramatically, it has come at significant cost to the
+already low \pnos observed earlier. This was seen as very high levels of false
+alarms for \no (Figure \ref{fig:eval-mn-nosub-preds}), especially taxing recall
+for \ssp and moving in the direction of a degenerate case. It was also
+observed that misclassification rate of \ov as \no was two to three times higher
+with either of the normalization procedures, even though more number of \ov were
+detected by the classifier when compared to non-normalized case earlier.
 
 It was particularly interesting to see that simple mean subtraction seemed to
 have been responsible for most of the observed changes, while additional
 variance normalization had slightly-beneficial to slightly-detrimental impact. As previously
 discussed in Section [[Normalization]], additional variance normalization is less
-commonly observed when deep learning technologies are used, and the results here
+commonly observed in recent applications of deep learning technologies, and the results here
 perhaps indicate why.
 
-Nevertheless, looking at the precision vs. recall values for the test set in
+Nevertheless, looking at the precision vs. recall scores for the test set in
 Figure \ref{fig:eval-mn-nosub-precrec}, one can argue that at least the problems
 due to mismatch in training and testing conditions are being rectified to some
 extent. These values for all the classes are clustered together for all calls
 (though around less than ideal centers), which could mean that these
-normalizations are compensating for any differences in the raw un-normalized
+normalizations are able to compensate for any differences in the raw un-normalized
 inputs in the training and test set.
 
 The predominantly lower \pnos however suggests that these methods may not be
 appropriately compensating for additional noise that well in either of two ways:
 the noise specific to the each call's recording conditions is not being removed
 well enough, or, that it is being over-compensated for leading to loss of useful
-information in $(sp)$ as well. The latter could to be the case in the present
-scenario since it was observed that most of the detected \no formed fairly long
+information in \ssp as well. The latter could to be the case in the present
+scenario, since it was observed that most of the detected \no formed fairly long
 and contiguous segments in time (Figure \ref{fig:eval-mn-nosub-preds}). These
 could be due to loss of information in some word-units that were spoken.
 However, this could also be observed if the noise was under-compensated for,
@@ -2683,28 +2776,27 @@ Another observation made from Figure \ref{fig:eval-mn-nosub-preds} is that \ov
 were detected in relatively similar manner as earlier, i.e. fewer frames over
 multiple segments, however the detected frames formed relatively longer and more
 contiguous segments. This, accompanied by more number \ov being detected, lead
-to much less relative reduction in \rov after temporal smoothing (~36% vs. ~67%
-relative) while \pov still increased (further illustrated in Figure
-\ref{fig:eval-mn-nosub-precrec}). This keeps the prospects of applying
-normalization promising for overlap detection, at least in terms of making the
-inputs more suitable for the classifier to learn from.
+to much less relative reduction in \rov after temporal smoothing ($\sim 36\%$
+vs. $\sim 67\%) relative) while \pov still increased. This keeps the prospects
+of applying normalization promising for overlap detection, at least in terms of
+making the inputs more suitable for the classifier to learn from.
 
 With respect to gradients, however, \no still seems to mislead the classifier.
 Furthermore, with respect to non-speech vs. speech detection, the classifier
 still does not perform as well as much simpler methods. It was argued that
 perhaps some methods for rectifying the class imbalance may help improve the
-results, at least with respect to detecting \ov. Some initial experiments did
-show this to be the case for \ov, but performance for \no degraded even further.
+results, at least with respect to detecting $(ov)$. Some initial experiments did
+show this to be the case for $(ov)$, but performance for \no degraded even further.
 Lastly, it was deemed worthwhile to study the impact of various attempts at
 tackling class imbalance in isolation, and results from these would motivate
 future works where all three classes might be trained for simultaneously.
-** Training Without Silence
-For the experiments reported in the rest of this chapter, silence frames were
-excluded during training. They were added during the application of
+Therefore, in the experiments reported in the rest of the chapter, training was
+carried out without silence frames. They were added during the application of
 temporal smoothing using ground-truth labelling, but, since the \pnos and \rno in
-these cases will always be ~100%, they are not reported in the tables.
-
+these cases will always be $\sim 100\%$, they are not reported in the tables.
+** Training without Silence
 #+LATEX: \begin{table}
+|-------------------------+---+------------+------------+---+------------+------------|
 |-------------------------+---+------------+------------+---+------------+------------|
 |                         |   | $P^{(sp)}$ | $R^{(sp)}$ |   | $P^{(ov)}$ | $R^{(ov)}$ |
 |                         |   |        (%) |        (%) |   |        (%) |        (%) |
