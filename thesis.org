@@ -74,7 +74,7 @@ To Ammi, Abbu, Gudiya, Bushra and Khushi
 #+latex: \end{center}
 #+latex: \vspace*{\fill}
 
-Thank you Dr. Köhler and Alex for your invaluable trust and guidance
+Thank you Dr. Köhler and Alex for playing invaluable roles along the way
 #+latex: \end{center}
 #+latex: \vspace*{\fill}
 \clearpage
@@ -1523,7 +1523,7 @@ class (as $P^{(no)}$ and $R^{(no)}$) and the single-speaker speech class (as
 $P^{(sp)}$ and $R^{(sp)}$), and will be appropriately reported during evaluations.
 ** DONE [2/2] Dataset
 CLOSED: [2017-09-13 Wed 02:08]
-#+latex: \afterpage{
+# #+latex: \afterpage{
 #+LATEX: \begin{table}
 |--------------------------------------------+--------------|
 |--------------------------------------------+--------------|
@@ -1539,12 +1539,12 @@ CLOSED: [2017-09-13 Wed 02:08]
 |--------------------------------------------+--------------|
 |--------------------------------------------+--------------|
 #+LATEX: \caption{Rough sizes of different conversational datasets used in
-overlapping speech detection, and that of the Fisher Corpus used
-/(size of NIST RT as reported in \cite{zelenak_detection_2012})/.
+overlapping speech detection, and that of the Fisher Corpus
+/(NIST RT size as reported in \cite{zelenak_detection_2012})/.
 #+LATEX: }
 #+LATEX: \label{tab:data-sizes}
 #+LATEX: \end{table}
-#+LATEX: }
+# #+LATEX: }
 The dataset used in training (and evaluating) a classifier should
 be representative of goals the of the task. As has been mentioned earlier, for
 the task of building an overlapping speech detection system, datasets like AMI
@@ -1582,35 +1582,28 @@ nevertheless warranted for making any worthwhile claims, are scheduled to be
 carried out in future beyond this thesis' submission.
 *** DONE [0/0] Overview
 CLOSED: [2017-09-13 Wed 00:01]
-#+latex: \afterpage{
-#+LATEX: \begin{figure}
-  #+LATEX: \includegraphics[width=0.75\textwidth]{img/data-eg-transcript}
-  #+LATEX: \caption{First few lines of a transcript file in \emph{LDC2004T19}.}
-  #+LATEX: \label{fig:data-eg-transcript}
-#+LATEX: \end{figure}
-#+LATEX: }
 The Fisher English training corpus
 \cite{cieri_switchboard_2003,_fisher_2004,_fisher_2004-1} was made available by
-the Linguistic Data Consortium (LDC; \cite{_language_2017}) in two parts, one
-each in 2004 and 2005, catalogued as */LDC2004S13/* and */LDC2005S13/*
-containing speech data and */LDC2004T19/* and */LDC2005T19/* containing the
-corresponding transcripts. Taken as a whole, the corpus is made up of 11,699 (=
-5,850 + 5,849) recorded telephone conversations, each given a unique 5-digit
-~CALLID~, starting from ~00001~. The corpus is predominently used in
-conversational and large-vocabulary speech recorgnition systems in literature
-\cite{xiong_achieving_2016,chen_advances_2006}. For this thesis, only data from the
-first part (*/LDC2004S13/* \cite{_fisher_2004} and */LDC2004T19/*
+the Linguistic Data Consortium (LDC; \cite{_language_2017}) in two parts, in
+2004 and 2005, catalogued as */LDC2004S13/* and */LDC2005S13/* containing speech
+data and */LDC2004T19/* and */LDC2005T19/* containing the corresponding
+transcripts. Taken as a whole, the corpus is made up of 11,699 (= 5,850 + 5,849)
+recorded telephone conversations, each given a unique 5-digit ~CALLID~, starting
+from ~00001~. The corpus is predominently used in conversational and
+large-vocabulary speech recorgnition systems in literature
+\cite{xiong_achieving_2016,chen_advances_2006}. For this thesis, only data from
+the first part (*/LDC2004S13/* \cite{_fisher_2004} and */LDC2004T19/*
 \cite{_fisher_2004-1}) were used.
 
 Each conversation is upto 10 minutes long, and is carried out between two
 participants in English on a provided topic. Over 12,000 participants were
 initially recruited, including both native and non-native speakers of English,
 and each were assigned a unique ~PIN~. However, due to the procedures used while
-collecting these recordings, it is not guaranteed that the same ~PIN~ in different
-calls represent the same speaker. Therefore, it is also not possible to
-determine exactly how many unique speakers are present in the entire dataset.
-Nevertheless, it is obviously guaranteed that the two speakers within a
-call are not the same.
+collecting these recordings, it is not guaranteed that the same ~PIN~ in
+different calls represent the same speaker. Therefore, it is also not possible
+to determine exactly how many unique speakers are present in the entire dataset.
+But it is obviously guaranteed that the two speakers within a call are not the
+same.
 
 The audios are available in NIST SPHERE format containing two channels (one
 channel dedicated to each speaker's side in the telephone conversations) sampled
@@ -1628,6 +1621,13 @@ maximum resolution (theoritically minimum segment length) of these time-stamps
 is $10\,\text{ms}$, which govern the frame-rate of the acoustic
 feature extraction process (Section [[Acoustic Features]]) and how various duration
 related statistics are reported in this thesis.
+# #+latex: \afterpage{
+#+LATEX: \begin{figure}
+  #+LATEX: \includegraphics[width=0.75\textwidth]{img/data-eg-transcript}
+  #+LATEX: \caption{First few lines of a transcript file in \emph{LDC2004T19}.}
+  #+LATEX: \label{fig:data-eg-transcript}
+#+LATEX: \end{figure}
+# #+LATEX: }
 
 It has been explicitly pointed out in the documentation that no manual attempts
 were made to modify the automatically derived utterance boundaries, leaving the
@@ -1860,7 +1860,7 @@ The process involved in MFCC extraction includes the following steps:
    and $s$ the temporal axis of the resulting **spectrogram**. The square of
    this gives the /power spectrogram/ which is used in the next step.
 4. The frequency axis is then warped according to the /Mel-scale/
-   \cite{_mel_2017}, which reduces the spectral resolution in the higher
+   \cite{stevens_scale_1937}, which reduces the spectral resolution in the higher
    dimensions of the axis, similar to the frequency response of the human ear.
    This is done by applying $b_{mel}$ (smaller than $b_{ft}$, typically 14
    to 40) overlapping triangular filterbanks that are equidisitant in the
@@ -2025,6 +2025,54 @@ scholarly article, their discussion in this thesis has been kept brief. The
 reader is encouraged to follow the resources referred in respective sections for
 deeper discussions.
 *** Architecture
+Table \ref{tab:dcnn-arch} shows the final DCNN architecture that was used in
+this thesis. It was decided upon after initial experiments, and was limited
+by what seemed reasonable for the given task and by available hardware and time.
+There are a total number of 572,035 trainable parameters, which were trained
+using the /adamax/ optimizer (a popular variant of batched stochastic gradient
+descent) on the /categorical cross entropy/ (objective function) between the
+output class posteriors and the categorical ground-truth labels.
+
+This architecture is a heavily simplified version of VGG-net
+\cite{simonyan_very_2014}, originally designed for large scale image
+recognition, but was also recently investigated by Xiong /et al./
+\cite{xiong_achieving_2016} and Sercu /et al./
+\cite{sercu_very_2015,sercu_advances_2016} for acoustic modelling in ASR with
+great results. The original network was simplified here to have fewer layers,
+especially fewer convolutional layers before every pooling layer, and hence much
+fewer number of learnable parameters than the original $\sim 85\,\text{million}$. This
+decision was made since, in addition to practical reasons, the network was to be
+trained for only three classes as opposed to in the order of thousands in the case of the
+original purposes of original investigations. More powerful architectures in
+the present case would have been prone to /overfitting/. Initial experiments for this thesis with
+smaller architectures, or even those without any convolutional layers, had not
+shown satisfactory results.
+
+The DCNN consists of three /convolutional blocks/ near the input layer, followed by 3
+/dense blocks/ before the final /softmax/ output layer for the three
+classes: /**(0 speakers, 1 speaker, more than 1 speakers)**/. No padding was
+performed on inputs or outputs of any layers, so the depth of the network (i.e. the
+number of blocks and layers) is also partly constrained by the shape of the /input/.
+
+The **inputs** are formed for a given frame by attaching 10 frames immediately
+before and 10 frames immediately after as contextual information. This leads to
+an input of the shape $(21, 64, 1)$ where the dimensions are /(time,
+mel-frequency, channel)/, and, since these frames were calculated every 10 ms,
+represent a total contextual information of $210\,\text{ms}$ available to the
+DCNN for each frame's classification. The **class label** for each such input is
+decided by the frame at the center, and is provided to the network in
+categorical form (3 dimensional vector with value 1 for true class and 0
+otherwise). Other works with DCNN in speech recognition prepare their inputs in
+a similar manner to capture a typical phoneme length, with the amount of context
+added between 5 to 9 from both sides being popular
+\cite{sercu_very_2015,sercu_advances_2016,xiong_achieving_2016}. The decision to
+choose 10 contextual frames was made after determining that lower number of such
+frames lead to relatively worse results in initial exploratory experiments,
+while larger numbers would have imposed severe penalty on training times as well
+as, given the typically small duration of segments with overlapping speech,
+would have made the decision to choose label from only the center frame
+questionable. The choice was made also to somewhat mitigate for any inaccuracies the
+ground-truth annotations.
 #+latex: \afterpage{
 #
   #+LATEX: \begin{table}
@@ -2086,54 +2134,6 @@ deeper discussions.
   \clearpage
 #
 #+latex: }
-Table \ref{tab:dcnn-arch} shows the final DCNN architecture that was used in
-this thesis. It was decided upon after initial experiments, and was limited
-by what seemed reasonable for the given task and by available hardware and time.
-There are a total number of 572,035 trainable parameters, which were trained
-using the /adamax/ optimizer (a popular variant of batched stochastic gradient
-descent) on the /categorical cross entropy/ (objective function) between the
-output class posteriors and the categorical ground-truth labels.
-
-This architecture is a heavily simplified version of VGG-net
-\cite{simonyan_very_2014}, originally designed for large scale image
-recognition, but was also recently investigated by Xiong /et al./
-\cite{xiong_achieving_2016} and Sercu /et al./
-\cite{sercu_very_2015,sercu_advances_2016} for acoustic modelling in ASR with
-great results. The original network was simplified here to have fewer layers,
-especially fewer convolutional layers before every pooling layer, and hence much
-fewer number of learnable parameters than the original $\sim 85\,\text{million}$. This
-decision was made since, in addition to practical reasons, the network was to be
-trained for only three classes as opposed to in the order of thousands in the case of the
-original purposes of original investigations. More powerful architectures in
-the present case would have been prone to /overfitting/. Initial experiments for this thesis with
-smaller architectures, or even those without any convolutional layers, had not
-shown satisfactory results.
-
-The DCNN consists of three /convolutional blocks/ near the input layer, followed by 3
-/dense blocks/ before the final /softmax/ output layer for the three
-classes: /**(0 speakers, 1 speaker, more than 1 speakers)**/. No padding was
-performed on inputs or outputs of any layers, so the depth of the network (i.e. the
-number of blocks and layers) is also partly constrained by the shape of the /input/.
-
-The **inputs** are formed for a given frame by attaching 10 frames immediately
-before and 10 frames immediately after as contextual information. This leads to
-an input of the shape $(21, 64, 1)$ where the dimensions are /(time,
-mel-frequency, channel)/, and, since these frames were calculated every 10 ms,
-represent a total contextual information of $210\,\text{ms}$ available to the
-DCNN for each frame's classification. The **class label** for each such input is
-decided by the frame at the center, and is provided to the network in
-categorical form (3 dimensional vector with value 1 for true class and 0
-otherwise). Other works with DCNN in speech recognition prepare their inputs in
-a similar manner to capture a typical phoneme length, with the amount of context
-added between 5 to 9 from both sides being popular
-\cite{sercu_very_2015,sercu_advances_2016,xiong_achieving_2016}. The decision to
-choose 10 contextual frames was made after determining that lower number of such
-frames lead to relatively worse results in initial exploratory experiments,
-while larger numbers would have imposed severe penalty on training times as well
-as, given the typically small duration of segments with overlapping speech,
-would have made the decision to choose label from only the center frame
-questionable. The choice was made also to somewhat mitigate for any inaccuracies the
-ground-truth annotations.
 
 Each **convolutional block** consists of a /2D convolutional layer/,
 /batch-normalization layer/, non-linear /activation layer/, /drop-out layer/,
@@ -3089,44 +3089,125 @@ itself had not converged to a stable loss value. These results were thus omitted
 from this thesis, and this avenue remains to be explored after this thesis'
 submission. The last Chapter of this thesis summarises even more directions that
 future works should explore, while also summarizing what was achieved in this work.
-* TODO [0/0] Conclusions and Future Prospects
+* DONE [0/0] Conclusions and Future Prospects
+CLOSED: [2017-09-17 Sun 17:13]
 The study of human interactions has a keen interest in the phenomenon of
-Double-Talk or Overlapping Speech that occurs in normal conversations, where
-participants speak simultaneously for brief durations of time during some
-characteristic situations. On the other hand, this phenomenon is a nuisance to
-various speech technologies where it contributes as a major source of errors in
-their otherwise state of the art performances. Automatically detecting and
-temporally localizing these double-talk situations in audios of conversations,
-to be either directly useful to the former, or as a starting point for
-appropriate handling for the latter, is, therefore, the ultimate goal of this
-thesis.
+Double-Talk that occurs in normal conversations, where participants speak
+simultaneously for brief durations of time during some characteristic
+situations. On the other hand, this phenomenon is a nuisance to various speech
+technologies where it contributes as a major source of errors in their otherwise
+state of the art performances. Automatically detecting and temporally localizing
+these double-talk situations in audios of conversations was the ultimate goal of
+this thesis' works. The results could be either directly useful in conversation
+analysis, or act as a starting point to be handled appropriately by speech
+technologies.
 
 Knowing that achieving this goal has proven to be extremely challenging with
-classic approaches, a Deep Convolutional Neural Networks based .
-Various approaches for tackling the expected hurdles in such an
-exploration are scientifically evaluated.
+classic approaches, a Deep Convolutional Neural Networks based system was
+explored. The most important goal of the exploration was to be able to use
+low-level acoustic features for detecting double-talks, and avoiding heavy
+feature engineering done in previous works. It was seen that, even in presence
+of many characteristic hurdles posed by the problem, the neural network had
+learned to extract useful features for overlap detection. Various approaches for
+tackling the expected hurdles were enumerated and scientifically evaluated. It
+was seen that using simple normalization procedures provided benefit by reducing
+the expected mismatch between the training and testing conditions. Removing
+silence for the training objective helped reduce the competition on the already
+disadvantaged class of double-talk examples. The system performed better when
+the disadvantage was compensated for by rebalancing the dataset during training.
+The system performed best when assistance from all the above methods was made
+available and when the classifier's inability to model longer-term temporal
+dependencies was compensated for using a Viterbi algorithm based decoding
+procedure. The decoding method was able to smooth over the short, noisy
+predictions made by the classifier, including many false detections, while
+keeping and often even enhancing many correct detections.
 
+The precision and recall of the system are good enough to be useful for
+conversation analysis, by at least being able to direct attention for later,
+more precise manual annotation. The good recall would help them in quickly find
+more instances of double-talk, and higher precision would reduce the
+frustrations of too many false alarms. Furthermore, seeing that the best
+configuration of the proposed system produces rather contiguous segments for
+double-talks, such false alarms would count to be even fewer when only
+enumerating the segment-wise individual occurrences of double-talk. Speech
+technologies will similarly benefit by being able to reduce the amount of errors
+faced by a baseline system that cannot detect and handle overlapping speech.
 
-- Limited by time ... still a lot got done.
+The modular and cross-platform implementation of the system will allow for
+smmooth deployment to most application scenarios. Furthermore, future works
+along this direction would require minimal modifications to test new approaches.
 
-- The network is able to learn appropriate features for DT from low-level ones
-  + but ... of course not all
-- under-sampling + normalization gave best result ... as one could have expected
+The most important among the tasks slated for the future is to evaluate the
+proposed system on the datasets that have been used by previous works. This is
+expected to involve adapting the proposed model to the new dataset, perhaps by
+retraining a few layers of the neural network on a subset. Some other adaptation
+procedures would also be required during the final deployment of the system.
+Chief among them would be a more powerful normalization and appropriate
+denoising procedure, so that the system is more robust against the less than
+ideal nature of real world signals.
 
-- Future Work
-  + Evaluate on different dataset
-  + More context?
-    * Hardware limitations.
-  + More/better features.
-    * If Fbanks do in fact work better, then, more hand-tuned ones as well.
-  + Better class imbalance handling
-    + Cost sensitive objective
-  + More complicated neural networks.
-    * Bigger size ones.
-    * Heirarchial model.
-    * LSTM.
-  + Use language model.
-#+latex: \pagebreak
+Furthermore, an automatic speech activity detector will have to be integrated
+into the proposed system seeing that removal of silence from the classification
+objective had helped the system. It was seen in the many exploratory experiments
+for this thesis that a neural network based system for this performed very well.
+Perhaps a heirarchial classification approach could be taken, where silence is
+removed in the first step by one neural network and overlaps are detected in a
+second step using the proposed one.
+
+Talking of heirarchial systems, improvements could be achieved by using the
+information from other modalities in addition to the acoustic features. One
+approach could be to combine the outputs of an automatic speech recognition
+system with the ones of the proposed system for training a more sophisticated
+decoding system. This system could exploit the characteristic failures and
+perplexities in the aligned outputs of the speech recognition system in regions
+of overlaps, and add to the performance achieved using only the proposed system.
+Such an approach would prove complicated to appropriately impelement,
+but the endeavour could prove worthwhile.
+
+Nevertheless, only a subset of the originally assigned splits of the Fisher
+Corpus were used in this thesis' works. While the reasons for it were practical,
+it is expected that improvements after using the entire dataset would only be
+moderate, while costing disproportionately more computation time. More
+beneficial would to work with a different dataset that is sufficiently large, is
+representative, and, crucially, has higher fidelity audios and finer annotations.
+However, such a dataset would certainly prove difficult to acquire. Prehaps, the
+idea of training on artificially overlapped speech can be revisited. In doing
+so, it will be important to avoid the various pitfalls involved in the process
+of creating such a dataset. Care should be taken that the new dataset faithfully
+reflects the characteristics of natural double-talks with respect to typical
+duration, production and content. And final evaluations must be carried out on
+real conversations.
+
+With respect to other approaches for tackling the inherent class imbalance,
+different parameters or procedures for rebalancing the training data could be
+explored. More urgent would be to explore different cost-sensitive objective
+functions with more reliable implementations. If no improvements are achieved in
+the latter case, at least a comprehensive study speculating on the possible
+causes should be done. Learning from imbalanced classes is a common challenge
+when working with real world datasets, and contributions in improving the
+performance of deep learning technologies in such situations will be widely
+influential.
+
+Finally, the Deep Convolutional Neural Network that was proposed in this thesis
+was settled on after many initial exploratory experiments, where it was very
+clear that more powerful configurations performed better on the given task. The
+particular architecture proposed here had to be fixed to evaluate the impact of
+other problem specific variables, and it had to be limited to meet the
+constraints of time and resources. Architectures with more number of learnable
+parameters and different layer configurations and orders should be explored if
+the same formulation as the one proposed in this thesis is used. Care should
+however be taken in tackling expected problems of overfitting and those due to
+the inability of current /raw/ formulation to model longer-term temporal
+dependencies. For the latter, the use of Recurrent Neural Networks for modelling
+such dependencies, and related architectures where convolutional layers act as
+feature extractors, should be explored. Such directions would require a larger
+investment of resources but openly available state of the art frameworks for
+implementing should reduce the impelementation effort. Detecting double-talks in
+conversations continues to be a challenging problem, and, given the results
+presented in this thesis, further efforts in solving the problem should be
+encouraged to continue testing the powerful promises of deep learning.
+
+\clearpage
 
 # * Bibliography
 # \bibliographystyle{plain}
