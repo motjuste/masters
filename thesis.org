@@ -29,6 +29,7 @@
 #+LATEX_HEADER: \usepackage{amsmath}
 #+latex_header: \usepackage{fancyhdr}
 #+latex_header: \usepackage{afterpage}
+#+latex_header: \usepackage{pdfpages}
 #
 # #+latex_header: \usepackage{chngcntr}
 # #+latex_header: \counterwithout{figure}{chapter}
@@ -40,36 +41,53 @@
 
 #+latex_header: \DeclareMathOperator*{\argmax}{arg\,max}
 
-# #+BEGIN_LATEX
-# \beginidedication}
-# \vspace*{\fill}
-# \begin{center}
-# To Ammi, Abbu, Gudiya, Bushra, and Khushi
-
-# \textit{To Happiness indeed}
-# \end{center}
-# \vspace*{\fill}
-# \end{dedication}
-# #+END_LATEX
-
-# #+LATEX: \begin{acknowledgements}
-# Joachim, Alex ... set the bar that every other human has to reach ... and they
-# set a very high one.
-# #+LATEX: \end{acknowledgements}
-
+#+latex: \includepdf[pages={1}]{affidavit.pdf}
+\clearpage
+#+latex: \pagenumbering{gobble}
 #+latex: \addchap*{Abstract}
-Abstract for Detecting Double-Talk ...
-#+latex: \pagebreak
+The work presented in this thesis aims to automatically detect double-talks
+(overlapping speech) in audio recordings of natural conversations using a Deep
+Convolutional Neural Network. In doing it so, manual engineering of problem
+specific acoustic features prevelant in classical approaches is avoided. The
+characteristic challenges arising from the ephemeral nature of natural
+double-talks, in addition to the standard issues faced in development of a
+pattern recognition system, are handled using different methods. In particular,
+careful rebalancing of the training data for tackling the inherent class
+imbalance, pre-removal of silence, and two standard normalization procedures for
+reducing the mismatch in training and testing conditions, are all scientifically
+evaluated for their respective impact. Furthermore, the shortcoming of the
+proposed neural network in modelling long-term temporal dependencies is
+documented, and an attempt for fixing it with Viterbi decoding is reported.
+Satisfactory results are achieved on a large and representative testing set,
+while multiple avenues have been paved for future works on this challenging
+problem.
+
+\clearpage
+
+#+latex: \vspace*{\fill}
+#+latex: \begin{center}
+To Ammi, Abbu, Gudiya, Bushra and Khushi
+
+/To Happiness Indeed/
+
+#+latex: \begin{center}
+#+latex: \end{center}
+#+latex: \vspace*{\fill}
+
+Thank you Dr. Köhler and Alex for your invaluable trust and guidance
+#+latex: \end{center}
+#+latex: \vspace*{\fill}
+\clearpage
 
 #+latex: \renewcommand{\headrulewidth}{0.5pt} %obere Trennlinie
 #+latex: \fancyhead[R]{\small \textbf{\thepage}} %Kopfzeile rechts
 #+latex: \fancyhead[L]{\small \textbf{\nouppercase{\rightmark}}} %Kopfzeile rechts
 #+latex: \pagestyle{fancy} %Stilangabe
 #+latex: \fancyfoot{}
-# #+latex: \pagenumbering{arabic}
 
 #+TOC: headlines 2
-#+latex: \pagebreak
+\clearpage
+#+latex: \pagenumbering{arabic}
 * DONE [6/6] Introduction
 CLOSED: [2017-09-17 Sun 00:23]
 Conversations are the dominant form of social interaction between two or more
@@ -160,13 +178,11 @@ differences can also arise when the setting is formal vs. informal, involves two
 vs. more participants, or is carried out face-to-face vs. using a telephone,
 etc.
 
-# #+latex: \begin{center}
 #+LATEX: \begin{figure}
 #+LATEX: \includegraphics[width=\textwidth]{img/example-ovl-conv}
 #+LATEX: \caption{Examples of most common types of double-talk situations (shaded white) in informal conversations.}
 #+LATEX: \label{fig:example-ovl-conv}
 #+LATEX: \end{figure}
-# #+latex: \end{center}
 
 Double-talks become interesting in the study of turn-taking management in
 conversation analysis. In the absence of any strict guidelines, participants in
@@ -239,7 +255,6 @@ additional challenge due to the heavy imbalance between the classes.
 #+LATEX: \end{table}
 
 #+LATEX: \begin{figure}
-# \centering
 #+LATEX: \includegraphics[width=\textwidth]{img/actspk-hist-all}
 #+LATEX: \caption{Histogram of durations of segments (truncated to $<4$ sec. long) with different number of active speakers in \emph{LDC2004T19}.}
 #+LATEX: \label{fig:actspk-hist-all}
@@ -277,7 +292,6 @@ only be reliably calculated over long durations.
 #+LATEX: \caption{Weighted histogram of durations of segments (truncated to $<4$ sec. long) with different number of active speakers in \emph{LDC2004T19}.}
 #+LATEX: \label{fig:actspk-whist-all}
 #+LATEX: \end{figure}
-#+LATEX: \end{small}
 
 High temporal resolution in double talk detection is, nevertheless, necessary.
 When the histograms in Figure \ref{fig:actspk-hist-all} are weighted by their
@@ -443,7 +457,6 @@ the recording.
 #+LATEX: \caption{General architecture of speaker diarization systems, and popular approach for handling overlapping speech.}
 #+LATEX: \label{fig:arch-diarization}
 #+LATEX: \end{figure}
-#+LATEX: \end{small}
 
 Anguera /et al./ provide an excellent overview of various approaches used for
 speaker diarization in \cite{anguera_speaker_2012}. In brief, the general
@@ -2725,9 +2738,9 @@ order to mitigate these issues, and the results are discussed next.
 #+LATEX: \end{figure}
 #
 #+latex: }
-The two explored normalization procedures, Mean-Subtraction and
+The two explored normalization procedures (Section [[Normalization]]), Mean-Subtraction and
 Mean-Variance-Normalization, were both applied at a level of relatively long
-segments of a conversation (Section [[Normalization]]). The precision and recall
+segments of a conversation. The precision and recall
 performance for the three classes with each of these settings are presented in
 Table \ref{tab:eval-mvn-nosub}.
 
@@ -3077,6 +3090,23 @@ from this thesis, and this avenue remains to be explored after this thesis'
 submission. The last Chapter of this thesis summarises even more directions that
 future works should explore, while also summarizing what was achieved in this work.
 * TODO [0/0] Conclusions and Future Prospects
+The study of human interactions has a keen interest in the phenomenon of
+Double-Talk or Overlapping Speech that occurs in normal conversations, where
+participants speak simultaneously for brief durations of time during some
+characteristic situations. On the other hand, this phenomenon is a nuisance to
+various speech technologies where it contributes as a major source of errors in
+their otherwise state of the art performances. Automatically detecting and
+temporally localizing these double-talk situations in audios of conversations,
+to be either directly useful to the former, or as a starting point for
+appropriate handling for the latter, is, therefore, the ultimate goal of this
+thesis.
+
+Knowing that achieving this goal has proven to be extremely challenging with
+classic approaches, a Deep Convolutional Neural Networks based .
+Various approaches for tackling the expected hurdles in such an
+exploration are scientifically evaluated.
+
+
 - Limited by time ... still a lot got done.
 
 - The network is able to learn appropriate features for DT from low-level ones
