@@ -256,7 +256,7 @@ additional challenges due to the heavy imbalance between the classes.
 
 #+LATEX: \begin{figure}
 #+LATEX: \includegraphics[width=\textwidth]{img/actspk-hist-all}
-#+LATEX: \caption{Histogram of durations of segments (truncated to $<4$ sec. long) with different number of active speakers in \emph{LDC2004T19}.}
+#+LATEX: \caption{Histograms of durations of segments (truncated to $<4$ sec. long) with different number of active speakers in \emph{LDC2004T19}.}
 #+LATEX: \label{fig:actspk-hist-all}
 #+LATEX: \end{figure}
 
@@ -289,7 +289,7 @@ only be reliably calculated over long durations.
 #+LATEX: \begin{figure}
 # \centering
 #+LATEX: \includegraphics[width=\textwidth]{img/actspk-whist-all}
-#+LATEX: \caption{Weighted histogram of durations of segments (truncated to $<4$ sec. long) with different number of active speakers in \emph{LDC2004T19}.}
+#+LATEX: \caption{Weighted histograms of durations of segments (truncated to $<4$ sec. long) with different number of active speakers in \emph{LDC2004T19}.}
 #+LATEX: \label{fig:actspk-whist-all}
 #+LATEX: \end{figure}
 
@@ -1720,7 +1720,7 @@ transcript file.
 
 The entire dataset of 5850 calls (\sim960.3 hours) was then split to make training,
 validation and testing sets. The validation set was only used during the
-training phase for monitoring or experimentation, but were not used for training
+training phase for monitoring or experimentation, but was not used for training
 or evaluation. Final evaluations that have been presented in this thesis were
 done on the testing set. These sets were made
 as follows: 99 calls (\sim16.71 hours, 1.74%) were
@@ -1730,14 +1730,14 @@ set.
 
 However, due to hardware and time limitations, the final sets that were actually
 used during the works in this thesis were only subsets from the initial
-assignment above. The final calls that were used in each set are shown in Table
+assignments above. The final calls that were used in each set are shown in Table
 \ref{tab:splits}. The particular choice of validation calls was made to control
 for gender ratios and certain other properties, while the first 1,200 calls from
 the originally assigned training set, and the last 551 calls from the originally
 assigned testing set were chosen for the respective final sets.
 #+LATEX: \begin{figure}
 #+LATEX: \includegraphics[width=\textwidth]{img/actspk-whist-trn}
-#+LATEX: \caption{Weighted histogram of durations of segments (truncated to $<4$ sec. long)
+#+LATEX: \caption{Weighted histograms of durations of segments (truncated to $<4$ sec. long)
 with different number of active speakers in the final *training set*.
 #+latex: }
 #+LATEX: \label{fig:actspk-hist-trn}
@@ -1752,15 +1752,15 @@ with different number of active speakers in the final *testing set*.
 #+LATEX: \end{figure}
 Table \ref{tab:actspk-sets} shows the ratios of the segments and the total
 durations with different number of active speakers for the final sets. Figure
-\ref{fig:actspk-hist-trn} shows the histogram of propotional (weighted by
+\ref{fig:actspk-hist-trn} shows the histograms of the propotional (weighted by
 duration) contributions of segments of different lengths to the total set of
 segments with respective number of speakers active in the training set. Figure
 \ref{fig:actspk-hist-tst} does the same for the final testing set. It can be
-seen that, as discussed in Section [[Double-Talk in Conversations]], 0.5 seconds to
+seen that, as discussed in Section [[Double-Talk in Conversations]], 0.5 to
 1.5 seconds long segments contribute the most the overlapping speech situations.
 Particular peaks could depend on the nature of the dataset, but overall
-characteristics of the data matche what has been reported for other
-conversational datsets used in other overlapping speech detection systems.
+characteristics of the data matches what has been reported for other
+conversational datasets used in other overlapping speech detection systems.
 # #+LATEX: \begin{table}
 #   |-----------------+---+-----------------+---+---------------|
 #   |-----------------+---+-----------------+---+---------------|
@@ -1820,19 +1820,19 @@ Again, real world feature extractors are not this perfect. In classical machine
 learning approaches, significant amount of effort is therefore applied in
 finding such extractors, and previous works on overlap detection are no
 exception to this (Section [[Speaker Diarization]]). Engineering such features has
-required the use of extensive knowledge of problem domain, and sometimes have
+required the use of extensive knowledge of the problem's domain, and sometimes has
 led to settling for handling a limited number of scenarios.
 
 But, as motivated in Section [[Deep Learning]], such feature engineering methods
-have become more and more irrelevant even in some of the most difficult pattern
-recorgnition problems. The raw measurements need to be minimally processed
+have become less relevant even in some of the most difficult pattern
+recognition problems. The raw measurements need to be minimally processed
 before an appropriate deep neural network can, effectively, simultaneously learn
 the appropriate features and how to classify them.
 
 In speech technologies that use deep learning, there have been some attempts to
 work on the raw audio signal itself (e.g. \cite{oord_wavenet:_2016}), but the
 computational burden is often too high owing to the high sample rates of such
-signals, and the efficacy of this approach in most larger applications are yet
+signals, and the efficacy of this approach in most larger applications is yet
 to be studied. Nevertheless, using acoustic features extracted at lower levels
 of the pipelines for extracting traditional ones have been shown to lead to
 significantly better performance when using deep learning technologies
@@ -1843,37 +1843,37 @@ systems. The one to take their place are $\text{log}_{10} \text{-Mel-Filterbank
 Coefficients}$ that are extracted in a step earlier in the MFCC extraction
 pipeline.
 
-The process involved in MFCC extraction includes the following steps:
+The process involved in MFCC extraction involves the following steps:
 1. Audio signal is normalized to be in the range of [-1, 1].
 1. Every $s$ steps in time (usually 10 ms), the audio signal is segmented into
-   windows of $w$ length, where $w$ is kept small (usually 25 ms or 50 ms) such
+   windows of length $w$, where $w$ is kept small (usually 25 ms to 60 ms) such
    that the audio signal can be assumed to be /quasi-stationary/ within this
-   interval to support validity of performing short-term spectral analysis in
+   interval to support the validity of performing short-term spectral analysis in
    the next steps.
 2. Each such window of samples is multiplied by a windowing function in the time
-   domain (usually a Hamming, or Hanning function, to minimize /spectral
-   leakage/ in the Fourier transform of this window).
+   domain (usually a Hamming, or Hanning function) to minimize /spectral
+   leakage/ in the Fourier transform of this window.
 3. A Fourier transform is applied to all such windows to get a vector of size
-   $b_{ft}$ at every $s^{th}$ time-step, with $b_f$ defining the frequency axis
+   $b_{ft}$ at every $s^{th}$ time-step, with $b_ft$ defining the frequency axis
    and $s$ the temporal axis of the resulting **spectrogram**. The square of
    this gives the /power spectrogram/ which is used in the next step.
 4. The frequency axis is then warped according to the /Mel-scale/
    \cite{stevens_scale_1937}, which reduces the spectral resolution in the higher
    dimensions of the axis, similar to the frequency response of the human ear.
    This is done by applying $b_{mel}$ (smaller than $b_{ft}$, typically 14
-   to 40) overlapping triangular filterbanks that are equidisitant in the
+   to 40) overlapping triangular filterbanks that are equidisitant on the
    mel-scale to get the **mel-filterbank coefficients** (aka mel-spectrogram).
 5. The dynamic range of individual filterbank channels is reduced by taking the
-   logarithm, so as to mimic the human perception of loudness, and as well to
+   logarithm, so as to mimic the human perception of loudness, and also to
    avail certain normalization steps done later. The output at this stage is the
-   **log-mel-filterbank**, or often simply called the log-mel-spectrogram.
+   **log-mel-filterbank** or the log-mel-spectrogram.
 6. The discrete cosine transform is applied to the log-mel-spectrogram to
-   decorrelate the filterbank channels, to get the standard **MFCC** (cepstrum).
+   decorrelate the filterbank channels and get the standard **MFCC** (cepstrum).
 
 As seen, many of the steps above are inspired by the human auditory system,
 which is perhaps the best acoustic feature extractor available for one to model
 on. The final decorrelation step was necessitated in classic speech technologies
-to allow for using diagonal covariance matrices in the involved modelling (e.g.
+to allow for using diagonal covariance matrices in the involved acoustic modelling (e.g.
 GMM-HMMs), this step has been found to be unnecessary when using deep learning
 methods. Furthermore, the highly correlated filterbank coefficients, owing to
 the use of overlapping filterbanks, can prove to be useful for DCNN based
@@ -1915,9 +1915,9 @@ certain long-term acoustic features like prosody estimates
 \cite{yella_overlapping_2014} helped improve the results over using acoustic
 features alone. Knowing that DCNNs are capable of learning low- and high-level
 representations of data for an appropriate task, it was hoped that the proposed
-classifier could learn such longer-term patterns from the contextual acoustic
+classifier could learn such patterns from the contextual acoustic
 information automatically. Neural network architecture, like RNNs, are designed
-to learn such longer-term patterns without the need of manually providing the
+to learn even longer-term patterns without the need of manually providing the
 necessary contextual frames, but such architectures were not investigaged in
 this thesis. The number of contextual frames added were ±10 (from before and
 after the center frame) resulting in the total acoustic information available to
@@ -1934,20 +1934,20 @@ in the classifier.
 A classifier should be robust against noise and other irrelevant phenomena that
 are common in natural signals. In speech signals, the recording conditions, the
 microphones used, presence of channel noise, or even speaker variability can
-prove detrimental to goals of an acoustic classification task. Various
+prove detrimental to the goals of an acoustic classification task. Various
 normalization techniques have been studied over the years to compensate for
 these.
 
 Simple **mean-subtraction**, where each frequency component/channel is centered
-to zero based on their mean values calculated over the utterance, have proven to
-go a long way in mitigating such issues. In particular, they are known to
+to zero based on its mean value calculated over the utterance, has proven to
+go a long way in mitigating such issues. In particular, the process is known to
 suppress the convolutional distortions introduced by the transmission channel.
-In fact, the motivation applying logarithm in the feature extraction steps
+In fact, one motivation behind applying logarithm in the feature extraction steps
 discussed earlier is partly also based on the reasoning that these convolutional
 distortions become multiplicative in the spectral domain and then additive in
 the log-spectral domain \cite{molau_normalization_2003,li_overview_2014}.
 
-Additional **variance normalization** is often also performed, but is done so to
+Additional **variance normalization** is often also performed, and is done so to
 ensure that the variance of individual frequency components is 1. Various
 machine learning algorithms are either designed to work with such unit-variance
 data, or are at least known to perform better. This includes the algorithms used
@@ -1961,13 +1961,13 @@ Many systems that want to learn speaker discriminative information for their
 tasks (e.g. speaker identification) often perform no normalization at all
 \cite{lukic_speaker_2016}. It is possible that using such normalizations may in
 fact lead to loss of relevant information. Furthermore, the underlying
-statistical model behind these normalizations, that each frequency channel is
-uni-modal normal distribution, does not hold for most of these channels in
+statistical model behind these normalizations, that each frequency channel is a
+uni-modal normal distribution, does not hold for most of these channels in the
 persence of speech activity even over a single utterance \cite{molau_normalization_2003}.
 
 Nevertheless, in this thesis, to study the impact of the two normalization
 techniques discussed above, the performance of various configurations with and
-without them was evaluated in this thesis' work. In implementation, the means
+without them was evaluated in this thesis' works. In implementation, the means
 and variances were calculated on relatively long ($\sim2.5\,\text{minutes}$) contiguous
 segments in a conversation so as to have reliable values for these metrics, as
 opposed to other approaches which calculate these over single utterances (3 to
@@ -1995,7 +1995,7 @@ the work by Geiger /et al/ mentioned above, have concentrated on finding the
 right set of acoustic features that give the best performance. Deep learning
 technologies, especially Deep Convolutional Neural Networks (DCNN), promise the
 capability to /automatically learn/ robust representations from low-level
-features that are most appropriate for a given task. And recent results have
+features that are the most appropriate for a given task. And recent results have
 demonstrated that these promises are being satisfactorily fulfilled.
 Particularly interesting are the studies where neural network architectures
 originally designed for one problem domain (e.g. computer vision) have shown to
@@ -2020,7 +2020,7 @@ This DCNN architecture is presented in the next section and each of its
 components are later also briefly discussed. Most of these components are fairly
 standard in any DCNN, and even though almost each of them can warrant a
 scholarly article, their discussion in this thesis has been kept brief. The
-reader is encouraged to follow the resources referred in respective sections for
+reader is encouraged to follow the resources referred to in the respective sections for
 deeper discussions.
 *** Architecture
 Table \ref{tab:dcnn-arch} shows the final DCNN architecture that was used in
@@ -2041,7 +2041,7 @@ especially fewer convolutional layers before every pooling layer, and hence much
 fewer number of learnable parameters than the original $\sim 85\,\text{million}$. This
 decision was made since, in addition to practical reasons, the network was to be
 trained for only three classes as opposed to in the order of thousands in the case of the
-original purposes of original investigations. More powerful architectures in
+purposes of the original investigations. More powerful architectures in
 the present case would have been prone to /overfitting/. Initial experiments for this thesis with
 smaller architectures, or even those without any convolutional layers, had not
 shown satisfactory results.
@@ -2056,9 +2056,9 @@ The **inputs** are formed for a given frame by attaching 10 frames immediately
 before and 10 frames immediately after as contextual information. This leads to
 an input of the shape $(21, 64, 1)$ where the dimensions are /(time,
 mel-frequency, channel)/, and, since these frames were calculated every 10 ms,
-represent a total contextual information of $210\,\text{ms}$ available to the
-DCNN for each frame's classification. The **class label** for each such input is
-decided by the frame at the center, and is provided to the network in
+it represents a total contextual information of $210\,\text{ms}$ available to
+the DCNN for each frame's classification. The **class label** for each such
+input is decided by the frame at the center, and is provided to the network in
 categorical form (3 dimensional vector with value 1 for true class and 0
 otherwise). Other works with DCNN in speech recognition prepare their inputs in
 a similar manner to capture a typical phoneme length, with the amount of context
@@ -2069,8 +2069,8 @@ frames lead to relatively worse results in initial exploratory experiments,
 while larger numbers would have imposed severe penalty on training times as well
 as, given the typically small duration of segments with overlapping speech,
 would have made the decision to choose label from only the center frame
-questionable. The choice was made also to somewhat mitigate for any inaccuracies the
-ground-truth annotations.
+questionable. The choice was made also to somewhat mitigate for any inaccuracies
+in the ground-truth annotations.
 #+latex: \afterpage{
 #
   #+LATEX: \begin{table}
@@ -2411,7 +2411,7 @@ versions of some of the key libraries used are listed below:
 - ~pytest 3.0.7~ \cite{_pytest:_2017}
 
 The process that was followed was designed to be modular, where each step is
-configurable and reproducible, with in order to be helpful for works that are to
+configurable and reproducible, in order to be helpful for works that are to
 continue beyond this thesis' submission. It is briefly explained next with the
 context of the relevant implementation highlights.
 
@@ -2420,20 +2420,19 @@ context of the relevant implementation highlights.
                  individual speaker channels were merged using ~FFMPEG~. The
                  labels were parsed from the corresponding transcripts using a
                  custom implementation that heavily exploited ~NumPy~. This was
-                 also the stage where the dataset was split into training,
-                 validation and testing dataset.
+                 also the stage where the dataset was split into the training,
+                 validation and testing set.
 - Feature Extraction :: The audios were loaded and the feature extraction
      procedure was performed using slightly modified versions of the relevant
-     functions available in ~LibROSA~. The process was parallelized across
-     multiple audio files using ~Dask~. The final features and the
-     corresponding class labels were then stored in ~HDF5~ format, one for each
-     split.
+     functions available in ~LibROSA~, and the process was parallelized using
+     ~Dask~. The final features and the corresponding class labels were then
+     stored in ~HDF5~ format, one for each split.
 - Neural Network :: The DCNN was implemented using ~Keras~ while the actual
                     computation backend was provided by (GPU enabled)
                     ~Tensorflow~. Any parameters that have not been mentioned in
                     earlier descriptions were kept to the default values set in
                     the respective versions of ~Keras~ and ~Tensorflow~. All
-                    networks were trained for 20 to 40 passes over the entire
+                    experiments involved training for 20 or 40 passes over the entire
                     dataset, and each took between 5 to 7 days on an Nvidia
                     GeForce GTX TITAN X Black GPU (~cuda 8.0~) when a custom
                     /data provider/ was used.
@@ -2454,19 +2453,19 @@ context of the relevant implementation highlights.
                 DCNN over each epoch by using callbacks provided in ~Keras~ to
                 build a ~Tensorboard~ \cite{abadi_tensorflow:_2016}, and the
                 learned weights were saved after each epoch using another
-                in-built callback. A custom callback was implemented using
+                built-in callback. A custom callback was implemented using
                 ~NumPy~ and ~Keras~ to also monitor the class confusion matrix
                 to indicate the classwise precision and recall metrics on the
                 validation set.
 - Evaluations :: For evaluations, a slightly modified version of the above data
                  provider (one with no shuffling, subsampling, or skipping) was
-                 also used to generate raw predictions from the neural network
+                 used to generate raw predictions from the neural network that was
                  set with learned weights obtained after training. These
                  predictions were then analyzed by functions implemented using
                  ~NumPy~, and almost all of the graphical analysis was done
                  using ~Matplotlib~. A custom and numerically stable ~NumPy~
                  based implementation of Viterbi algorithm for temporal
-                 smoothing was used where relevant.
+                 smoothing was used.
 * DONE [3/3] Evaluations
 CLOSED: [2017-09-17 Sun 03:51]
 #+latex: \newcommand*\rfrac[2]{{}^{#1}\!/_{#2}}
@@ -2498,7 +2497,7 @@ in this thesis, but the decisions they inspired are summarized below:
 
 - Using log-mel-filterbanks gave better results over spectrograms or MFCCs.
 - Adding more contextual frames (±1, ±5, ±10) while preparing inputs to the
-  classifier helped improve the results for overlapping detection. Adding too
+  classifier helped improve the results for overlap detection. Adding too
   many contextual frames did however lead to increased training effort,
   sometimes even resource-exhaustion errors on the single GPU that was used.
 - Non-speech vs. speech (from any number of speakers) classification was achieved
@@ -2507,10 +2506,10 @@ in this thesis, but the decisions they inspired are summarized below:
 - Larger networks with more parameters performed better, but also cost more in
   terms of training and evalution times.
 - Deeper networks (with more number of layers) performed better than wider
-  networks (with more number of neural-units in each layer).
-- Larger filter sizes (receptive fields) in the convolutional layers cost more
-  in terms of time, but did not seem to improve results over the size proposed,
-  at least in early epochs.
+  networks (with more number of neural-units in each layer). Larger filter sizes
+  (receptive fields) in the convolutional layers cost more in terms of time, but
+  did not improve results over the size proposed, at least in the early
+  epochs.
 - Pooling with max function gave better results than with the averaging
   function.
 - The /adam/ family of optimizers lead to faster training times, and often
@@ -2564,7 +2563,7 @@ in Section [[Speaker Diarization]] since the dataset used for evaluation is diff
 ** DONE Training with Silence
 CLOSED: [2017-09-17 Sun 02:15]
 The flagship task for the proposed DCNN would be to differentiate between the
-three possible classes with the single set of learned parameters. Furthermore,
+three possible classes with a single set of learned parameters. Furthermore,
 it will achieve the task perfectly if it can do so without the need of
 normalizing the inputs and in the presence of imbalance between the classes
 while exhibiting high precision and recall scores for all classes. However, this
@@ -3110,7 +3109,7 @@ learned to automatically extract useful features for overlap detection. Various 
 tackling the expected hurdles were enumerated and scientifically evaluated. It
 was seen that using simple normalization procedures provided benefit by reducing
 the expected mismatch between the training and testing conditions. Removing
-silence for the training objective helped reduce the competition on the already
+silence from the training objective helped reduce the competition on the already
 disadvantaged class of double-talk examples. The system performed better when
 the disadvantage was compensated for by rebalancing the dataset during training.
 The system performed best when assistance from all the above methods was made
@@ -3140,7 +3139,7 @@ proposed system on the datasets that have been used by previous works, so as to
 have a more directly comparable set of results. This is expected to involve adapting the
 proposed model to the new dataset, perhaps by retraining a few layers of the
 neural network on a subset. Some other adaptation procedures would also be
-required during the final deployment of the system. Chief among them would be a
+required during the final deployment of the system. Chief among them would be
 more powerful normalization and appropriate denoising procedures, so that the
 system is more robust against the less than ideal nature of real world signals.
 
@@ -3157,7 +3156,7 @@ information from other modalities in addition to the acoustic features. One
 approach could be to combine the outputs of an automatic speech recognition
 system with the ones of the proposed system for obtaining a more sophisticated
 decoding procedure. Such a procedure could exploit the characteristic failures
-and perplexities in the aligned outputs of the speech recognition system in
+and perplexities in the outputs of the speech recognition system in
 regions of overlaps, and add to the performance achieved using only the proposed
 system. This approach would prove complicated to appropriately implement, but
 the endeavour could prove worthwhile.
@@ -3168,8 +3167,8 @@ it is expected that improvements after using the entire dataset would only be
 moderate, while costing disproportionately more training time. More
 beneficial would be to work with a different dataset which is sufficiently large, is
 representative, and, crucially, has higher fidelity audios and finer annotations.
-However, such a dataset would certainly prove difficult to acquire. Prehaps, the
-idea of training on artificially overlapped speech can be revisited. In doing
+However, such a dataset would certainly prove difficult to acquire. Prehaps the
+idea of training on artificially overlapped speech can be revisited. While doing
 so, it will be important to avoid the various pitfalls involved in the process
 of creating such a dataset. Care should be taken that the new dataset faithfully
 reflects the characteristics of natural double-talks with respect to typical
