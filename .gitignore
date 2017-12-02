@@ -415,3 +415,7 @@ tags
 /*.tex
 /*.pdf
 **/Icon*
+*.gdraw
+*.zip
+/pure-tex
+*.odt
